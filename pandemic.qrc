@@ -1,0 +1,61 @@
+<RCC>
+    <qresource prefix="/">
+        <file>style.qss</file>
+    </qresource>
+    <qresource prefix="/icons">
+        <file>img/icons/cure_black_new.png</file>
+        <file>img/icons/cure_blue_new.png</file>
+        <file>img/icons/cure_red_new.png</file>
+        <file>img/icons/cure_yellow_new.png</file>
+        <file>img/icons/cure_black_discovered.png</file>
+        <file>img/icons/cure_blue_discovered.png</file>
+        <file>img/icons/cure_red_discovered.png</file>
+        <file>img/icons/cure_treated.png</file>
+        <file>img/icons/cure_yellow_discovered.png</file>
+        <file>img/icons/base.png</file>
+        <file>img/icons/card.png</file>
+        <file>img/icons/cube_black.png</file>
+        <file>img/icons/cube_blue.png</file>
+        <file>img/icons/cube_red.png</file>
+        <file>img/icons/cube_yellow.png</file>
+        <file>img/icons/outbreaks.png</file>
+        <file>img/icons/action_buildStation.png</file>
+        <file>img/icons/action_healBlack.png</file>
+        <file>img/icons/action_healBlue.png</file>
+        <file>img/icons/action_healRed.png</file>
+        <file>img/icons/action_healYellow.png</file>
+    </qresource>
+    <qresource prefix="/roles">
+        <file>img/random.png</file>
+        <file>img/dispatcher.png</file>
+        <file>img/medic.png</file>
+        <file>img/researcher.png</file>
+        <file>img/scientist.png</file>
+        <file>img/operations expert.png</file>
+    </qresource>
+    <qresource prefix="/manual">
+        <file>img/instrukcja0.jpg</file>
+        <file>img/preview_instrukcja0.jpg</file>
+        <file>img/preview_instrukcja1.jpg</file>
+        <file>img/preview_instrukcja2.jpg</file>
+        <file>img/preview_instrukcja3.jpg</file>
+        <file>img/preview_instrukcja4.jpg</file>
+        <file>img/preview_instrukcja5.jpg</file>
+        <file>img/preview_instrukcja6.jpg</file>
+        <file>img/preview_instrukcja7.jpg</file>
+        <file>img/instrukcja1.jpg</file>
+        <file>img/instrukcja2.jpg</file>
+        <file>img/instrukcja3.jpg</file>
+        <file>img/instrukcja4.jpg</file>
+        <file>img/instrukcja5.jpg</file>
+        <file>img/instrukcja6.jpg</file>
+        <file>img/instrukcja7.jpg</file>
+    </qresource>
+    <qresource prefix="/pawns">
+        <file>img/dispatcherPawn.png</file>
+        <file>img/medicPawn.png</file>
+        <file>img/researcherPawn.png</file>
+        <file>img/scientistPawn.png</file>
+        <file>img/operations expertPawn.png</file>
+    </qresource>
+</RCC>

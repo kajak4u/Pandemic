@@ -1,0 +1,233 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Designer\designer.cpp" />
+    <ClCompile Include="Designer\main.cpp" />
+    <ClCompile Include="GeneratedFiles\Debug\moc_designer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_designer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Designer\designer.hpp">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing designer.hpp...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -D_DESIGNER  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I.\Core" "-I.\Game" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Moc%27ing designer.hpp...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -D_DESIGNER  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include\qtcore" "-I$(QTDIR)\include\qtgui" "-I$(QTDIR)\include\qtwidgets" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I.\Core" "-I.\Game" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing designer.hpp...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -D_DESIGNER -DQT_NO_DEBUG -DNDEBUG  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I.\Core" "-I.\Game" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Moc%27ing designer.hpp...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  -DUNICODE -DWIN32 -DQT_DLL -D_DESIGNER -DQT_NO_DEBUG -DNDEBUG  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include\qtcore" "-I$(QTDIR)\include\qtgui" "-I$(QTDIR)\include\qtwidgets" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I.\Core" "-I.\Game" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="cards.qrc">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);.\img\playersDeck\Atlanta.png;.\img\playersDeck\Chicago.png;.\img\playersDeck\Essen.png;.\img\playersDeck\London.png;.\img\playersDeck\Madrid.png;.\img\playersDeck\Milan.png;.\img\playersDeck\New York.png;.\img\playersDeck\Paris.png;.\img\playersDeck\San Francisco.png;.\img\playersDeck\St. Petersburg.png;.\img\playersDeck\Toronto.png;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(FullPath);.\img\playersDeck\Atlanta.png;.\img\playersDeck\Chicago.png;.\img\playersDeck\Essen.png;.\img\playersDeck\London.png;.\img\playersDeck\Madrid.png;.\img\playersDeck\Milan.png;.\img\playersDeck\New York.png;.\img\playersDeck\Paris.png;.\img\playersDeck\San Francisco.png;.\img\playersDeck\St. Petersburg.png;.\img\playersDeck\Toronto.png;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(FullPath);.\img\playersDeck\Atlanta.png;.\img\playersDeck\Chicago.png;.\img\playersDeck\Essen.png;.\img\playersDeck\London.png;.\img\playersDeck\Madrid.png;.\img\playersDeck\Milan.png;.\img\playersDeck\New York.png;.\img\playersDeck\Paris.png;.\img\playersDeck\San Francisco.png;.\img\playersDeck\St. Petersburg.png;.\img\playersDeck\Toronto.png;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(FullPath);.\img\playersDeck\Atlanta.png;.\img\playersDeck\Chicago.png;.\img\playersDeck\Essen.png;.\img\playersDeck\London.png;.\img\playersDeck\Madrid.png;.\img\playersDeck\Milan.png;.\img\playersDeck\New York.png;.\img\playersDeck\Paris.png;.\img\playersDeck\San Francisco.png;.\img\playersDeck\St. Petersburg.png;.\img\playersDeck\Toronto.png;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Rcc%27ing %(Identity)...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Rcc%27ing %(Identity)...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Rcc%27ing %(Identity)...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Rcc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\(Filename).rcc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\(Filename).rcc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\(Filename).rcc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\(Filename).rcc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+    </CustomBuild>
+    <CustomBuild Include="pandemic.qrc">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(FullPath);.\style.qss;.\img\icons\cure_black_new.png;.\img\icons\cure_blue_new.png;.\img\icons\cure_red_new.png;.\img\icons\cure_yellow_new.png;.\img\icons\cure_black_discovered.png;.\img\icons\cure_blue_discovered.png;.\img\icons\cure_red_discovered.png;.\img\icons\cure_treated.png;.\img\icons\cure_yellow_discovered.png;.\img\icons\base.png;.\img\icons\card.png;.\img\icons\cube_black.png;.\img\icons\cube_blue.png;.\img\icons\cube_red.png;.\img\icons\cube_yellow.png;.\img\icons\outbreaks.png;.\img\random.png;.\img\dispatcher.png;.\img\medic.png;.\img\operationsexpert.png;.\img\researcher.png;.\img\scientist.png;.\img\instrukcja0.jpg;.\img\preview_instrukcja0.jpg;.\img\preview_instrukcja1.jpg;.\img\preview_instrukcja2.jpg;.\img\preview_instrukcja3.jpg;.\img\preview_instrukcja4.jpg;.\img\preview_instrukcja5.jpg;.\img\preview_instrukcja6.jpg;.\img\preview_instrukcja7.jpg;.\img\instrukcja1.jpg;.\img\instrukcja2.jpg;.\img\instrukcja3.jpg;.\img\instrukcja4.jpg;.\img\instrukcja5.jpg;.\img\instrukcja6.jpg;.\img\instrukcja7.jpg;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(FullPath);.\style.qss;.\img\icons\cure_black_new.png;.\img\icons\cure_blue_new.png;.\img\icons\cure_red_new.png;.\img\icons\cure_yellow_new.png;.\img\icons\cure_black_discovered.png;.\img\icons\cure_blue_discovered.png;.\img\icons\cure_red_discovered.png;.\img\icons\cure_treated.png;.\img\icons\cure_yellow_discovered.png;.\img\icons\base.png;.\img\icons\card.png;.\img\icons\cube_black.png;.\img\icons\cube_blue.png;.\img\icons\cube_red.png;.\img\icons\cube_yellow.png;.\img\icons\outbreaks.png;.\img\random.png;.\img\dispatcher.png;.\img\medic.png;.\img\operationsexpert.png;.\img\researcher.png;.\img\scientist.png;.\img\instrukcja0.jpg;.\img\preview_instrukcja0.jpg;.\img\preview_instrukcja1.jpg;.\img\preview_instrukcja2.jpg;.\img\preview_instrukcja3.jpg;.\img\preview_instrukcja4.jpg;.\img\preview_instrukcja5.jpg;.\img\preview_instrukcja6.jpg;.\img\preview_instrukcja7.jpg;.\img\instrukcja1.jpg;.\img\instrukcja2.jpg;.\img\instrukcja3.jpg;.\img\instrukcja4.jpg;.\img\instrukcja5.jpg;.\img\instrukcja6.jpg;.\img\instrukcja7.jpg;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(FullPath);.\style.qss;.\img\icons\cure_black_new.png;.\img\icons\cure_blue_new.png;.\img\icons\cure_red_new.png;.\img\icons\cure_yellow_new.png;.\img\icons\cure_black_discovered.png;.\img\icons\cure_blue_discovered.png;.\img\icons\cure_red_discovered.png;.\img\icons\cure_treated.png;.\img\icons\cure_yellow_discovered.png;.\img\icons\base.png;.\img\icons\card.png;.\img\icons\cube_black.png;.\img\icons\cube_blue.png;.\img\icons\cube_red.png;.\img\icons\cube_yellow.png;.\img\icons\outbreaks.png;.\img\random.png;.\img\dispatcher.png;.\img\medic.png;.\img\operationsexpert.png;.\img\researcher.png;.\img\scientist.png;.\img\instrukcja0.jpg;.\img\preview_instrukcja0.jpg;.\img\preview_instrukcja1.jpg;.\img\preview_instrukcja2.jpg;.\img\preview_instrukcja3.jpg;.\img\preview_instrukcja4.jpg;.\img\preview_instrukcja5.jpg;.\img\preview_instrukcja6.jpg;.\img\preview_instrukcja7.jpg;.\img\instrukcja1.jpg;.\img\instrukcja2.jpg;.\img\instrukcja3.jpg;.\img\instrukcja4.jpg;.\img\instrukcja5.jpg;.\img\instrukcja6.jpg;.\img\instrukcja7.jpg;%(AdditionalInputs)</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(FullPath);.\style.qss;.\img\icons\cure_black_new.png;.\img\icons\cure_blue_new.png;.\img\icons\cure_red_new.png;.\img\icons\cure_yellow_new.png;.\img\icons\cure_black_discovered.png;.\img\icons\cure_blue_discovered.png;.\img\icons\cure_red_discovered.png;.\img\icons\cure_treated.png;.\img\icons\cure_yellow_discovered.png;.\img\icons\base.png;.\img\icons\card.png;.\img\icons\cube_black.png;.\img\icons\cube_blue.png;.\img\icons\cube_red.png;.\img\icons\cube_yellow.png;.\img\icons\outbreaks.png;.\img\random.png;.\img\dispatcher.png;.\img\medic.png;.\img\operationsexpert.png;.\img\researcher.png;.\img\scientist.png;.\img\instrukcja0.jpg;.\img\preview_instrukcja0.jpg;.\img\preview_instrukcja1.jpg;.\img\preview_instrukcja2.jpg;.\img\preview_instrukcja3.jpg;.\img\preview_instrukcja4.jpg;.\img\preview_instrukcja5.jpg;.\img\preview_instrukcja6.jpg;.\img\preview_instrukcja7.jpg;.\img\instrukcja1.jpg;.\img\instrukcja2.jpg;.\img\instrukcja3.jpg;.\img\instrukcja4.jpg;.\img\instrukcja5.jpg;.\img\instrukcja6.jpg;.\img\instrukcja7.jpg;%(AdditionalInputs)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Rcc%27ing %(Identity)...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Rcc%27ing %(Identity)...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Rcc%27ing %(Identity)...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Rcc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\%(Filename).rcc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\%(Filename).rcc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\%(Filename).rcc;%(Outputs)</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\%(Filename).rcc;%(Outputs)</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\rcc.exe" -binary "%(FullPath)" -o .\%(Filename).rcc</Command>
+      <SubType>Designer</SubType>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Core.vcxproj">
+      <Project>{7adcd7d0-ed8a-4061-b722-c6135fe9fdeb}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B12702AD-ABFB-343A-A199-8E24837244A3}</ProjectGuid>
+    <Keyword>Qt4VSv1.0</Keyword>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Designer\PropertySheet.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>14.0.24720.0</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\$(ProjectName)\</OutDir>
+    <IntDir>$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_DLL;_DESIGNER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.\Core;.\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>qtmaind.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_DLL;_DESIGNER;_DESIGNER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include\qtcore;$(QTDIR)\include\qtgui;$(QTDIR)\include\qtwidgets;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.\Core;.\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>Disabled</Optimization>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <BrowseInformation>true</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>qtmaind.lib;qt5widgetsd.lib;qt5guid.lib;qt5cored.lib;$(SolutionDir)$(Platform)\$(Configuration)\core.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <DelayLoadDLLs>
+      </DelayLoadDLLs>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_DLL;_DESIGNER;QT_NO_DEBUG;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.\Core;.\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>qtmain.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PreprocessorDefinitions>UNICODE;WIN32;QT_DLL;_DESIGNER;QT_NO_DEBUG;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include\qtcore;$(QTDIR)\include\qtgui;$(QTDIR)\include\qtwidgets;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.\Core;.\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat />
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
+      <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties MocDir=".\GeneratedFiles\$(ConfigurationName)" UicDir=".\GeneratedFiles" RccDir=".\GeneratedFiles" lupdateOptions="" lupdateOnBuild="0" lreleaseOptions="" Qt5Version_x0020_x64="Qt5.5" MocOptions="" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

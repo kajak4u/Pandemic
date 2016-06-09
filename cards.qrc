@@ -1,0 +1,55 @@
+<RCC>
+    <qresource prefix="/">
+        <file>img/cards/Player/Atlanta.png</file>
+        <file>img/cards/Player/Chicago.png</file>
+        <file>img/cards/Player/Essen.png</file>
+        <file>img/cards/Player/London.png</file>
+        <file>img/cards/Player/Madrid.png</file>
+        <file>img/cards/Player/Milan.png</file>
+        <file>img/cards/Player/New York.png</file>
+        <file>img/cards/Player/Paris.png</file>
+        <file>img/cards/Player/reverse.png</file>
+        <file>img/cards/Player/San Francisco.png</file>
+        <file>img/cards/Player/St. Petersburg.png</file>
+        <file>img/cards/Player/Toronto.png</file>
+        <file>img/cards/Player/Washington.png</file>
+        <file>img/cards/Player/Bogota.png</file>
+        <file>img/cards/Player/Buenos Aires.png</file>
+        <file>img/cards/Player/Johannesburg.png</file>
+        <file>img/cards/Player/Khartoum.png</file>
+        <file>img/cards/Player/Kinshasa.png</file>
+        <file>img/cards/Player/Lagos.png</file>
+        <file>img/cards/Player/Lima.png</file>
+        <file>img/cards/Player/Los Angeles.png</file>
+        <file>img/cards/Player/Mexico City.png</file>
+        <file>img/cards/Player/Miami.png</file>
+        <file>img/cards/Player/Santiago.png</file>
+        <file>img/cards/Player/Sao Paulo.png</file>
+        <file>img/cards/Player/Algiers.png</file>
+        <file>img/cards/Player/Baghdad.png</file>
+        <file>img/cards/Player/Bangkok.png</file>
+        <file>img/cards/Player/Bejing.png</file>
+        <file>img/cards/Player/Cairo.png</file>
+        <file>img/cards/Player/Chennai.png</file>
+        <file>img/cards/Player/Delhi.png</file>
+        <file>img/cards/Player/Ho Chi Minh City.png</file>
+        <file>img/cards/Player/Hong Kong.png</file>
+        <file>img/cards/Player/Istanbul.png</file>
+        <file>img/cards/Player/Jakarta.png</file>
+        <file>img/cards/Player/Karachi.png</file>
+        <file>img/cards/Player/Kolkata.png</file>
+        <file>img/cards/Player/Manila.png</file>
+        <file>img/cards/Player/Moscow.png</file>
+        <file>img/cards/Player/Mumbai.png</file>
+        <file>img/cards/Player/Osaka.png</file>
+        <file>img/cards/Player/Riyadh.png</file>
+        <file>img/cards/Player/Seoul.png</file>
+        <file>img/cards/Player/Shanghai.png</file>
+        <file>img/cards/Player/Sydney.png</file>
+        <file>img/cards/Player/Taipei.png</file>
+        <file>img/cards/Player/Tehran.png</file>
+        <file>img/cards/Player/Tokyo.png</file>
+        <file>img/cards/Disease/reverse.png</file>
+        <file>img/cards/Epidemic/epidemy.png</file>
+    </qresource>
+</RCC>

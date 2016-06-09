@@ -1,0 +1,65 @@
+#menu, #body, #NewGameMenu {
+	background-color: #AFAFAF;
+}
+#menu QPushButton {
+	color: rgb(239,30,30);
+	background-color: #000044;
+	padding: 20px;
+	font-size: 30pt;
+	font-weight: bold;
+	font-family: "Arial";
+	border-width: 5px;
+	border-style: outset;
+	border-color: #000066 #000022 #000022 #000066;
+}
+#menu QPushButton:hover {
+	font-style: italic;
+	
+}
+#menu QPushButton:pressed {
+
+	padding: 22px 18px 18px 22px;
+	border-color: #000022 #000066 #000066 #000022;
+}
+#body QWidget {
+	font-size: 30pt;
+	font-family: "Arial";
+}
+#NewGameMenu QWidget {
+ 
+} 
+#CGameWindow #gameStatusWidget {
+	border-bottom: 2px ridge grey;
+}
+#CGameWindow #gameStatusWidget QWidget {
+	font-weight: bold;
+}
+#CGameWindow #playerAreaWidget {
+	border-right: 2px ridge grey;
+	border-top: 2px groove grey;
+}
+#CGameWindow #gameLogEdit {
+	border: 1px solid green;
+	background-color: transparent;
+	font-family: "Comic Sans MS";
+}
+#CGameWindow #actionsWidget CExtendedSignalWidget {
+	border: 2px outset #b37d00;
+	background-color: #ffb200;
+	padding: 4px;
+	cursor: pointer;
+}
+#CGameWindow #actionsWidget CExtendedSignalWidget[pressed=true] {
+	border: 2px inset #b37d00;
+	padding: 4px 0px 0px 4px;
+}
+#CGameWindow #actionsWidget CExtendedSignalWidget:disabled {
+	border-color: #bfa466;
+	background-color: #e5bf66;
+}
+CBoarItem {/*border: 1px outset black;*/ background-color: rgba(255,255,255,63);}
+CBoardItem[selected=true] {/*border-color: green;*/ background-color: rgba(127, 192, 192, 191);}
+CBoardItem[highlighted=true] {background-color: rgba(100,50,200,127);}
+CPathItem {background-color: none;/*rgba(100,50,200,127);*/}
+CPawn, CDiseaseCube, CCureMarker {border: none;}
+CCureMarker {background-color: none;}

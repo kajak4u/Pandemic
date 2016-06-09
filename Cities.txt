@@ -1,0 +1,381 @@
+48
+CCity
+New York
+BLUE
+4
+London
+Madrid
+Washington
+Toronto
+CCity
+Washington
+BLUE
+4
+New York
+Atlanta
+Miami
+Toronto
+CCity
+Miami
+YELLOW
+4
+Bogota
+Mexico City
+Atlanta
+Washington
+CCity
+Atlanta
+BLUE
+4
+Los Angeles
+Miami
+Washington
+Chicago
+CCity
+Toronto
+BLUE
+3
+New York
+Washington
+Chicago
+CCity
+Shanghai
+RED
+5
+Tokyo
+Taipei
+Seoul
+Bejing
+Hong Kong
+CCity
+Algiers
+BLACK
+4
+Cairo
+Madrid
+Istanbul
+Paris
+CCity
+Madrid
+BLUE
+5
+London
+New York
+Algiers
+Sao Paulo
+Paris
+CCity
+Chicago
+BLUE
+5
+Los Angeles
+Mexico City
+Atlanta
+San Francisco
+Toronto
+CCity
+San Francisco
+BLUE
+4
+Los Angeles
+Tokyo
+Manila
+Chicago
+CCity
+Mexico City
+YELLOW
+5
+Los Angeles
+Bogota
+Lima
+Miami
+Chicago
+CCity
+Bogota
+YELLOW
+5
+Lima
+Mexico City
+Buenos Aires
+Sao Paulo
+Miami
+CCity
+Los Angeles
+YELLOW
+5
+Mexico City
+Atlanta
+San Francisco
+Sydney
+Chicago
+CCity
+Lima
+YELLOW
+3
+Bogota
+Mexico City
+Santiago
+CCity
+Buenos Aires
+YELLOW
+2
+Bogota
+Sao Paulo
+CCity
+Sao Paulo
+YELLOW
+4
+Bogota
+Lagos
+Madrid
+Buenos Aires
+CCity
+Santiago
+YELLOW
+1
+Lima
+CCity
+Lagos
+YELLOW
+3
+Kinshasa
+Khartoum
+Sao Paulo
+CCity
+Paris
+BLUE
+5
+London
+Madrid
+Algiers
+Milan
+Essen
+CCity
+Kinshasa
+YELLOW
+3
+Lagos
+Johannesburg
+Khartoum
+CCity
+Johannesburg
+YELLOW
+2
+Kinshasa
+Khartoum
+CCity
+Khartoum
+YELLOW
+4
+Lagos
+Kinshasa
+Cairo
+Johannesburg
+CCity
+Cairo
+BLACK
+5
+Baghdad
+Algiers
+Istanbul
+Khartoum
+Riyadh
+CCity
+Istanbul
+BLACK
+6
+Baghdad
+Cairo
+Algiers
+Milan
+St. Petersburg
+Moscow
+CCity
+Milan
+BLUE
+3
+Istanbul
+Paris
+Essen
+CCity
+Essen
+BLUE
+4
+London
+Milan
+St. Petersburg
+Paris
+CCity
+St. Petersburg
+BLUE
+3
+Istanbul
+Essen
+Moscow
+CCity
+Moscow
+BLACK
+3
+Tehran
+Istanbul
+St. Petersburg
+CCity
+Tehran
+BLACK
+4
+Baghdad
+Delhi
+Karachi
+Moscow
+CCity
+Baghdad
+BLACK
+5
+Tehran
+Cairo
+Istanbul
+Riyadh
+Karachi
+CCity
+Riyadh
+BLACK
+3
+Baghdad
+Cairo
+Karachi
+CCity
+Karachi
+BLACK
+5
+Baghdad
+Delhi
+Tehran
+Mumbai
+Riyadh
+CCity
+Mumbai
+BLACK
+3
+Delhi
+Chennai
+Karachi
+CCity
+Delhi
+BLACK
+5
+Kolkata
+Tehran
+Chennai
+Mumbai
+Karachi
+CCity
+Kolkata
+BLACK
+4
+Delhi
+Chennai
+Bangkok
+Hong Kong
+CCity
+Chennai
+BLACK
+5
+Kolkata
+Delhi
+Mumbai
+Bangkok
+Jakarta
+CCity
+Bangkok
+RED
+5
+Kolkata
+Chennai
+Ho Chi Minh City
+Hong Kong
+Jakarta
+CCity
+Jakarta
+RED
+4
+Chennai
+Ho Chi Minh City
+Sydney
+Bangkok
+CCity
+Hong Kong
+RED
+6
+Kolkata
+Taipei
+Manila
+Ho Chi Minh City
+Shanghai
+Bangkok
+CCity
+Ho Chi Minh City
+RED
+4
+Manila
+Hong Kong
+Bangkok
+Jakarta
+CCity
+Sydney
+RED
+3
+Los Angeles
+Manila
+Jakarta
+CCity
+Manila
+RED
+5
+Taipei
+Ho Chi Minh City
+San Francisco
+Sydney
+Hong Kong
+CCity
+Taipei
+RED
+4
+Osaka
+Manila
+Shanghai
+Hong Kong
+CCity
+Osaka
+RED
+2
+Tokyo
+Taipei
+CCity
+Bejing
+RED
+2
+Seoul
+Shanghai
+CCity
+Seoul
+RED
+3
+Tokyo
+Bejing
+Shanghai
+CCity
+Tokyo
+RED
+4
+Osaka
+Seoul
+San Francisco
+Shanghai
+CCity
+London
+BLUE
+4
+New York
+Madrid
+Paris
+Essen

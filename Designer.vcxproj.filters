@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Designer">
+      <UniqueIdentifier>{16ef1148-0141-4a91-99f0-030cc080ae25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{cfd5b1e7-e8b4-409a-8036-4cc9f30bc1db}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{a51a5bc5-c815-4b0d-87c7-18736ef06703}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{7dbc8825-a66f-4894-bac6-e283d4d9c09d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Designer\main.cpp">
+      <Filter>Designer</Filter>
+    </ClCompile>
+    <ClCompile Include="Designer\designer.cpp">
+      <Filter>Designer</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_designer.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_designer.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Designer\designer.hpp">
+      <Filter>Designer</Filter>
+    </CustomBuild>
+    <CustomBuild Include="pandemic.qrc">
+      <Filter>Resource</Filter>
+    </CustomBuild>
+    <CustomBuild Include="cards.qrc">
+      <Filter>Resource</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
