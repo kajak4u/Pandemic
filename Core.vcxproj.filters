@@ -115,9 +115,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_CDeck.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="core.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="GeneratedFiles\Debug\moc_CCircleMenu.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -135,6 +132,9 @@
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_COverlay.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\core.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,7 +239,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core.h">
+    <ClInclude Include="Core\core.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>

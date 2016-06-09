@@ -81,15 +81,6 @@
     <ClCompile Include="GeneratedFiles\Release\moc_CHowToPlayWindow.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="CPixmapLoader.cpp">
-      <Filter>Game</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Debug\moc_CPixmapLoader.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="GeneratedFiles\Release\moc_CPixmapLoader.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="Game\CGameWindow.cpp">
       <Filter>Game</Filter>
     </ClCompile>
@@ -135,6 +126,15 @@
     <ClCompile Include="Game\CPlayer.cpp">
       <Filter>Game</Filter>
     </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CPixmapLoader.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CPixmapLoader.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CPixmapLoader.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="pandemic.qrc">
@@ -158,9 +158,6 @@
     <CustomBuild Include="Game\CHowToPlayWindow.ui">
       <Filter>Form Files</Filter>
     </CustomBuild>
-    <CustomBuild Include="CPixmapLoader.hpp">
-      <Filter>Game</Filter>
-    </CustomBuild>
     <CustomBuild Include="Game\CGameWindow.hpp">
       <Filter>Game</Filter>
     </CustomBuild>
@@ -169,6 +166,9 @@
     </CustomBuild>
     <CustomBuild Include="cards.qrc">
       <Filter>Resource</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CPixmapLoader.hpp">
+      <Filter>Game</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

@@ -111,7 +111,6 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="core.cpp" />
     <ClCompile Include="Core\CBoard.cpp" />
     <ClCompile Include="Core\CBoardItem.cpp" />
     <ClCompile Include="Core\CBoardItemsFactory.cpp" />
@@ -122,6 +121,7 @@
     <ClCompile Include="Core\CDeck.cpp" />
     <ClCompile Include="Core\CDiseaseCube.cpp" />
     <ClCompile Include="Core\CExtendedSignalWidget.cpp" />
+    <ClCompile Include="Core\core.cpp" />
     <ClCompile Include="Core\CPathItem.cpp" />
     <ClCompile Include="Core\CPathMarker.cpp" />
     <ClCompile Include="Core\CPawn.cpp" />
@@ -634,7 +634,6 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core.h" />
     <CustomBuild Include="Game\COverlay.hpp">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing COverlay.hpp...</Message>
@@ -707,6 +706,9 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp"  "-I.\GeneratedFiles" "-I." "-I$(QTDIR)\include\qtcore" "-I$(QTDIR)\include\qtgui" "-I$(QTDIR)\include\qtwidgets" "-I$(QTDIR)\include" "-I.\GeneratedFiles\$(ConfigurationName)\." "-I.\Core" "-I.\Game" "-IC:\Program Files (x86)\Visual Leak Detector\include"</Command>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\core.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
