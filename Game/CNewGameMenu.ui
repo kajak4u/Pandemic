@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>NewGameMenu</class>
+ <widget class="QWidget" name="NewGameMenu">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1366</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>CNewGameMenu</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget {font-size: 20pt; font-family: Arial;}
+QLabel[objectName=&quot;roleDescriptionLabel_1&quot;],
+QLabel[objectName=&quot;roleDescriptionLabel_2&quot;],
+QLabel[objectName=&quot;roleDescriptionLabel_3&quot;],
+QLabel[objectName=&quot;roleDescriptionLabel_4&quot;] {font-size: 15pt;}</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="5">
+    <widget class="QComboBox" name="difficultyComboBox">
+     <property name="frame">
+      <bool>true</bool>
+     </property>
+     <item>
+      <property name="text">
+       <string>Introductory</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Medium</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Heroic</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>Difficulty:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="0" column="2">
+    <widget class="QSpinBox" name="numberOfPlayersBox">
+     <property name="minimum">
+      <number>2</number>
+     </property>
+     <property name="maximum">
+      <number>4</number>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Number of players:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::MinimumExpanding</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="4" column="0" colspan="2">
+    <widget class="QPushButton" name="backButton">
+     <property name="text">
+      <string>Back</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="5">
+    <widget class="QPushButton" name="startGameButton">
+     <property name="text">
+      <string>Start game</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="6">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="4" column="0">
+      <widget class="QLabel" name="playerId_4">
+       <property name="text">
+        <string>4.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <widget class="QComboBox" name="playerRoleComboBox_1">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>250</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+       </property>
+       <item>
+        <property name="text">
+         <string>Operations Expert</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dispatcher</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Medic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Scientist</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Researcher</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLineEdit" name="playerName_3">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QComboBox" name="playerRoleComboBox_4">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>125</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+       </property>
+       <item>
+        <property name="text">
+         <string>Operations Expert</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dispatcher</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Medic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Scientist</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Researcher</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="3" column="3">
+      <widget class="QLabel" name="roleDescriptionLabel_3">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;
+&lt;head/&gt;
+&lt;body&gt;
+&lt;table&gt;&lt;tr&gt;&lt;td&gt;
+  &lt;img src=&quot;:/roles/img/operationsexpert.png&quot; width=&quot;80&quot; height=&quot;80&quot;/&gt;
+&lt;/td&gt;&lt;td style=&quot;vertical-align: middle;&quot;&gt;
+  &lt;ul&gt;
+    &lt;li&gt;You may build a research station in your current city for one action&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLineEdit" name="playerName_1">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="3">
+      <widget class="QLabel" name="roleDescriptionLabel_2">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;table&gt;&lt;tr&gt;&lt;td&gt;&lt;img src=&quot;:/roles/img/scientist.png&quot;        width=100 height=100 /&gt;&lt;/td&gt;&lt;td style=&quot;vertical-align: middle;&quot;&gt;&lt;ul&gt;&lt;li&gt;You need only 4 cards of the same color to discover a cure.&lt;/li&gt;&lt;/ul&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="3">
+      <widget class="QLabel" name="roleDescriptionLabel_1">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+         <horstretch>2</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>You may build a research station in your current city for one action</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="roleDescriptionLabel_4">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;ul&gt;&lt;li&gt;You may give a player cards from your hand for 1 action per card.&lt;/li&gt;&lt;li&gt;Both of your pawns must be in the same city, but it doesn't matter which city you are in&lt;/li&gt;&lt;/ul&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="playerId_2">
+       <property name="text">
+        <string>2.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="playerId_1">
+       <property name="text">
+        <string>1.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="playerId_3">
+       <property name="text">
+        <string>3.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLineEdit" name="playerName_2"/>
+     </item>
+     <item row="3" column="2">
+      <widget class="QComboBox" name="playerRoleComboBox_3">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>125</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+       </property>
+       <item>
+        <property name="text">
+         <string>Operations Expert</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dispatcher</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Medic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Scientist</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Researcher</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="2" column="2">
+      <widget class="QComboBox" name="playerRoleComboBox_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>125</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="sizeAdjustPolicy">
+        <enum>QComboBox::AdjustToMinimumContentsLength</enum>
+       </property>
+       <item>
+        <property name="text">
+         <string>Operations Expert</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Dispatcher</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Medic</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Scientist</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Researcher</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLineEdit" name="playerName_4"/>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Player name:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="2">
+      <widget class="QLabel" name="label_4">
+       <property name="text">
+        <string>Role:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="3">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Role description:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>numberOfPlayersBox</tabstop>
+  <tabstop>difficultyComboBox</tabstop>
+  <tabstop>playerName_1</tabstop>
+  <tabstop>playerRoleComboBox_1</tabstop>
+  <tabstop>playerName_2</tabstop>
+  <tabstop>playerRoleComboBox_2</tabstop>
+  <tabstop>playerName_3</tabstop>
+  <tabstop>playerRoleComboBox_3</tabstop>
+  <tabstop>playerName_4</tabstop>
+  <tabstop>playerRoleComboBox_4</tabstop>
+  <tabstop>backButton</tabstop>
+  <tabstop>startGameButton</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>

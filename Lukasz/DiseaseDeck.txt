@@ -1,0 +1,97 @@
+DiseaseCard
+Algiers
+BLACK
+Atlanta
+BLUE
+Baghdad
+BLACK
+Bangkok
+RED
+Bejing
+RED
+Bogota
+YELLOW
+Buenos Aires
+YELLOW
+Cairo
+BLACK
+Chennai
+BLACK
+Chicago
+BLUE
+Delhi
+BLACK
+Essen
+BLUE
+Ho Chi Minh City
+RED
+Hong Kong
+RED
+Istanbul
+BLACK
+Jakarta
+RED
+Johannesburg
+YELLOW
+Karachi
+BLACK
+Khartoum
+YELLOW
+Kinshasa
+YELLOW
+Kolkata
+BLACK
+Lagos
+YELLOW
+Lima
+YELLOW
+London
+BLUE
+Los Angeles
+YELLOW
+Madrid
+BLUE
+Manila
+RED
+Mexico City
+YELLOW
+Miami
+YELLOW
+Milan
+BLUE
+Moscow
+BLACK
+Mumbai
+BLACK
+New York
+BLUE
+Osaka
+RED
+Paris
+BLUE
+Riyadh
+BLACK
+San Francisco
+BLUE
+Santiago
+YELLOW
+Sao Paulo
+YELLOW
+Seoul
+RED
+Shanghai
+RED
+St. Petersburg
+BLUE
+Sydney
+RED
+Taipei
+RED
+Tehran
+BLACK
+Tokyo
+RED
+Toronto
+BLUE
+Washington
+BLUE
