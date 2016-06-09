@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{8fdfb7c6-f0a1-4d84-bbc0-cb71db69066b}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{fb30f298-a397-45c4-a01d-5d8b9d6e09fc}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{95c8d66b-e2c8-45b4-9b8f-162e3e66e53b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{223d34c2-5535-4b84-9727-5aab4cfef033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Lukasz">
+      <UniqueIdentifier>{9906c696-9933-49fa-b346-2b48ae30a282}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Game\CMainWindow.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CMainWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CMainWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CMenuLayout.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CNewGameMenu.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\main.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CNewGameMenu.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CNewGameMenu.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CMenuLayout.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CMenuLayout.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CHowToPlayWindow.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CHowToPlayWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CHowToPlayWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="CPixmapLoader.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CPixmapLoader.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CPixmapLoader.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CGameWindow.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_CGameWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_CGameWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\Board.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\Card.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\CardDeck.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\City.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\Disease.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\DiseaseCard.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\EpidemicCard.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\Player.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\PlayerCard.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Lukasz\SpecialCard.cpp">
+      <Filter>Lukasz</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Mediator.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\CPlayer.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="pandemic.qrc">
+      <Filter>Resource</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CMainWindow.hpp">
+      <Filter>Game</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CMenuLayout.hpp">
+      <Filter>Game</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CNewGameMenu.hpp">
+      <Filter>Game</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CNewGameMenu.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CHowToPlayWindow.hpp">
+      <Filter>Game</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CHowToPlayWindow.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="CPixmapLoader.hpp">
+      <Filter>Game</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CGameWindow.hpp">
+      <Filter>Game</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Game\CGameWindow.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="cards.qrc">
+      <Filter>Resource</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="img\dispatcher.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\medic.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\operationsexpert.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\researcher.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\scientist.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\random.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_black_new.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_blue_new.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_red_new.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_yellow_new.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_black_discovered.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_blue_discovered.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_red_discovered.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_treated.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cure_yellow_discovered.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\base.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\card.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cube_black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cube_blue.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cube_red.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\cube_yellow.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\icons\outbreaks.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja0.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja5.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja6.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\preview_instrukcja7.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja1.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja2.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja3.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja4.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja5.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja6.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\instrukcja7.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\Atlanta.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\Chicago.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\Essen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\London.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\Madrid.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\Milan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\New York.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\Paris.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\San Francisco.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\St. Petersburg.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="img\playersDeck\Toronto.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="style.qss">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GeneratedFiles\ui_CGameWindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\Board.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\Card.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\CardDeck.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\City.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\Disease.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\DiseaseCard.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\enumShort.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\EpidemicCard.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\Player.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\PlayerCard.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Lukasz\SpecialCard.h">
+      <Filter>Lukasz</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Mediator.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\CPlayer.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
