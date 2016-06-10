@@ -97,6 +97,8 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
             citiesGUI << ui.board->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
         ui.board->setActiveCities(citiesGUI);
     }
+    else
+        ui.board->setActiveCities(QSet<CCity*>());
     if (decisions.contains(DEC_MOVE_TO_CARD)) {
         // TODO decision
     }

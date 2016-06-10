@@ -26,7 +26,7 @@ CCity::CCity(QWidget * parent) :
         options += new CEnumOption<DiseaseType>("Disease type", DiseaseType_SL, type);
     }
     else {
-        connect(this, &CCity::rightButtonUp, this, &CCity::showCityMenu);
+        connect(this, &CCity::leftButtonUp, this, &CCity::showCityMenu);
     }
     if (cityMask == nullptr)
         cityMask = std::unique_ptr<QBitmap>(new QBitmap(QPixmap("img/cityMask.png").createMaskFromColor(Qt::transparent)));
@@ -264,11 +264,11 @@ QString CCity::createObjectName(const QString & name)
     return QString("CCity %1").arg(name);
 }
 
-void CCity::showCityMenu()
+void CCity::showCityMenu(QMouseEvent* event)
 {
     if (container->isCurrentCity(this)) {
-        select();
         container->showCityMenu(CPoint(this->pos()) + this->size() / 2);
+        event->accept();
     }
 }
 

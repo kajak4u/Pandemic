@@ -306,8 +306,9 @@ void CBoard::firstPathItem(CPathItem * item)
     }
 }
 
-void CBoard::clickCity()
+void CBoard::clickCity(QMouseEvent* event)
 {
+    event->accept();
     CCity* city = dynamic_cast<CCity*>(sender());
     emit cityClicked(city);
 }

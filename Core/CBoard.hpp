@@ -87,7 +87,7 @@ private:
     QSet<QWidget*> cardDecisions; // (moveFrom / moveTo / use), discard
     QSet<QWidget*> playersDecisions; // moveAnother
 public:
-    void clickCity();
+    void clickCity(QMouseEvent*);
 private slots:
     void afterCreate();
     void setMode(Qt::TransformationMode);

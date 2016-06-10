@@ -235,10 +235,6 @@ void Board::NewTurn()
 vector<Decision> Board::IsAbleTo()
 {
 	vector<Decision> decisionsAvailable;
-	if (movesLeft < 0)
-	{
-		movesLeft = 400;
-	}
 	if (movesLeft > 0)
 	{
 		currentCity = currentPlayer->GetPosition();
@@ -806,7 +802,6 @@ void Board::prepareCityList()
 	string ccityControl, cityName, neighbours, cityColor;
 	QString colour;
 	map<City*, vector<string>> citiesWithNeighbourhood;
-	vector<string> neighboursForCities;
 
 	File >> cityCounter;
 	getline(File, ccityControl);
@@ -815,6 +810,7 @@ void Board::prepareCityList()
 		getline(File, ccityControl);
 		if (ccityControl == "CCity")
 		{
+            vector<string> neighboursForCities;
 			getline(File, cityName);
 			getline(File, cityColor);
 			File >> neighbourCounter;
