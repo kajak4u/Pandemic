@@ -223,7 +223,8 @@ vector<Decision> Board::IsAbleTo()
 {
 	currentPlayer = players[currentPlayerNumber%players.size()];
 	vector<Decision> decisionsAvailable;
-    decisionsAvailable.push_back(DEC_MOVE_SHORT);
+    if (movesLeft < -10)
+        movesLeft = 400;
 	if (movesLeft > 0)
 	{
 		currentCity = currentPlayer->GetPosition();

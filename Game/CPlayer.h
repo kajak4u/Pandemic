@@ -19,6 +19,7 @@ public:
     CPlayer(Player*, CCity*);
     ~CPlayer();
     Player* toLogic();
+    CCity* getLocation() const;
     PlayerRole getRole() const;
     void setIco(QLabel*);
     QLabel* getIco();

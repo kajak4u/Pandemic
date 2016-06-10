@@ -16,6 +16,7 @@ public:
     void setType(CardType newType);
     void setReversed(bool);
     bool isReversed() const;
+    QString getCityName() const;
     virtual QString createObjectName() const;
     static QString createObjectName(const QString& cardName, CardType type);
     virtual void scale(double factor);
@@ -36,6 +37,7 @@ private:
 public slots:
     void invert();
     void scaleAnimationChanged(QAbstractAnimation::State);
+    void gotoPlayer();
 private slots:
     void invertStateChanged(QAbstractAnimation::State); // wywoływane przez animację z ::invert() - bo lambda może rzucać nullpointerexceptionem
 };

@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 #include "CBoard.hpp"
 #include <QDebug>
+#include "CPlayer.h"
 
 std::unique_ptr<QPixmap> CCard::playerReverse = nullptr,
         CCard::diseaseReverse = nullptr,
@@ -45,6 +46,11 @@ void CCard::setReversed(bool rev)
 bool CCard::isReversed() const
 {
     return reversed;
+}
+
+QString CCard::getCityName() const
+{
+    return cardName;
 }
 
 QString CCard::createObjectName() const
@@ -129,6 +135,21 @@ void CCard::scaleAnimationChanged(QAbstractAnimation::State state)
     scale(1.0);
 }
 
+void CCard::gotoPlayer()
+{
+    QRect cardPos = QRect(mapToGlobal({ 0,0 }), size());
+    QLabel* ico = container->currentPlayer()->getIco();
+    QRect playerIcoRect = QRect(ico->mapToGlobal({ 0,0 }), ico->size());
+    if (cardPos.intersects(playerIcoRect))
+        container->addCardToHand(this);
+    hide();
+    /*
+        getPos()
+        find label over it / calculate
+        move to player GUI deck
+    */
+}
+
 void CCard::invert()
 {
     QSequentialAnimationGroup* animation = new QSequentialAnimationGroup(this);
@@ -147,8 +168,10 @@ void CCard::invertStateChanged(QAbstractAnimation::State newState)
         reversed = !reversed;
         if (reversed)
             setImage(getReverse().scaledToWidth(standardSize.width(), Qt::SmoothTransformation));
-        else if(pxm.isNull())
+        else if (pxm.isNull()) {
+            setImage(QPixmap());
             setText(QString("<h1>%1</h1><h2>%2</h2>").arg(cardName).arg(CardType_SL[type]));
+        } 
         else
             setImage(pxm);
     }

@@ -20,6 +20,15 @@ CDiseaseCube* CDiseaseCube::createIn(CCity* destination, DiseaseType color)
     return newCube;
 }
 
+void CDiseaseCube::disappear()
+{
+    CPoint endPos = getStandardMiddle();
+    endPos.setY(-standardSize.height());
+    QPropertyAnimation *anim = createPropertyAnimation(this, "middlePos", getStandardMiddle(), endPos, 1500, QEasingCurve::OutBounce);
+    connect(anim, &QPropertyAnimation::finished, this, &CDiseaseCube::deleteLater);
+    container->addAnimation(anim);
+}
+
 CDiseaseCube::CDiseaseCube(DiseaseType _color, CCity *_city) : CBoardItem((QWidget*)defaultContainer), color(_color), location(_city), nth(-1)
 {
     disableResize();

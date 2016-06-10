@@ -76,8 +76,9 @@ void CPawn::moveTo(CCity * dest)
     position = dest;
     int nth = position->pawnEnters();
     CPoint newPos = position->getStandardMiddle() + CPoint(17,40) + nth*CPoint(0, -12);
-    QPropertyAnimation *animation = createPropertyAnimation(this, "middlePos", getStandardMiddle(), newPos, 2000, QEasingCurve::InOutQuart);
-    animation->start();
+    setStandardMiddleAnim(newPos);
+    //QPropertyAnimation *animation = createPropertyAnimation(this, "middlePos", getStandardMiddle(), newPos, 2000, QEasingCurve::InOutQuart);
+    //animation->start();
 }
 
 void CPawn::onRightBtnUp(QMouseEvent *event)
@@ -109,4 +110,9 @@ QString CPawn::createObjectName() const
 QString CPawn::createObjectName(PlayerRole role)
 {
     return QString("CPawn %1").arg(PlayerRole_SL[role]);
+}
+
+CCity * CPawn::getPosition() const
+{
+    return position;
 }

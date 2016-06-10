@@ -20,6 +20,7 @@ public:
     PlayerRole getRole() const;
     virtual QString createObjectName() const;
     static QString createObjectName(PlayerRole role);
+    CCity* getPosition() const;
 protected:
     CCity *position;
     PlayerRole role;

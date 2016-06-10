@@ -6,6 +6,7 @@
 #include "Lukasz\Board.h"
 #include <QVector>
 
+
 class CGameWindow_UI : public Ui::CGameWindow {
 public:
     QToolButton* playerAreaMaximizeButton;
@@ -46,12 +47,23 @@ private:
     Board *game;
     Difficulty diff;
     QVector<QPair<QString, PlayerRole>> players;
-    void dispatchDecisions(const QVector<Decision>&);
+    void dispatchDecisions(const QSet<Decision>&);
+    CExtendedSignalWidget *menu_buildStation,
+        *menu_discoverCure,
+        *menu_treatRed,
+        *menu_treatBlue,
+        *menu_treatYellow,
+        *menu_treatBlack,
+        *menu_shareKnowledge;
+    QMetaObject::Connection conn;
 private slots:
     void hidePlayerArea();
     void showPlayerArea();
     void createMenus();
     void afterCreate();
+    void targetCityClicked(CCity*);
+    void nextAction();
+    void waitForNextAction();
 signals:
     void created();
 };
