@@ -39,9 +39,9 @@ void Board::DiscardSpecialCard(string cardName)
 
 void Board::Infect(Card* card, int cubesCount)
 {
+	diseasesDiscarded.PutCard(card);
 	Disease* disease = FindDisease(card->GetColor());
 	disease->diseaseAppearsIn(FindCity(card->GetName()), cubesCount);
-	diseasesDiscarded.PutCard(card);
 }
 
 void Board::PlayTheInfection(bool isSkipped)
@@ -235,6 +235,10 @@ void Board::NewTurn()
 vector<Decision> Board::IsAbleTo()
 {
 	vector<Decision> decisionsAvailable;
+	if (movesLeft < 0)
+	{
+		movesLeft = 400;
+	}
 	if (movesLeft > 0)
 	{
 		currentCity = currentPlayer->GetPosition();
