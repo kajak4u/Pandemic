@@ -4,6 +4,10 @@
 !robocze/
 Lukasz_old/
 *.rcc
+*.sln
+*.vcxproj
+*.vcproj.*
+*.props
 
 # User-specific files
 *.suo
