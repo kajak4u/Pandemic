@@ -18,6 +18,7 @@ class CBoardItem : public CExtendedSignalWidget {
     Q_PROPERTY(QSize standardSize MEMBER standardSize WRITE setStandardSize)
     Q_PROPERTY(double angleY MEMBER angleY WRITE rotateY)
     Q_PROPERTY(double zoomFactor MEMBER zoomFactor WRITE scaleTo)
+    Q_PROPERTY(bool highlighted MEMBER highlighted)
 public:
     CBoardItem(QWidget * parent = (QWidget*)defaultContainer);
     CBoardItem(const CBoardItem& other);
@@ -66,6 +67,8 @@ public:
     void rename();
     virtual QString createObjectName() const;
     static QString createObjectName(const QString& name);
+    void setImage(const QPixmap&);
+    void setMask(const QBitmap&);
 protected:
     CPoint standardPos;
     QSize standardSize;
@@ -78,12 +81,11 @@ protected:
     bool isDragging;
     QVector<COption*> options;
     virtual void updateOptions() {}
-    void setImage(const QPixmap&);
-    void setMask(const QBitmap&);
     QMap<CBoardItem**, int> references;
     QPixmap image;
     QBitmap itemMask;
     Qt::TransformationMode mode;
+    bool highlighted;
 private:
     double angleY;
     bool allowResize;
@@ -91,4 +93,6 @@ private:
     friend class CBoardItemsFactory;
 private slots:
     void raiseOnAnimation(QAbstractAnimation::State);
+signals:
+    void scaled(double);
 };

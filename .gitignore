@@ -8,6 +8,7 @@ Lukasz_old/
 *.vcxproj
 *.vcproj.*
 *.props
+pandemic.VC.opendb
 
 # User-specific files
 *.suo
