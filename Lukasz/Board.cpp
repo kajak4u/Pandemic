@@ -39,9 +39,9 @@ void Board::DiscardSpecialCard(string cardName)
 
 void Board::Infect(Card* card, int cubesCount)
 {
-    diseasesDiscarded.PutCard(card);
 	Disease* disease = FindDisease(card->GetColor());
 	disease->diseaseAppearsIn(FindCity(card->GetName()), cubesCount);
+	diseasesDiscarded.PutCard(card);
 }
 
 void Board::PlayTheInfection(bool isSkipped)
@@ -55,6 +55,7 @@ void Board::PlayTheInfection(bool isSkipped)
 			Infect(card, 1);
 		}
 	}
+	wasInfection = true;
 }
 //PUBLIC:
 Player* Board::GetCurrentPlayer() const
@@ -173,6 +174,7 @@ GameResult Board::Pass()
 	{
 		cout << "Wygrana !!!" << endl;
 	}*/
+	NewTurn();
 	return gameStatus;
 }
 
@@ -219,11 +221,20 @@ bool IsEradicated(Disease& disease)	//lokalna funkcja dla ALL_OF
 	return (disease.Status() == TREATED) || (disease.Status() == DISCOVERED);
 }
 
+void Board::NewTurn()
+{
+	if (gameStatus == IN_PROGRESS && wasInfection)
+	{
+		wasInfection = false; //by nie wejsc tu znowu przed kolejna infekcja..
+		++currentPlayerNumber;
+		currentPlayer = players[currentPlayerNumber%players.size()];
+		movesLeft = 4;
+	}
+}
+
 vector<Decision> Board::IsAbleTo()
 {
-	currentPlayer = players[currentPlayerNumber%players.size()];
 	vector<Decision> decisionsAvailable;
-    decisionsAvailable.push_back(DEC_MOVE_SHORT);
 	if (movesLeft > 0)
 	{
 		currentCity = currentPlayer->GetPosition();
@@ -367,7 +378,10 @@ QSet<City*> Board::ChooseMoveShort(Player* toMove)
 	{
 		for (City* city : Stations)
 		{
-			toSend.insert(city);
+			if (city != currentCity)
+			{
+				toSend.insert(city);
+			}
 		}
 	}
 	return toSend;
@@ -694,8 +708,8 @@ void Board::INFECTION_TIME()
 	{
 		PlayTheInfection(skipInfecting); //ROZSZERZ CHOROBY
 		skipInfecting = false;
-		++currentPlayerNumber;
-		movesLeft = 4;
+		//++currentPlayerNumber;
+		//movesLeft = 4;
 	}
 	catch (GameResult res) 
 	{
@@ -743,8 +757,8 @@ Board::Board(Difficulty difficulty, QVector<QPair<QString, PlayerRole>> players)
 						break;
 					}
 				}
-                onePlayer.second = role;
 			} while (!isUnique);
+			onePlayer.second = role;
 		}
 		this->players.push_back(new Player(onePlayer.second, onePlayer.first.toStdString(), cityPtr));
 	}
@@ -772,8 +786,10 @@ Board::Board(Difficulty difficulty, QVector<QPair<QString, PlayerRole>> players)
 		forPlayers.clear();
 	}
 	PrepareDiseases();
-	currentPlayerNumber = 0;
-	currentPlayer = this->players[currentPlayerNumber];
+	currentPlayerNumber = -1;		//bo zwiekszane w NewTurn()
+	//currentPlayer = this->players[currentPlayerNumber];
+	wasInfection = true;
+	NewTurn();
 }
 
 void Board::prepareCityList()
@@ -786,6 +802,7 @@ void Board::prepareCityList()
 	string ccityControl, cityName, neighbours, cityColor;
 	QString colour;
 	map<City*, vector<string>> citiesWithNeighbourhood;
+	vector<string> neighboursForCities;
 
 	File >> cityCounter;
 	getline(File, ccityControl);
@@ -798,7 +815,6 @@ void Board::prepareCityList()
 			getline(File, cityColor);
 			File >> neighbourCounter;
 			getline(File, neighbours);	//przesun do nowej linii w pliku
-	        vector<string> neighboursForCities;
 			for (int i = 0; i < neighbourCounter; ++i)
 			{
 				getline(File, neighbours);
