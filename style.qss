@@ -43,19 +43,11 @@
 	background-color: transparent;
 	font-family: "Comic Sans MS";
 }
-#CGameWindow #actionsWidget CExtendedSignalWidget {
-	border: 2px outset #b37d00;
-	background-color: #ffb200;
-	padding: 4px;
-	cursor: pointer;
+CCircleMenu QWidget {
+	background-color: #8E8;
 }
-#CGameWindow #actionsWidget CExtendedSignalWidget[pressed=true] {
-	border: 2px inset #b37d00;
-	padding: 4px 0px 0px 4px;
-}
-#CGameWindow #actionsWidget CExtendedSignalWidget:disabled {
-	border-color: #bfa466;
-	background-color: #e5bf66;
+CCircleMenu QWidget:disabled {
+	background-color: #888;
 }
 CBoarItem {/*border: 1px outset black;*/ background-color: rgba(255,255,255,63);}
 CBoardItem[selected=true] {/*border-color: green;*/ background-color: rgba(127, 192, 192, 191);}

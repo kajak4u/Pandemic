@@ -50,6 +50,7 @@ CBoard::CBoard(QWidget * parent)
             emit item->moved(item->pos());
     });
     animation = new QParallelAnimationGroup(this);
+    connect(animation, &QAbstractAnimation::finished, this, &CBoard::animationFinished);
     emit created();
 }
 void CBoard::afterCreate()
@@ -83,8 +84,9 @@ void CBoard::wheelEvent(QWheelEvent* event)
     move(pt);
 }
 
-void CBoard::setPlayerIconLabels(QLabel* arr[4])
+void CBoard::setPlayerWidgets(QLabel* arr[4], QLayout* playerArea)
 {
+    this->playerArea = playerArea;
     playerLabels = QVector<QLabel*>();
     for (int i = 0; i < 4; ++i)
         playerLabels << arr[i];
@@ -304,6 +306,12 @@ void CBoard::firstPathItem(CPathItem * item)
     }
 }
 
+void CBoard::clickCity()
+{
+    CCity* city = dynamic_cast<CCity*>(sender());
+    emit cityClicked(city);
+}
+
 void CBoard::setMode(Qt::TransformationMode newMode)
 {
     scaleMode = newMode;
@@ -319,6 +327,11 @@ void CBoard::showCityMenu(const CPoint & pos)
 {
     cityMenu->show(pos);
     activeMenu = cityMenu;
+    closeMenuConn = connect(this, &CBoard::leftButtonUp, this, &CBoard::closeCityMenu);
+}
+void CBoard::closeCityMenu() {
+    disconnect(closeMenuConn);
+    cityMenu->hide();
 }
 
 void CBoard::setCityMenu(CCircleMenu *menu)
@@ -341,10 +354,10 @@ void CBoard::addAnimation(QAbstractAnimation *newAnim)
     if (animation->animationCount() != 0) {
         QSequentialAnimationGroup* lastGroup = dynamic_cast<QSequentialAnimationGroup*>(animation->animationAt(animation->animationCount() - 1));
         QPauseAnimation* pause = dynamic_cast<QPauseAnimation*>(lastGroup->animationAt(0));
-        lastStart = pause->duration() - animation->currentTime();
+        lastStart = qMax(pause->duration() - animation->currentTime(), 0);
     }
     QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
-    newGroup->addPause(lastStart + 500);
+    newGroup->addPause(lastStart + 10);// 500);
     newGroup->addAnimation(newAnim);
     if (animation->state() == QAbstractAnimation::Stopped) {
         animation->clear();
@@ -379,12 +392,43 @@ void CBoard::setActiveCities(const QSet<CCity*>&newActive)
     for (CCity* city : activeCities) {
         city->setProperty("selected", false);
         city->update();
+        disconnect(city, &CCity::leftButtonUp, this, &CBoard::clickCity);
     }
     activeCities = newActive;
     for (CCity* city : newActive) {
         city->setProperty("selected", true);
         city->update();
+        connect(city, &CCity::leftButtonUp, this, &CBoard::clickCity);
     }
+}
+
+bool CBoard::isCurrentCity(CCity *city) const
+{
+    return players[0]->getLocation() == city;
+}
+
+void CBoard::addCardToHand(CCard *card)
+{
+    DiseaseType type;
+    CCity* city = container->findChild<CCity*>(CCity::createObjectName(card->getCityName()));
+    if (city == nullptr) {
+        type = UNKNOWN;
+    }
+    else {
+        type = city->getColor();
+    }
+    QLabel* item = new QLabel();
+    item->setText(QString("<h2>%1</h2>").arg(card->getCityName()));
+    //item->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    QString fontColor = type == BLACK ? "white" : "black";
+    QString backgroundColor = type == UNKNOWN ? "orange; font-style: italic" : DiseaseType_SL[type];
+    item->setStyleSheet(QString("border: 2px outset grey; border-radius: 10px; background-color: %1; color: %2;").arg(backgroundColor).arg(fontColor));
+    item->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    item->setMinimumHeight(70);
+    item->setWordWrap(true);
+    dynamic_cast<QVBoxLayout*>(playerArea)->insertWidget(playerArea->count(), item);
+    //playerArea->addWidget(item);
+    item->show();
 }
 
 double CBoard::minZoomFactor() const

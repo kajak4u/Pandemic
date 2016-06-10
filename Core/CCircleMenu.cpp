@@ -12,10 +12,11 @@ void CCircleMenu::show(const CPoint & middle)
 {
     if (dirty)
         recalc();
-    dirty = false;
     CPoint offset = size() / 2;
     move(middle - offset);
     QWidget::show();
+    raise();
+    dirty = false;
 }
 
 int CCircleMenu::countItems() const
@@ -34,6 +35,6 @@ void CCircleMenu::recalc()
         int x = menuRadius / 2 * (1 - sin(3.14159*kat / 180));
         int y = menuRadius / 2 * (1 - cos(3.14159*kat / 180));
         items[i]->setGeometry(x, y, itemWidth, itemWidth);
-        items[i]->setStyleSheet(QString() + "border: 0px outset black; border-radius: " + QString::number(itemWidth / 2) + "px; background-color: #BEE;");
+        items[i]->setStyleSheet(QString() + "border: 0px outset black; border-radius: " + QString::number(itemWidth / 2) + "px; ");
     }
 }

@@ -35,3 +35,8 @@ Player* CPlayer::toLogic()
 {
     return logicObj;
 }
+
+CCity * CPlayer::getLocation() const
+{
+    return pawn->getPosition();
+}

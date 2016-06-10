@@ -4,6 +4,10 @@
 !robocze/
 Lukasz_old/
 *.rcc
+*.sln
+*.vcxproj
+*.vcproj.*
+*.props
 
 # User-specific files
 *.suo
@@ -216,5 +220,11 @@ _Pvt_Extensions/
 ModelManifest.xml
 /!robocze
 /GeneratedFiles
-/Pandemic.VC.VC.opendb
-/Pandemic.VC.db
+/Pandemic_Lukasz_160604.zip
+/pandemic.ui
+/Lukasz.7z
+/headers.7z
+/dbghelp.dll
+/data — kopia.txt
+/copy_data_old.txt
+/copy_data.txt

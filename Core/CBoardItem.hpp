@@ -50,6 +50,7 @@ public:
     void setStandardSize(const QSize &s);
     CPoint getStandardMiddle() const;
     void setStandardMiddle(const CPoint &p);
+    QPropertyAnimation* createStandardMiddleAnim(const CPoint& p);
     void setStandardMiddleAnim(const CPoint& p);
     void setRealPos(int x, int y);
     void setRealPos(const CPoint &p);

@@ -251,7 +251,7 @@ void CBoardItem::setStandardMiddle(const CPoint &p)
 {
     setStandardPos(p - standardSize / 2);
 }
-void CBoardItem::setStandardMiddleAnim(const CPoint & newMiddle)
+QPropertyAnimation* CBoardItem::createStandardMiddleAnim(const CPoint & newMiddle)
 {
     QPropertyAnimation* animation = new QPropertyAnimation(this, "middlePos");
     animation->setStartValue(getStandardMiddle());
@@ -259,7 +259,12 @@ void CBoardItem::setStandardMiddleAnim(const CPoint & newMiddle)
     animation->setDuration(2000);
     animation->setEasingCurve(QEasingCurve::InOutCubic);
     connect(animation, &QAbstractAnimation::stateChanged, this, &CBoardItem::raiseOnAnimation);
-    container->addAnimation(animation);
+    return animation;
+}
+
+void CBoardItem::setStandardMiddleAnim(const CPoint & p)
+{
+    container->addAnimation(createStandardMiddleAnim(p));
 }
 
 void CBoardItem::setRealPos(int x, int y)

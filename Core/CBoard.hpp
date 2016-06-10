@@ -16,6 +16,7 @@ class CPawn;
 class CCircleMenu;
 class COverlay;
 class CCity;
+class CCard;
 
 class Board;
 
@@ -27,7 +28,7 @@ public:
 	CBoard(QWidget * parent = Q_NULLPTR);
 	~CBoard();
     void wheelEvent(QWheelEvent*);
-    void setPlayerIconLabels(QLabel* arr[4]);
+    void setPlayerWidgets(QLabel* arr[4], QLayout* playerArea);
 
     void zoom(double factor, CPoint refPoint = { 0,0 });
     void zoomTo(double newZoomFactor);
@@ -51,7 +52,10 @@ public:
     CPlayer* findPlayer(PlayerRole role);
     CPlayer* currentPlayer() const;
     void setActiveCities(const QSet<CCity*>&);
+    bool isCurrentCity(CCity*) const;
+    void addCardToHand(CCard*);
 private:
+    QLayout* playerArea;
     double minZoomFactor() const;
     Qt::TransformationMode scaleMode;
     CCircleMenu* cityMenu;
@@ -76,15 +80,21 @@ private:
     Insertable actualInserted;
     QMap<Decision, QWidget*> decisions;
     QParallelAnimationGroup* animation;
+    QMetaObject::Connection closeMenuConn;
 
 ////////////////////////////// Czy to tak ma być? //////////////////////////
     QSet<QWidget*> cityDecisions; // healDisease x4, findCure, buildResearchStation, shareKnowledge
     QSet<QWidget*> cardDecisions; // (moveFrom / moveTo / use), discard
     QSet<QWidget*> playersDecisions; // moveAnother
+public:
+    void clickCity();
 private slots:
     void afterCreate();
     void setMode(Qt::TransformationMode);
     void setSmoothMode();
+    void closeCityMenu();
 signals:
     void created();
+    void cityClicked(CCity*);
+    void animationFinished();
 };

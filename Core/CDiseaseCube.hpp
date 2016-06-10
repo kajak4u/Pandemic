@@ -7,9 +7,10 @@ class CDiseaseCube : public CBoardItem {
 	Q_OBJECT
     Q_PROPERTY(double alpha MEMBER alpha WRITE setAlpha)
 public:
-    static CDiseaseCube* createIn(CCity*, DiseaseType color);
 	CDiseaseCube(DiseaseType _color=UNKNOWN, CCity *city=nullptr);
 	~CDiseaseCube();
+    static CDiseaseCube* createIn(CCity*, DiseaseType color);
+    void disappear();
     DiseaseType getColor() const;
     //void scale(double factor);
     void setDestination(CCity *newLocation);

@@ -8,35 +8,9 @@
 #include <QBitmap>
 #include "core.h"
 #include "CResearchStation.hpp"
-#include "CCircleMenu.hpp"
 #include <QDebug>
 
 std::unique_ptr<QBitmap> CCity::cityMask = nullptr;
-
-//QVector<QWidget*> widgets;
-//CCircleMenu *menu = nullptr;
-//void popupMenu(QMouseEvent* event, CBoardItem* widget)
-//{
-//    const int options = 7;
-//    //options = QInputDialog::getInt(widget, "Number of options", "Enter number of options", options, 2, 20);
-//    if (menu == nullptr) {
-//        menu = new CCircleMenu(dynamic_cast<QWidget*>(widget->parent()));
-//        for (int i = 0; i < options; ++i)
-//            menu->addOption(QPixmap(), QString("opis %1").arg(i), [i]() {
-//            QMessageBox::information(nullptr, QString("Opcja %1").arg(i), QString::fromLocal8Bit("Kliknięto przycisk"));
-//        });
-//    }
-//    menu->show(CPoint(widget->pos())+widget->size()/2);
-//    widget->connect(dynamic_cast<CBoard*>(widget->parent()->parent()), &CBoard::rightButtonUp, []() {
-//        menu->hide();
-//        //for (QWidget* elem : widgets)
-//        //    delete elem;
-//        //widgets.clear();
-//    });
-//    widget->getContainer()->registerMenu(menu);
-//
-//}
-
 
 CCity::CCity(QWidget * parent) :
     CBoardItem(parent),
@@ -53,10 +27,7 @@ CCity::CCity(QWidget * parent) :
         options += new CEnumOption<DiseaseType>("Disease type", DiseaseType_SL, type);
     }
     else {
-        connect(this, &CCity::rightButtonUp, [this](QMouseEvent* event) {
-            select();
-            container->showCityMenu(CPoint(this->pos()) + this->size() / 2);
-        });
+        connect(this, &CCity::rightButtonUp, this, &CCity::showCityMenu);
     }
     if (cityMask == nullptr)
         cityMask = std::unique_ptr<QBitmap>(new QBitmap(QPixmap("img/cityMask.png").createMaskFromColor(Qt::transparent)));
@@ -227,7 +198,8 @@ void CCity::addCube(DiseaseType color)
 
 void CCity::removeCube(DiseaseType type)
 {
-    delete diseaseCubes[type].back();
+    diseaseCubes[type].back()->disappear();/*
+    delete diseaseCubes[type].back();*/
     diseaseCubes[type].pop_back();
 }
 
@@ -279,4 +251,17 @@ QString CCity::createObjectName() const
 QString CCity::createObjectName(const QString & name)
 {
     return QString("CCity %1").arg(name);
+}
+
+void CCity::showCityMenu()
+{
+    if (container->isCurrentCity(this)) {
+        select();
+        container->showCityMenu(CPoint(this->pos()) + this->size() / 2);
+    }
+}
+
+DiseaseType CCity::getColor() const
+{
+    return type;
 }

@@ -14,6 +14,7 @@
 #include "CCard.hpp"
 #include "CPlayer.h"
 #include <QDebug>
+#include <QParallelAnimationGroup>
 
 CardType findType(Card* card)
 {
@@ -162,17 +163,16 @@ void Mediator::moveCard(Card *card, Player * dest)
     CPoint boardStartPos = GUI->mapFrom(par, cardGUI->mapTo(par, CPoint(cardGUI->size()) / 2));
     QPointF sizeFactor = { double(target->width()) / cardGUI->width(), double(target->height()) / cardGUI->height() };
     double endFactor = qMin(sizeFactor.x(), sizeFactor.y()) * cardGUI->getZoom();
+    QParallelAnimationGroup* group = new QParallelAnimationGroup(cardGUI);
     cardGUI->setParent(GUI);
     cardGUI->show();
     cardGUI->setStandardMiddle(boardStartPos / cardGUI->getZoom());
-    cardGUI->setStandardMiddleAnim(boardEndPos / endFactor);
-    //QPropertyAnimation* anim = new QPropertyAnimation(cardGUI, "standardSize");
-    //anim->setStartValue(cardGUI->size()/cardGUI->getZoom());
-    //anim->setEndValue(target->size()/cardGUI->getZoom());
-    QPropertyAnimation* anim = createPropertyAnimation(cardGUI, "zoomFactor", cardGUI->getZoom(), endFactor, 1000, QEasingCurve::InQuad);
-    anim->connect(anim, &QPropertyAnimation::stateChanged, cardGUI, &CCard::scaleAnimationChanged);
-    anim->connect(anim, &QPropertyAnimation::finished, cardGUI, &CCard::hide);
-    GUI->addAnimation(anim);
+    group->addAnimation( cardGUI->createStandardMiddleAnim(boardEndPos / endFactor) );
+    QPropertyAnimation* scaleAnim = createPropertyAnimation(cardGUI, "zoomFactor", cardGUI->getZoom(), endFactor, 1000, QEasingCurve::InQuad);
+    scaleAnim->connect(scaleAnim, &QPropertyAnimation::stateChanged, cardGUI, &CCard::scaleAnimationChanged);
+    scaleAnim->connect(group, &QPropertyAnimation::finished, cardGUI, &CCard::gotoPlayer);
+    group->addAnimation(scaleAnim);
+    GUI->addAnimation(group);
 // TODO "Mediator::moveCard(Card*,Player*) - not implemented"
 }
 

@@ -38,6 +38,8 @@ public:
     void bindLogic(City*);
     virtual QString createObjectName() const;
     static QString createObjectName(const QString& name);
+    void showCityMenu();
+    DiseaseType getColor() const;
 private:
     City* logicObj;
     static std::unique_ptr<QBitmap> cityMask;
