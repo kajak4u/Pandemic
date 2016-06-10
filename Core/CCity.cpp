@@ -16,6 +16,7 @@ CCity::CCity(QWidget * parent) :
     CBoardItem(parent),
     researchStation(nullptr),
     type(UNKNOWN),
+    highlighted(false),
     pawnsInCity(0),
     logicObj(nullptr)
 {
@@ -31,10 +32,6 @@ CCity::CCity(QWidget * parent) :
     if (cityMask == nullptr)
         cityMask = std::unique_ptr<QBitmap>(new QBitmap(QPixmap("img/cityMask.png").createMaskFromColor(Qt::transparent)));
     setMask(*cityMask);
-    bottom = new CBoardItem(parent);
-    connect(this, &CCity::scaled, bottom, &CBoardItem::scale);
-    bottom->scaleTo(zoomFactor);
-    bottom->setMask(*cityMask);
 }
 
 CCity::CCity(const CCity & other) :
@@ -43,6 +40,7 @@ CCity::CCity(const CCity & other) :
     diseaseCubes(other.diseaseCubes),
     researchStation(nullptr),
     connections(other.connections),
+    highlighted(false),
     logicObj(other.logicObj)
 {
     for (CCity* city : connections)
@@ -82,24 +80,20 @@ void CCity::onRightBtnUp(QMouseEvent *event)
 
 void CCity::select()
 {
-    if (isDesigner()) {
-        for (CCity *neighbour : connections) {
-            neighbour->setProperty("highlighted", true);
-            neighbour->update();
-        }
+    CBoardItem::select();
+    for (CCity *neighbour : connections) {
+        neighbour->setProperty("highlighted", true);
+        neighbour->update();
     }
-    bottom->select();
 }
 
 void CCity::unselect()
 {
-    if (isDesigner()) {
-        for (CCity *neighbour : connections) {
-            neighbour->setProperty("highlighted", false);
-            neighbour->update();
-        }
+    CBoardItem::unselect();
+    for (CCity *neighbour : connections) {
+        neighbour->setProperty("highlighted", false);
+        neighbour->update();
     }
-    bottom->unselect();
 }
 
 void CCity::toggleHighlight()
@@ -117,12 +111,12 @@ void CCity::toggleHighlight()
     if (connections.contains(selCity)) {
         connections -= selCity;
         selCity->connections -= this;
-        bottom->setProperty("highlighted", false);
+        setProperty("highlighted", false);
     }
     else {
         connections += selCity;
         selCity->connections += this;
-        bottom->setProperty("highlighted", true);
+        setProperty("highlighted", true);
     }
     update();
 }
@@ -166,10 +160,7 @@ void CCity::loadFrom(QTextStream &ts)
         while (count-- > 0 && false)
             addCube(disType);
     }
-    bottom->setParent(dynamic_cast<QWidget*>(parent()));
-    bottom->stackUnder(this);
-    bottom->setStandardPos(standardPos);
-    bottom->setStandardSize(standardSize);
+
     updateOptions();
 }
 
@@ -203,8 +194,6 @@ void CCity::addCube(DiseaseType color)
         for (CDiseaseCube* cube : diseaseCubes[(DiseaseType)index])
             if (cube->isFirst())
                 newCube->stackUnder(cube);
-    if (researchStation != nullptr)
-        researchStation->stackUnder(this);
 }
 
 void CCity::removeCube(DiseaseType type)

@@ -390,15 +390,13 @@ CPlayer * CBoard::currentPlayer() const
 void CBoard::setActiveCities(const QSet<CCity*>&newActive)
 {
     for (CCity* city : activeCities) {
-        city->unselect();
-        //city->setProperty("selected", false);
+        city->setProperty("selected", false);
         city->update();
         disconnect(city, &CCity::leftButtonUp, this, &CBoard::clickCity);
     }
     activeCities = newActive;
     for (CCity* city : newActive) {
-        city->select();
-        //city->setProperty("selected", true);
+        city->setProperty("selected", true);
         city->update();
         connect(city, &CCity::leftButtonUp, this, &CBoard::clickCity);
     }

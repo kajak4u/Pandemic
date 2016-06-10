@@ -11,6 +11,7 @@ class City;
 
 class CCity : public CBoardItem {
 	Q_OBJECT
+    Q_PROPERTY(bool highlighted MEMBER highlighted)
 
 public:
 	CCity(QWidget * parent = (QWidget*)defaultContainer);
@@ -46,10 +47,11 @@ private:
     void onLeftBtnUp(QMouseEvent*);
     void onRightBtnUp(QMouseEvent*);
     int pawnsInCity;
+
+    bool highlighted;
     DiseaseType type;
     QMap<DiseaseType, QVector<CDiseaseCube*> > diseaseCubes;
     CResearchStation* researchStation;
     QSet<CCity*> connections;
-    CBoardItem* bottom;
 };
 

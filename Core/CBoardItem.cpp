@@ -34,8 +34,7 @@ CBoardItem::CBoardItem(QWidget * parent)
     allowResize(true),
     angleY(0.0),
     standardSize(70, 70),
-    mode(Qt::SmoothTransformation),
-    highlighted(false)
+    mode(Qt::SmoothTransformation)
 {
     standardPos = pos();
 
@@ -197,7 +196,6 @@ void CBoardItem::scale(double factor)
         QWidget::setMask(itemMask.scaled(itemMask.size()*zoomFactor));
     move(standardPos*zoomFactor);
     resize(standardSize*zoomFactor);
-    emit scaled(factor);
 }
 
 void CBoardItem::scaleTo(double factor)
