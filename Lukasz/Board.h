@@ -34,6 +34,7 @@ class Board
 	static vector<int> infectionRateMarker;
 	vector<City*> Stations;
 //deklaracje na etapie SPRAWDZANIA MOZLIWYCH RUCHOW - zachowane na pozniej
+	bool wasInfection;
 	Player* currentPlayer;
 	City* currentCity;
 	PlayerCard* cityCard;
@@ -51,6 +52,7 @@ class Board
 	void PrepareDiseases();
 	void MedicIncoming(Player* moved);
 	void INFECTION_TIME();
+	void NewTurn();
 public:	
 //w turze znamy: OBECNY GRACZ, JEGO POLOZENIE, INNI GRACZE W TYM MIESCIE, STACJE, CHOROBY, karty do wynalezienia choroby
 	vector<Decision> IsAbleTo();
