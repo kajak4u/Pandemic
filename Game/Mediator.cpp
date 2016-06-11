@@ -85,17 +85,28 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
 
 void Mediator::setCurrent(Player *current)
 {
-    qDebug() << "set current to " << PlayerRole_SL[current->GetRole()];
-    while(GUI->currentPlayer()->getRole() != current->GetRole())
-        GUI->nextPlayer();
     checkGUI();
-    vector<PlayerCard*> hand = current->SeeCards();
+    qDebug() << "set current to " << PlayerRole_SL[current->GetRole()];
+    QMetaObject::Connection *conn = new QMetaObject::Connection;
+    *conn = GUI->connect(GUI, &CBoard::animationFinished, [this, current, conn]() {
+        GUI->disconnect(*conn);
+        delete conn;
+        while (GUI->currentPlayer()->getRole() != current->GetRole())
+            GUI->nextPlayer();
+        setHand();
+    });
+}
+
+void Mediator::setHand()
+{
+    vector<PlayerCard*> hand = engine->GetCurrentPlayer()->SeeCards();
     GUI->clearHand();
     for (PlayerCard* card : hand) {
         CCard* cardGUI = GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
         GUI->addCardToHand(cardGUI);
         qDebug() << "add card " << cardGUI;
     }
+
 }
 
 void Mediator::addDiseaseCube(City *infectedCity, DiseaseType color, int count)
@@ -190,7 +201,8 @@ void Mediator::moveCard(Card *card, Player * dest)
     group->addAnimation( cardGUI->createStandardMiddleAnim(boardEndPos / endFactor) );
     QPropertyAnimation* scaleAnim = createPropertyAnimation(cardGUI, "zoomFactor", cardGUI->getZoom(), endFactor, 1000, QEasingCurve::InQuad);
     scaleAnim->connect(scaleAnim, &QPropertyAnimation::stateChanged, cardGUI, &CCard::scaleAnimationChanged);
-    scaleAnim->connect(group, &QPropertyAnimation::finished, cardGUI, &CCard::gotoPlayer);
+    /*scaleAnim->connect(group, &QPropertyAnimation::finished, cardGUI, &CCard::gotoPlayer);*/
+    scaleAnim->connect(group, &QPropertyAnimation::finished, cardGUI, &CCard::hide);
     group->addAnimation(scaleAnim);
     GUI->addAnimation(group);
 }

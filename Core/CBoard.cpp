@@ -496,16 +496,19 @@ void CBoard::clearHand()
 
 void CBoard::nextPlayer()
 {
+    players[0]->getIco()->setStyleSheet("");
     QVector<CPoint> positions;
     for (const CPlayer* player : players)
         positions += player->getIco()->pos();
-    for (int i = 0; i < players.size()-1; ++i) {
+    players[0]->getIco()->stackUnder(players.back()->getIco());
+    for (int i = 0; i < players.size()-1; ++i)
         swap(players[i + 1], players[i]);
-        players[i]->getIco()->stackUnder(players[i + 1]->getIco());
-    }
     int i = 0;
     for (CPlayer* player : players)
         addAnimation(createPropertyAnimation(player->getIco(), "pos", player->getIco()->pos(), positions[i++], 1000, QEasingCurve::InOutCirc));
+    QSize size = players[0]->getIco()->size();
+    QString qss = QString("border: 2px outset #0F0; width: %1px; height: %2px").arg(size.width() + 4).arg(size.height() + 4);
+    players[0]->getIco()->setStyleSheet(QString("border: 2px outset #0F0; width: %1px; height: %2px").arg(size.width()+4).arg(size.height()+4));
 }
 
 double CBoard::minZoomFactor() const

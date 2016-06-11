@@ -66,10 +66,11 @@ void CGameWindow::targetCityClicked(CCity* target)
 void CGameWindow::nextAction()
 {
     qDebug() << "ACTION, left " << game->GetMovesLeft();
-    if (game->GetCurrentPlayer()->GetRole() != ui.board->currentPlayer()->getRole()) {
-        mediator().setCurrent(game->GetCurrentPlayer());
-        return;
-    }
+    mediator().setHand();
+    //if (game->GetCurrentPlayer()->GetRole() != ui.board->currentPlayer()->getRole()) {
+    //    mediator().setCurrent(game->GetCurrentPlayer());
+    //    return;
+    //}
     disconnect(conn);
     QVector<Decision> decisions = QVector<Decision>::fromStdVector(game->IsAbleTo());
     QSet<Decision> decisionsSet;
