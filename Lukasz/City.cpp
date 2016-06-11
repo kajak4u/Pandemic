@@ -97,7 +97,6 @@ vector<City*> City::Neighbours() const
 void City::BuildResearchStation()
 {
 	hasResearchStation = true;
-    mediator().buildResearchStation(this);
 }
 
 void City::RemoveResearchStation()
