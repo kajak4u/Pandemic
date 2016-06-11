@@ -313,9 +313,11 @@ void CBoard::firstPathItem(CPathItem * item)
 
 void CBoard::clickCity(QMouseEvent* event)
 {
-    event->accept();
-    CCity* city = dynamic_cast<CCity*>(sender());
-    emit cityClicked(city);
+    if (!isDragging) {
+        event->accept();
+        CCity* city = dynamic_cast<CCity*>(sender());
+        emit cityClicked(city);
+    }
 }
 
 void CBoard::setMode(Qt::TransformationMode newMode)
@@ -476,11 +478,6 @@ void CBoard::removeCardFromHand(CCard *card)
             return;
         }
     }
-    //for (int i = 0; i < playerArea->count(); ++i) {
-    //    QWidget* widget = dynamic_cast<QWidget*>(playerArea->itemAt(i)->widget());
-    //    if (widget != nullptr && widget->objectName() == desiredName)
-    //        delete widget;
-    //}
 
 }
 
