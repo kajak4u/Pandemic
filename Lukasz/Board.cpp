@@ -63,6 +63,11 @@ Player* Board::GetCurrentPlayer() const
 	return currentPlayer;
 }
 
+int Board::GetMovesLeft() const
+{
+	return movesLeft;
+}
+
 City* Board::FindCity(string name) const
 {
 	for (City* city : Cities)

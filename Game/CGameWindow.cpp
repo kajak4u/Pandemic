@@ -65,7 +65,7 @@ void CGameWindow::targetCityClicked(CCity* target)
 
 void CGameWindow::nextAction()
 {
-    qDebug() << "ACTION, left " << game->movesLeft;
+    qDebug() << "ACTION, left " << game->GetMovesLeft();
     if (game->GetCurrentPlayer()->GetRole() != ui.board->currentPlayer()->getRole()) {
         mediator().setCurrent(game->GetCurrentPlayer());
         return;
