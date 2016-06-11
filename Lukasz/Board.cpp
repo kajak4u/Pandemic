@@ -284,7 +284,15 @@ vector<Decision> Board::IsAbleTo()
 				supPlayers.push_back(play);
 				if (play->GetRole() == ROLE_RESEARCHER)		  //czy dodawany gracz bedzie mogl dawac dowolne karty
 				{
-					isResearcher = true;
+					for (PlayerCard* oneCard : play->SeeCards())//czy karty na rece gracza to nie tylko specjalne (tych nie oddajemy)
+					{
+						SpecialCard	* areTheyNotOnlySpecial = dynamic_cast<SpecialCard*>(oneCard);
+						if (areTheyNotOnlySpecial == nullptr)//jak choc jedna karta NIE jest specjalna
+						{
+							isResearcher = true;//wtedy ma sens informowanie, ze jest Researcher	- inaczej nic jego rola nie da
+							break;//..i nie szukaj dalej w kjego kartach
+						}
+					}					
 				}
 				if (cityCard == nullptr && anotherPlayersCityCard == nullptr) //czy juz ktos SPRAWDZONY wczesniej tej karty nie ma
 				{
@@ -294,13 +302,25 @@ vector<Decision> Board::IsAbleTo()
 		}
 		if (!supPlayers.empty())
 		{
-			if (currentPlayer->GetRole() == ROLE_RESEARCHER || cityCard != nullptr)//GIVE_CARD	  luka - brak warunku na karty specjalne...
+			if (currentPlayer->GetRole() == ROLE_RESEARCHER)
+			{
+				for (PlayerCard* oneCard : currentPlayer->SeeCards())//czy karty na rece gracza to nie tylko specjalne (tych nie oddajemy)
+				{
+					SpecialCard	* areTheyNotOnlySpecial = dynamic_cast<SpecialCard*>(oneCard);
+					if (areTheyNotOnlySpecial == nullptr)//jak choc jedna karta NIE jest specjalna
+					{
+						decisionsAvailable.push_back(DEC_GIVE_CARD);//dodaj opcje
+						break;//..i nie szukaj dalej
+					}
+				}
+			}
+			else if (cityCard != nullptr)
 			{
 				decisionsAvailable.push_back(DEC_GIVE_CARD);
 			}
 			if (isResearcher || anotherPlayersCityCard != nullptr)				   //GAIN_CARD
 			{
-				decisionsAvailable.push_back(DEC_GAIN_CARD);
+				decisionsAvailable.push_back(DEC_GAIN_CARD);//warunek Researchera - poprawiony
 			}
 		}
 		if (currentCity->IsStation())											   //DISCOVER_CURE
