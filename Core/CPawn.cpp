@@ -71,9 +71,9 @@ void CPawn::moveTo(CCity * dest)
     if (dest == nullptr)
         return;
     if (position != nullptr)
-        position->pawnEscapes();
+        position->pawnEscapes(this);
     position = dest;
-    int nth = position->pawnEnters();
+    int nth = position->pawnEnters(this);
     CPoint newPos = position->getStandardMiddle() + CPoint(17,40) + nth*CPoint(0, -12);
     setStandardMiddleAnim(newPos);
 }

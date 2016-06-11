@@ -9,6 +9,7 @@
 #include "core.h"
 #include "CResearchStation.hpp"
 #include <QDebug>
+#include "CPawn.hpp"
 
 std::unique_ptr<QBitmap> CCity::cityMask = nullptr;
 
@@ -222,17 +223,26 @@ void CCity::removeResearchStation()
 {
     if (researchStation == nullptr)
         throw "No research station to remove!";
-    delete researchStation;
+    researchStation->disappear();
     researchStation = nullptr;
 }
 
-int CCity::pawnEnters()
+int CCity::pawnEnters(CPawn* pawn)
 {
-    return pawnsInCity++;
+    pawnsInCity += pawn;
+    return pawnsInCity.size();
 }
-void CCity::pawnEscapes()
+void CCity::pawnEscapes(CPawn* pawn)
 {
-    --pawnsInCity;
+    if (!pawnsInCity.contains(pawn))
+        return;
+    for (int i = pawnsInCity.size() - 1; i >= 0;--i)
+        if(pawnsInCity[i]!=pawn)
+            pawnsInCity[i]->setStandardMiddleAnim(pawnsInCity[i]->getStandardMiddle() - CPoint(0, -12));
+        else {
+            pawnsInCity.erase(&pawnsInCity[i]);
+            return;
+        }
 }
 void CCity::scale(double factor) {
     CBoardItem::scale(factor);

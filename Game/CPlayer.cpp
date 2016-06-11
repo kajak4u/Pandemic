@@ -20,7 +20,7 @@ PlayerRole CPlayer::getRole() const
 {
     return role;
 }
-QLabel * CPlayer::getIco()
+QLabel * CPlayer::getIco() const
 {
     return playerIco;
 }

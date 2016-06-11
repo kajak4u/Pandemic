@@ -7,12 +7,13 @@ class CResearchStation : public CBoardItem {
 	Q_OBJECT
 
 public:
-    static CResearchStation* createIn(CCity*);
 	CResearchStation(QWidget * parent = (QWidget*)defaultContainer);
 	~CResearchStation();
+    static CResearchStation* createIn(CCity*);
+    void disappear();
     QSet<CCity*> citiesWithStation() const;
     QString createToolTip();
-    void moveTo(CCity * newLocation);
+    void setDestination(CCity * newLocation);
     void onRightBtnUp(QMouseEvent * event);
 private:
 	static QSet<CResearchStation*> existingStations;

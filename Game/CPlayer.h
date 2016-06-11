@@ -22,6 +22,6 @@ public:
     CCity* getLocation() const;
     PlayerRole getRole() const;
     void setIco(QLabel*);
-    QLabel* getIco();
+    QLabel* getIco() const;
 };
 

@@ -8,6 +8,7 @@
 class CDiseaseCube;
 class CResearchStation;
 class City;
+class CPawn;
 
 class CCity : public CBoardItem {
 	Q_OBJECT
@@ -30,8 +31,8 @@ public:
     void removeCube(DiseaseType);
     void buildResearchStation();
     void removeResearchStation();
-    int pawnEnters();
-    void pawnEscapes();
+    int pawnEnters(CPawn*);
+    void pawnEscapes(CPawn*);
     virtual void scale(double factor);
     City* toLogic() const;
     void bindLogic(City*);
@@ -44,7 +45,7 @@ private:
     void updateOptions();
     void onLeftBtnUp(QMouseEvent*);
     void onRightBtnUp(QMouseEvent*);
-    int pawnsInCity;
+    QVector<CPawn*> pawnsInCity;
     DiseaseType type;
     QMap<DiseaseType, QVector<CDiseaseCube*> > diseaseCubes;
     CResearchStation* researchStation;

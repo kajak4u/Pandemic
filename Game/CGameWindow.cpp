@@ -65,6 +65,9 @@ void CGameWindow::targetCityClicked(CCity* target)
 void CGameWindow::nextAction()
 {
     qDebug() << "ACTION";
+    while (game->GetCurrentPlayer()->GetRole() != ui.board->currentPlayer()->getRole())
+        ui.board->nextPlayer();
+    game->GetCurrentPlayer()->SeeCards();
     disconnect(conn);
     QVector<Decision> decisions = QVector<Decision>::fromStdVector(game->IsAbleTo());
     QSet<Decision> decisionsSet;
@@ -102,7 +105,7 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
     if (decisions.contains(DEC_MOVE_ANOTHER)) {
     }
     if (decisions.contains(DEC_MOVE_SHORT)) {
-        QSet<City*> cities = game->ChooseMoveShort(currentPlayer->toLogic());
+        QSet<City*> cities = game->ChooseMoveShort(game->GetCurrentPlayer());
         QSet<CCity*> citiesGUI;
         for (City* city : cities)
             citiesGUI << ui.board->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));

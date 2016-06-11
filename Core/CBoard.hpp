@@ -56,6 +56,7 @@ public:
     bool isCurrentCity(CCity*) const;
     void addCardToHand(CCard*);
     void removeCardFromHand(CCard*);
+    void nextPlayer();
 private:
     QLayout* playerArea;
     double minZoomFactor() const;
@@ -88,7 +89,7 @@ private:
     QSet<QWidget*> cityDecisions; // healDisease x4, findCure, buildResearchStation, shareKnowledge
     QSet<QWidget*> cardDecisions; // (moveFrom / moveTo / use), discard
     QSet<QWidget*> playersDecisions; // moveAnother
-public:
+public slots:
     void clickCity(QMouseEvent*);
 private slots:
     void afterCreate();

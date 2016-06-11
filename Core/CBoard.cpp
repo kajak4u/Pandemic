@@ -380,10 +380,7 @@ void CBoard::addAnimation(QAbstractAnimation *newAnim)
         lastStart = qMax(pause->duration() - animation->currentTime(), 0);
     }
     if (animation->state() == QAbstractAnimation::Stopped) {
-        int t1 = animation->totalDuration();
-        int t2 = animation->currentTime();
-        if(t1==t2)
-            animation->clear();
+        animation->clear();
         QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
         newGroup->addPause(lastStart + 50);
         newGroup->addAnimation(newAnim);
@@ -487,6 +484,18 @@ void CBoard::removeCardFromHand(CCard *card)
             delete widget;
     }
 
+}
+
+void CBoard::nextPlayer()
+{
+    QVector<CPoint> positions;
+    for (const CPlayer* player : players)
+        positions += player->getIco()->pos();
+    for (int i = players.size() - 1; i > 0; --i)
+        swap(players[i - 1], players[i]);
+    int i = 0;
+    for (CPlayer* player : players)
+        addAnimation(createPropertyAnimation(player->getIco(), "pos", player->getIco()->pos(), positions[i++], 1000, QEasingCurve::InOutCirc));
 }
 
 double CBoard::minZoomFactor() const
