@@ -341,8 +341,14 @@ void CBoard::closeCityMenu() {
 }
 
 void CBoard::emitFinishedIfFinished(QAbstractAnimation::State state) {
-    if (state == QAbstractAnimation::Stopped)
-        emit animationFinished();
+    QParallelAnimationGroup* snd = dynamic_cast<QParallelAnimationGroup*>(sender());
+    if (state == QAbstractAnimation::Stopped) {
+        if (snd->currentTime() != snd->totalDuration()) {
+            snd->pause();
+            snd->resume();
+        }
+            emit animationFinished();
+    }
 }
 
 void CBoard::setCityMenu(CCircleMenu *menu)
@@ -361,22 +367,53 @@ COverlay * CBoard::showOverlay()
 
 void CBoard::addAnimation(QAbstractAnimation *newAnim)
 {
+    connect(newAnim, &QAbstractAnimation::stateChanged, [newAnim](QAbstractAnimation::State state) {
+        auto propAnim = dynamic_cast<QPropertyAnimation*>(newAnim);
+        if (propAnim == nullptr)
+            return;
+        qDebug() << propAnim->targetObject() << " - " << propAnim->propertyName() << " - state " << (state==QAbstractAnimation::Running ? "Running" : state==QAbstractAnimation::Stopped ? "Stopped" : "Paused") << " at " << propAnim->currentTime() << " / " << propAnim->totalDuration();
+    });
     int lastStart = 1000;
     if (animation->animationCount() != 0) {
         QSequentialAnimationGroup* lastGroup = dynamic_cast<QSequentialAnimationGroup*>(animation->animationAt(animation->animationCount() - 1));
         QPauseAnimation* pause = dynamic_cast<QPauseAnimation*>(lastGroup->animationAt(0));
         lastStart = qMax(pause->duration() - animation->currentTime(), 0);
     }
-    QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
-    newGroup->addPause(lastStart + 10);// 500);
-    newGroup->addAnimation(newAnim);
     if (animation->state() == QAbstractAnimation::Stopped) {
-        animation->clear();
+        int t1 = animation->totalDuration();
+        int t2 = animation->currentTime();
+        if(t1==t2)
+            animation->clear();
+        QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
+        newGroup->addPause(lastStart + 50);
+        newGroup->addAnimation(newAnim);
         animation->addAnimation(newGroup);
         animation->start();
     }
-    else
+    else {
+        //brzydkie zabezpieczenie, bo jeżeli naraz animowana jest dwa razy ta sama cecha tego samego obiektu, to cała animacja się przerywa...
+        QPropertyAnimation* animProp = dynamic_cast<QPropertyAnimation*>(newAnim);
+        if(animProp != nullptr)
+            for (int i = animation->animationCount() - 1; i >= 0; --i) {
+                auto group = dynamic_cast<QSequentialAnimationGroup*>(animation->animationAt(i));
+                QPropertyAnimation* anim = dynamic_cast<QPropertyAnimation*>(group->animationAt(1));
+                if (anim && anim->targetObject() == animProp->targetObject() && anim->propertyName() == animProp->propertyName()) {
+                    animation->pause();
+                    group->addPause(50);
+                    group->addAnimation(newAnim);
+                    animProp->setStartValue(anim->endValue());
+                    qDebug() << animProp->targetObject()->objectName() << " - " << animProp->propertyName() << " conflict";
+                    animation->resume();
+                    return;
+                }
+            }
+        animation->pause();
+        QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
+        newGroup->addPause(lastStart + 50);
+        newGroup->addAnimation(newAnim);
         animation->addAnimation(newGroup);
+        animation->resume();
+    }
 }
 
 void CBoard::addPlayer(CPlayer* newPlayer)

@@ -120,6 +120,7 @@ GameResult Board::Pass()
 		{
 			try
 			{
+                movesLeft = 0;
 				Card* card;
 				EpidemicCard* eCard;
 				Mediator m = mediator();
@@ -174,7 +175,7 @@ GameResult Board::Pass()
 	{
 		cout << "Wygrana !!!" << endl;
 	}*/
-	NewTurn();
+	//NewTurn();
 	return gameStatus;
 }
 
@@ -710,6 +711,7 @@ void Board::INFECTION_TIME()
 		skipInfecting = false;
 		//++currentPlayerNumber;
 		//movesLeft = 4;
+	    NewTurn();
 	}
 	catch (GameResult res) 
 	{

@@ -265,6 +265,7 @@ void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Ca
 void Mediator::playerMustDiscardCards(Player * which, int count, CALLBACK(Board, void, TWOPARAM(std::vector<PlayerCard*>, Player *))callback)
 {
     qDebug() << "player must discard cards" ;
+    engine->DiscardToLimit(std::vector<PlayerCard*>(), engine->GetCurrentPlayer());
     // TODO: Mediator::playerMustDiscardCards not implemented
 }
 
