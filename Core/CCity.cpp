@@ -232,17 +232,18 @@ int CCity::pawnEnters(CPawn* pawn)
     pawnsInCity += pawn;
     return pawnsInCity.size();
 }
-void CCity::pawnEscapes(CPawn* pawn)
+void CCity::pawnEscapes(CPawn* escaping)
 {
-    if (!pawnsInCity.contains(pawn))
+    if (!pawnsInCity.contains(escaping))
         return;
-    for (int i = pawnsInCity.size() - 1; i >= 0;--i)
-        if(pawnsInCity[i]!=pawn)
+    CPawn** toDelete = nullptr;
+    for (int i = 0; i < pawnsInCity.size();++i)
+        if (pawnsInCity[i] == escaping)
+            toDelete = &pawnsInCity[i];
+        else if(toDelete != nullptr)
             pawnsInCity[i]->setStandardMiddleAnim(pawnsInCity[i]->getStandardMiddle() - CPoint(0, -12));
-        else {
-            pawnsInCity.erase(&pawnsInCity[i]);
-            return;
-        }
+    if (toDelete)
+        pawnsInCity.erase(toDelete);
 }
 void CCity::scale(double factor) {
     CBoardItem::scale(factor);

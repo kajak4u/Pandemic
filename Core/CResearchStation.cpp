@@ -50,7 +50,7 @@ void CResearchStation::setDestination(CCity * newLocation)
     CPoint cityPoint = newLocation->getStandardPos();
     CPoint stationOffset = { 0,0 };
     CPoint endPos = cityPoint + stationOffset + standardSize / 2;
-    setStandardMiddle(CPoint(endPos.x(), endPos.y() % 100));
+    setStandardMiddle(CPoint(endPos.x(), -height()));
     CPoint stdm1 = getStandardMiddle();
     QPropertyAnimation *anim = createPropertyAnimation(this, "middlePos", getStandardMiddle(), endPos, 1500, QEasingCurve::OutBounce);
     container->addAnimation(anim);

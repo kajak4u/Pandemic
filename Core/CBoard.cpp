@@ -416,6 +416,7 @@ void CBoard::addAnimation(QAbstractAnimation *newAnim)
 void CBoard::addPlayer(CPlayer* newPlayer)
 {
     newPlayer->setIco(playerLabels[players.size()]);
+    newPlayer->getIco()->setObjectName(QString("playerLabel %1").arg(players.size()));
     players.push_back(newPlayer);
 }
 
@@ -454,6 +455,7 @@ bool CBoard::isCurrentCity(CCity *city) const
 
 void CBoard::addCardToHand(CCard *card)
 {
+    qDebug() << "CBoard::addCard " << card;
     DiseaseType type;
     CCity* city = container->findChild<CCity*>(CCity::createObjectName(card->getCityName()));
     if (city == nullptr) {
@@ -471,19 +473,37 @@ void CBoard::addCardToHand(CCard *card)
     item->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     item->setMinimumHeight(70);
     item->setWordWrap(true);
-    dynamic_cast<QVBoxLayout*>(playerArea)->insertWidget(playerArea->count(), item);
+    hand.push_back(item);
+    dynamic_cast<QVBoxLayout*>(playerArea)->insertWidget(hand.size(), item);
     item->show();
 }
 
 void CBoard::removeCardFromHand(CCard *card)
 {
     QString desiredName = QString("CardInHand_%1").arg(card->getCityName());
-    for (int i = 0; i < playerArea->count(); ++i) {
-        QWidget* widget = dynamic_cast<QWidget*>(playerArea->itemAt(i)->widget());
-        if (widget != nullptr && widget->objectName() == desiredName)
-            delete widget;
+    for (int i = 0; i < hand.size(); ++i) {
+        if (hand[i]->objectName() == desiredName) {
+            delete hand[i];
+            hand.erase(&hand[i]);
+            return;
+        }
     }
+    //for (int i = 0; i < playerArea->count(); ++i) {
+    //    QWidget* widget = dynamic_cast<QWidget*>(playerArea->itemAt(i)->widget());
+    //    if (widget != nullptr && widget->objectName() == desiredName)
+    //        delete widget;
+    //}
 
+}
+
+void CBoard::clearHand()
+{
+    qDebug() << "CBoard::clearHand";
+    while (!hand.isEmpty()) { // itemAt(0) == spacer
+        qDebug() << "removed " << hand.back();
+        delete hand.back();
+        hand.pop_back();
+    }
 }
 
 void CBoard::nextPlayer()
@@ -491,8 +511,10 @@ void CBoard::nextPlayer()
     QVector<CPoint> positions;
     for (const CPlayer* player : players)
         positions += player->getIco()->pos();
-    for (int i = players.size() - 1; i > 0; --i)
-        swap(players[i - 1], players[i]);
+    for (int i = 0; i < players.size()-1; ++i) {
+        swap(players[i + 1], players[i]);
+        players[i]->getIco()->stackUnder(players[i + 1]->getIco());
+    }
     int i = 0;
     for (CPlayer* player : players)
         addAnimation(createPropertyAnimation(player->getIco(), "pos", player->getIco()->pos(), positions[i++], 1000, QEasingCurve::InOutCirc));

@@ -92,7 +92,7 @@ private:
     int id;
     friend class CBoardItemsFactory;
 private slots:
-    void raiseOnAnimation(QAbstractAnimation::State);
+    virtual void raiseOnAnimation(QAbstractAnimation::State);
 signals:
     void scaled(double);
 };
