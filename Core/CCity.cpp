@@ -201,9 +201,9 @@ void CCity::addCube(DiseaseType color)
     CDiseaseCube* newCube = CDiseaseCube::createIn(this, color);
     diseaseCubes[color] += newCube;
     for (int index = DiseaseType_SL.size() - 1; index > (int)color; --index)
-        for (CDiseaseCube* cube : diseaseCubes[(DiseaseType)index])
-            if (cube->isFirst())
-                newCube->stackUnder(cube);
+        if (diseaseCubes[(DiseaseType)index].size() > 0) {
+            newCube->stackUnder(diseaseCubes[(DiseaseType)index][0]);
+        }
     if (researchStation != nullptr)
         researchStation->stackUnder(this);
 }
