@@ -242,132 +242,136 @@ void Board::NewTurn()
 vector<Decision> Board::IsAbleTo()
 {
 	vector<Decision> decisionsAvailable;
-	if (movesLeft > 0)
+	if (gameStatus == IN_PROGRESS)
 	{
-		currentCity = currentPlayer->GetPosition();
-		cityCard = currentPlayer->FindCard(currentCity->GetName());
-		decisionsAvailable.push_back(DEC_MOVE_SHORT);								//MOVE_SHORT
-		if (currentPlayer->GetRole() == ROLE_DISPATCHER)							//MOVE_ANOTHER
+		if (movesLeft > 0)
 		{
-			decisionsAvailable.push_back(DEC_MOVE_ANOTHER);
-		}
-		for (PlayerCard* card : currentPlayer->SeeCards())							//MOVE_TO_CARD
-		{
-			if (card->GetName() != currentCity->GetName())
+			currentCity = currentPlayer->GetPosition();
+			cityCard = currentPlayer->FindCard(currentCity->GetName());
+			decisionsAvailable.push_back(DEC_MOVE_SHORT);								//MOVE_SHORT
+			if (currentPlayer->GetRole() == ROLE_DISPATCHER)							//MOVE_ANOTHER
 			{
-				decisionsAvailable.push_back(DEC_MOVE_TO_CARD);
-				break;
+				decisionsAvailable.push_back(DEC_MOVE_ANOTHER);
 			}
-		}
-		if (cityCard != nullptr)													//MOVE_ENYWHERE
-		{
-			decisionsAvailable.push_back(DEC_MOVE_EVERYWHERE);
-		}
-		if (!(currentCity->IsStation()) && (currentPlayer->GetRole() == ROLE_OPERATIONSEXPERT || cityCard != nullptr))
-		{
-			decisionsAvailable.push_back(DEC_BUILD_STATION);						//BUILD_STATION
-		}
-		for (Disease dis : diseases)												//TREAT
-		{
-			if (currentCity->DiseaseCounter(dis.getID()) > 0)
+			for (PlayerCard* card : currentPlayer->SeeCards())							//MOVE_TO_CARD
 			{
-				decisionsAvailable.push_back(DEC_TREAT);
-				break;
-			}
-		}
-		isResearcher = false;
-		anotherPlayersCityCard = nullptr;
-		for (Player* play : players)				//wybierz graczy w miescie BEZ obecnego gracza
-		{
-			if (play != currentPlayer && play->GetPosition() == currentCity)
-			{
-				supPlayers.push_back(play);
-				if (play->GetRole() == ROLE_RESEARCHER)		  //czy dodawany gracz bedzie mogl dawac dowolne karty
+				if (card->GetName() != currentCity->GetName())
 				{
-					for (PlayerCard* oneCard : play->SeeCards())//czy karty na rece gracza to nie tylko specjalne (tych nie oddajemy)
+					decisionsAvailable.push_back(DEC_MOVE_TO_CARD);
+					break;
+				}
+			}
+			if (cityCard != nullptr)													//MOVE_ENYWHERE
+			{
+				decisionsAvailable.push_back(DEC_MOVE_EVERYWHERE);
+			}
+			if (!(currentCity->IsStation()) && (currentPlayer->GetRole() == ROLE_OPERATIONSEXPERT || cityCard != nullptr))
+			{
+				decisionsAvailable.push_back(DEC_BUILD_STATION);						//BUILD_STATION
+			}
+			for (Disease dis : diseases)												//TREAT
+			{
+				if (currentCity->DiseaseCounter(dis.getID()) > 0)
+				{
+					decisionsAvailable.push_back(DEC_TREAT);
+					break;
+				}
+			}
+			supPlayers.clear();
+			isResearcher = false;
+			anotherPlayersCityCard = nullptr;
+			for (Player* play : players)				//wybierz graczy w miescie BEZ obecnego gracza
+			{
+				if (play != currentPlayer && play->GetPosition() == currentCity)
+				{
+					supPlayers.push_back(play);
+					if (play->GetRole() == ROLE_RESEARCHER)		  //czy dodawany gracz bedzie mogl dawac dowolne karty
+					{
+						for (PlayerCard* oneCard : play->SeeCards())//czy karty na rece gracza to nie tylko specjalne (tych nie oddajemy)
+						{
+							SpecialCard	* areTheyNotOnlySpecial = dynamic_cast<SpecialCard*>(oneCard);
+							if (areTheyNotOnlySpecial == nullptr)//jak choc jedna karta NIE jest specjalna
+							{
+								isResearcher = true;//wtedy ma sens informowanie, ze jest Researcher	- inaczej nic jego rola nie da
+								break;//..i nie szukaj dalej w kjego kartach
+							}
+						}
+					}
+					if (cityCard == nullptr && anotherPlayersCityCard == nullptr) //czy juz ktos SPRAWDZONY wczesniej tej karty nie ma
+					{
+						anotherPlayersCityCard = play->FindCard(currentCity->GetName());
+					}
+				}
+			}
+			if (!supPlayers.empty())
+			{
+				if (currentPlayer->GetRole() == ROLE_RESEARCHER)
+				{
+					for (PlayerCard* oneCard : currentPlayer->SeeCards())//czy karty na rece gracza to nie tylko specjalne (tych nie oddajemy)
 					{
 						SpecialCard	* areTheyNotOnlySpecial = dynamic_cast<SpecialCard*>(oneCard);
 						if (areTheyNotOnlySpecial == nullptr)//jak choc jedna karta NIE jest specjalna
 						{
-							isResearcher = true;//wtedy ma sens informowanie, ze jest Researcher	- inaczej nic jego rola nie da
-							break;//..i nie szukaj dalej w kjego kartach
+							decisionsAvailable.push_back(DEC_GIVE_CARD);//dodaj opcje
+							break;//..i nie szukaj dalej
 						}
-					}					
-				}
-				if (cityCard == nullptr && anotherPlayersCityCard == nullptr) //czy juz ktos SPRAWDZONY wczesniej tej karty nie ma
-				{
-					anotherPlayersCityCard = play->FindCard(currentCity->GetName());
-				}
-			}
-		}
-		if (!supPlayers.empty())
-		{
-			if (currentPlayer->GetRole() == ROLE_RESEARCHER)
-			{
-				for (PlayerCard* oneCard : currentPlayer->SeeCards())//czy karty na rece gracza to nie tylko specjalne (tych nie oddajemy)
-				{
-					SpecialCard	* areTheyNotOnlySpecial = dynamic_cast<SpecialCard*>(oneCard);
-					if (areTheyNotOnlySpecial == nullptr)//jak choc jedna karta NIE jest specjalna
-					{
-						decisionsAvailable.push_back(DEC_GIVE_CARD);//dodaj opcje
-						break;//..i nie szukaj dalej
 					}
 				}
-			}
-			else if (cityCard != nullptr)
-			{
-				decisionsAvailable.push_back(DEC_GIVE_CARD);
-			}
-			if (isResearcher || anotherPlayersCityCard != nullptr)				   //GAIN_CARD
-			{
-				decisionsAvailable.push_back(DEC_GAIN_CARD);//warunek Researchera - poprawiony
-			}
-		}
-		if (currentCity->IsStation())											   //DISCOVER_CURE
-		{
-			for (Disease dis : diseases)
-			{
-				cardsInColor.clear();
-				for (PlayerCard* card : currentPlayer->SeeCards())
+				else if (cityCard != nullptr)
 				{
-					if (card->GetColor() == dis.getID())
+					decisionsAvailable.push_back(DEC_GIVE_CARD);
+				}
+				if (isResearcher || anotherPlayersCityCard != nullptr)				   //GAIN_CARD
+				{
+					decisionsAvailable.push_back(DEC_GAIN_CARD);//warunek Researchera - poprawiony
+				}
+			}
+			if (currentCity->IsStation())											   //DISCOVER_CURE
+			{
+				for (Disease dis : diseases)
+				{
+					cardsInColor.clear();
+					for (PlayerCard* card : currentPlayer->SeeCards())
 					{
-						cardsInColor.push_back(card);
+						if (card->GetColor() == dis.getID())
+						{
+							cardsInColor.push_back(card);
+						}
 					}
-				}
-				if (cardsInColor.size() >= 5)
-				{
-					decisionsAvailable.push_back(DEC_DISCOVER_CURE);
-					break;
-				}
-				else
-				{
-					if (currentPlayer->GetRole() == ROLE_SCIENTIST && cardsInColor.size() >= 4)
+					if (cardsInColor.size() >= 5)
 					{
 						decisionsAvailable.push_back(DEC_DISCOVER_CURE);
 						break;
 					}
+					else
+					{
+						if (currentPlayer->GetRole() == ROLE_SCIENTIST && cardsInColor.size() >= 4)
+						{
+							decisionsAvailable.push_back(DEC_DISCOVER_CURE);
+							break;
+						}
+					}
 				}
 			}
 		}
-	}
-	for (Player* play : players)
-	{
-		for (PlayerCard* card : play->SeeCards())								//USE_SPECIAL
+		for (Player* play : players)
 		{
-			checker = dynamic_cast<SpecialCard*>(card);
+			for (PlayerCard* card : play->SeeCards())								//USE_SPECIAL
+			{
+				checker = dynamic_cast<SpecialCard*>(card);
+				if (checker != nullptr)
+				{
+					decisionsAvailable.push_back(DEC_USE_SPECIAL);
+					break;
+				}
+			}
 			if (checker != nullptr)
 			{
-				decisionsAvailable.push_back(DEC_USE_SPECIAL);
 				break;
 			}
 		}
-		if (checker != nullptr)
-		{
-			break;
-		}
-	}
-	decisionsAvailable.push_back(DEC_PASS);											//PASS
+		decisionsAvailable.push_back(DEC_PASS);	//PASS
+	}									
 	return decisionsAvailable;
 }
 
