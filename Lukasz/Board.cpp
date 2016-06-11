@@ -744,6 +744,7 @@ Board::Board(Difficulty difficulty, QVector<QPair<QString, PlayerRole>> players)
 
 	City* cityPtr = FindCity("Atlanta");
 	cityPtr->BuildResearchStation();
+	mediator().buildResearchStation(cityPtr);
 	Stations.push_back(cityPtr);
 	stationsLeft = 5;
 	srand(time(NULL));
