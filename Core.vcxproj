@@ -87,11 +87,14 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include\qtcore;$(QTDIR)\include\qtgui;$(QTDIR)\include\qtwidgets;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.\Core;.\Game;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles;.;$(QTDIR)\include\qtcore;$(QTDIR)\include\qtgui;$(QTDIR)\include\qtwidgets;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);.\Core;.\Game;D:\Programy\Qt\Qt5.6.0\5.6\msvc2015_64\include\QtCore;D:\Programy\Qt\Qt5.6.0\5.6\msvc2015_64\include\QtGui;D:\Programy\Qt\Qt5.6.0\5.6\msvc2015_64\include\QtWidgets;D:\Programy\Qt\Qt5.6.0\5.6\msvc2015_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG</PreprocessorDefinitions>
     </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\Programy\Qt\Qt5.6.0\5.6\msvc2015_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

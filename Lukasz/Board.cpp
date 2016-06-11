@@ -229,6 +229,7 @@ void Board::NewTurn()
 		wasInfection = false; //by nie wejsc tu znowu przed kolejna infekcja..
 		++currentPlayerNumber;
 		currentPlayer = players[currentPlayerNumber%players.size()];
+		mediator().setCurrent(currentPlayer);
 		movesLeft = 4;
 	}
 }
@@ -822,7 +823,7 @@ void Board::prepareCityList()
 				getline(File, neighbours);
 				neighboursForCities.push_back(neighbours);
 			}
-			colour.fromStdString(cityColor);
+			colour = QString::fromStdString(cityColor);
 			citiesWithNeighbourhood[new City(cityName, (DiseaseType)DiseaseType_SL.indexOf(colour))] = neighboursForCities;
 		}
 	}

@@ -229,3 +229,5 @@ ModelManifest.xml
 /data — kopia.txt
 /copy_data_old.txt
 /copy_data.txt
+*.db
+*.opendb
