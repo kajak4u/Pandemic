@@ -26,8 +26,7 @@ Washington
 CCity
 Atlanta
 BLUE
-4
-Los Angeles
+3
 Miami
 Washington
 Chicago
@@ -102,9 +101,8 @@ Miami
 CCity
 Los Angeles
 YELLOW
-5
+4
 Mexico City
-Atlanta
 San Francisco
 Sydney
 Chicago
