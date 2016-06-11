@@ -17,6 +17,7 @@ class CCircleMenu;
 class COverlay;
 class CCity;
 class CCard;
+class CHandCard;
 
 class Board;
 
@@ -70,7 +71,7 @@ private:
     QVector<QLabel*> playerLabels; //wskazują kolejkę - [0]-current ... [3]-last
     QVector<CPlayer*> players;
     QVector<CBoardItem*> items;
-    QVector<QLabel*> hand;
+    QVector<CHandCard*> hand;
     QSet<CCity*> activeCities;
     CPathItem* outbreaksPath;
     CPathItem* infectionsPath;
@@ -82,7 +83,6 @@ private:
     QPixmap smallImage;
     Insertable actualInserted;
     QMap<Decision, QWidget*> decisions;
-    QParallelAnimationGroup* animation;
     QMetaObject::Connection closeMenuConn;
 // NOTE sprawdzić, czy nie będzie tego trzeba usunąć:
 ////////////////////////////// Czy to tak ma być? //////////////////////////
@@ -98,9 +98,10 @@ private slots:
     void setMode(Qt::TransformationMode);
     void setSmoothMode();
     void closeCityMenu();
-    void emitFinishedIfFinished(QAbstractAnimation::State);
+    void useCard(CCard*);
 signals:
     void created();
     void cityClicked(CCity*);
+    void cardActivated();
     void animationFinished();
 };

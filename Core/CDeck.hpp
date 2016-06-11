@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "CBoardItem.hpp"
 #include "enums.h"
-class CCard;
+class Card;
 
 class CDeck : public CBoardItem {
 	Q_OBJECT
@@ -11,9 +11,7 @@ public:
 	CDeck(QWidget * parent = (QWidget*)defaultContainer);
     virtual void loadFrom(QTextStream &);
     virtual void saveTo(QTextStream &) const;
-    void addCard(CardType type, const QString& name);
-    void revealCard();
-    void revealBottomCard();
+    void addCard(CardType type, const QString& name, Card* logicObj=nullptr);
 	virtual ~CDeck();
     void setType(DeckType);
     void setReversed(bool reversed);

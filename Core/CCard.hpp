@@ -5,6 +5,7 @@
 #include <QAbstractAnimation>
 
 class QSequentialAnimationGroup;
+class Card;
 
 class CCard : public CBoardItem {
 	Q_OBJECT
@@ -20,12 +21,16 @@ public:
     virtual QString createObjectName() const;
     static QString createObjectName(const QString& cardName, CardType type);
     virtual void scale(double factor);
+    void bindLogic(Card*);
+    Card* toLogic() const;
+    CardType getType() const;
 private:
     static std::unique_ptr<QPixmap> playerReverse,
         diseaseReverse,
         epidemicObverse; //epidemicReverse==playerReverse
     QString cardName;
     CardType type;
+    Card* logicObj;
     void loadStaticGraphics();
     void updateOptions();
     const QPixmap& getReverse() const;

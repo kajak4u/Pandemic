@@ -70,6 +70,21 @@ void CCard::scale(double factor)
     CBoardItem::scale(factor);
 }
 
+void CCard::bindLogic(Card *card)
+{
+    logicObj = card;
+}
+
+Card * CCard::toLogic() const
+{
+    return logicObj;
+}
+
+CardType CCard::getType() const
+{
+    return type;
+}
+
 void CCard::loadStaticGraphics()
 {
     playerReverse = std::unique_ptr<QPixmap>(new QPixmap(":/img/cards/Player/reverse.png"));

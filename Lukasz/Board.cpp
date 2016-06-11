@@ -516,7 +516,6 @@ void Board::MoveToCard(PlayerCard * card, Player * toMove)
 		throw string("zgubiona karta !!!"); //krytyczny blad
 	}
 	playerDiscarded.PutCard(takenCard);
-	mediator().moveCard(takenCard, &(this->playerDiscarded));
 	if (toMove->GetRole() == ROLE_MEDIC)
 	{
 		MedicIncoming(toMove);
@@ -548,7 +547,6 @@ void Board::MoveEverywhere(City * target, Player * toMove)
 		throw string("zgubiona karta !!!"); //krytyczny blad
 	}
 	playerDiscarded.PutCard(used);
-	mediator().moveCard(used, &(this->playerDiscarded));
 	if (toMove->GetRole() == ROLE_MEDIC)
 	{
 		MedicIncoming(toMove);
@@ -577,7 +575,7 @@ void Board::BuildStation()
 	}
 	else
 	{
-		mediator().chooseStationToRemove(Stations, THISMETHOD(&Board::BuildStationIfFull));
+        mediator().chooseStationToRemove(Stations);
 	}		
 }
 
@@ -729,7 +727,7 @@ void Board::GovernmentGrant(City* toBuild)
 	}
 	else
 	{
-		mediator().chooseStationToRemove(Stations, THISMETHOD(&Board::BuildStationIfFull));
+        mediator().chooseStationToRemove(Stations);
 	}
 }
 

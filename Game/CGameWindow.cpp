@@ -30,6 +30,7 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     mediator().setGUI(ui.board);
     connect(this, &CGameWindow::created, this, &CGameWindow::afterCreate, Qt::ConnectionType(Qt::QueuedConnection | Qt::UniqueConnection));
     connect(ui.board, &CBoard::cityClicked, this, &CGameWindow::targetCityClicked);
+    connect(ui.board, &CBoard::cardActivated, this, &CGameWindow::waitForNextAction);
     connect(ui.passButton, &QPushButton::clicked, [this]() {
         engine()->Pass();
         waitForNextAction();
@@ -87,10 +88,10 @@ void CGameWindow::waitForNextAction()
     menu_buildStation->setEnabled(false);
     menu_discoverCure->setEnabled(false);
     menu_shareKnowledge->setEnabled(false);
-    menu_treatBlack->setEnabled(false);
-    menu_treatBlue->setEnabled(false);
-    menu_treatRed->setEnabled(false);
-    menu_treatYellow->setEnabled(false);
+    menu_treat[BLACK]->setEnabled(false);
+    menu_treat[BLUE]->setEnabled(false);
+    menu_treat[RED]->setEnabled(false);
+    menu_treat[YELLOW]->setEnabled(false);
     ui.passButton->setEnabled(false);
 }
 
@@ -123,10 +124,9 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
     menu_buildStation->setEnabled(decisions.contains(DEC_BUILD_STATION));
     menu_discoverCure->setEnabled(decisions.contains(DEC_DISCOVER_CURE));
     if (decisions.contains(DEC_TREAT)) {
-        menu_treatBlack->setEnabled(currentCity->cubesOf(BLACK)>0);
-        menu_treatBlue->setEnabled(currentCity->cubesOf(BLUE)>0);
-        menu_treatRed->setEnabled(currentCity->cubesOf(RED)>0);
-        menu_treatYellow->setEnabled(currentCity->cubesOf(YELLOW)>0);
+        vector<DiseaseType> toTreat = game->ChooseDiseaseToTreat();
+        for (DiseaseType dt : toTreat)
+            menu_treat[dt]->setEnabled(true);
     }
     if (decisions.contains(DEC_GAIN_CARD)) {
         // TODO decision
@@ -194,19 +194,19 @@ void CGameWindow::createMenus()
         engine()->DiscoverCure();
         waitForNextAction();
     });
-    menu_treatBlue = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healBlue.png"), "Treat the Blue Disease", [this]() {
+    menu_treat[BLUE] = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healBlue.png"), "Treat the Blue Disease", [this]() {
         engine()->Treat(BLUE);
         waitForNextAction();
     });
-    menu_treatYellow = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healYellow.png"), "Treat the Yellow Disease", [this]() {
+    menu_treat[YELLOW] = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healYellow.png"), "Treat the Yellow Disease", [this]() {
         engine()->Treat(YELLOW);
         waitForNextAction();
     });
-    menu_treatBlack = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healBlack.png"), "Treat the Black Disease", [this]() {
+    menu_treat[BLACK] = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healBlack.png"), "Treat the Black Disease", [this]() {
         engine()->Treat(BLACK);
         waitForNextAction();
     });
-    menu_treatRed = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healRed.png"), "Treat the Red Disease", [this]() {
+    menu_treat[RED] = cityMenu->addOption(QPixmap(":/icons/img/icons/action_healRed.png"), "Treat the Red Disease", [this]() {
         engine()->Treat(RED);
         waitForNextAction();
     });

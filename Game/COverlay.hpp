@@ -11,6 +11,7 @@ public:
 	~COverlay();
     void track(const QSet<CBoardItem*>& items);
 private:
+    QVector<QMetaObject::Connection> references;
 signals:
     void userMadeChoice(CBoardItem*);
 };

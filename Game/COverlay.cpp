@@ -10,7 +10,8 @@ COverlay::COverlay(QWidget * parent) : QLabel(parent) {
 }
 
 COverlay::~COverlay() {
-	
+    for (QMetaObject::Connection conn : references)
+        disconnect(conn);
 }
 
 void COverlay::track(const QSet<CBoardItem*>& items)
@@ -23,15 +24,15 @@ void COverlay::track(const QSet<CBoardItem*>& items)
         newItem->setStyleSheet("background-color: #0CE");
         newItem->setToolTip(item->getName());
         newItem->show();
-        connect(item, &CBoardItem::moved, [newItem, item](const QPoint& pt) {
+        references += connect(item, &CBoardItem::moved, [newItem, item](const QPoint& pt) {
             QPoint pt2 = dynamic_cast<QWidget*>(item->parent())->mapToGlobal(pt);
             newItem->move(dynamic_cast<QWidget*>(newItem->parent())->mapFromGlobal(pt2));
         });
-        connect(item, &CBoardItem::resized, [newItem, item](const QSize& siz) {
+        references += connect(item, &CBoardItem::resized, [newItem, item](const QSize& siz) {
             dynamic_cast<QWidget*>(newItem)->setMask(item->mask());
             newItem->resize(siz);
         });
-        connect(newItem, &CBoardItem::leftButtonUp, [this, item]() {
+        references += connect(newItem, &CBoardItem::leftButtonUp, [this, item]() {
             emit userMadeChoice(item);
             deleteLater();
         });

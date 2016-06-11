@@ -1,6 +1,4 @@
 #include "CPoint.h"
-#include <algorithm>
-#include <qstring>
 
 CPoint::CPoint(): QPoint()
 {
@@ -25,27 +23,15 @@ CPoint::CPoint(const QSize & s): QPoint(s.width(), s.height())
 CPoint CPoint::limited(const CPoint &origin, const QRect & area)
 {
     CPoint result(*this);
-    QString log;
-    if (result.x() < area.right()) {
-        log += "x (" + QString::number(result.x()) + ") to small - changed to ";
+    if (result.x() < area.right())
         result.setX(std::max(origin.x(), result.x()));
-        log += QString::number(result.x()) + "\n";
-    }
-    else if (result.x() > area.left()) {
-        log += "x (" + QString::number(result.x()) + ") to great - changed to ";
+    else if (result.x() > area.left())
         result.setX(std::min(origin.x(), result.x()));
-        log += QString::number(result.x()) + "\n";
-    }
-    if (result.y() < area.bottom()) {
-        log += "y (" + QString::number(result.y()) + ") to small - changed to ";
+
+    if (result.y() < area.bottom())
         result.setY(std::max(origin.y(), result.y()));
-        log += QString::number(result.y()) + "\n";
-    }
-    else if (result.y() > area.top()) {
-        log += "y (" + QString::number(result.y()) + ") to great - changed to ";
+    else if (result.y() > area.top())
         result.setY(std::min(origin.y(), result.y()));
-        log += QString::number(result.y()) + "\n";
-    }
     return result;
 }
 

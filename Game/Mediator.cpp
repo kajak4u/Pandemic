@@ -1,6 +1,7 @@
 #include "Mediator.h"
 #include "CBoard.hpp"
 #include "CCity.hpp"
+#include "CCard.hpp"
 #include "CPawn.hpp"
 #include "COverlay.hpp"
 #include "CCureMarker.hpp"
@@ -15,6 +16,7 @@
 #include "CPlayer.h"
 #include <QDebug>
 #include <QParallelAnimationGroup>
+#include <QMessageBox>
 
 CardType findType(Card* card)
 {
@@ -77,7 +79,7 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
         pair.second->setReversed(reversed);
         reversed = !reversed;
         for (Card* card : cards) {
-            pair.second->addCard(findType(card), QString::fromStdString(card->GetName()));
+            pair.second->addCard(findType(card), QString::fromStdString(card->GetName()), card);
         }
     }
     qDebug() << "init end";
@@ -107,6 +109,43 @@ void Mediator::setHand()
         qDebug() << "add card " << cardGUI;
     }
 
+}
+
+void Mediator::playerUsedCard(CCard* card)
+{
+    if (card->getType() == CT_SPECIAL) {
+        int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to use %1 Special Card?").arg(card->getCityName()));
+        if (result != QMessageBox::Yes)
+            return;
+// TODO        engine->UseSpecialCard(card->toLogic());
+    }
+    else if (card->getCityName().toStdString() == engine->GetCurrentPlayer()->GetPosition()->GetName()) {
+        int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move anywhere?").arg(card->getCityName()));
+        if (result != QMessageBox::Yes)
+            return;
+        QSet<City*> cities = engine->ChooseMoveEverywhere(engine->GetCurrentPlayer());
+        QSet<CBoardItem*> citiesGUI;
+        for (City* city : cities)
+            citiesGUI += GUI->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
+        GUI->zoomOut();
+        COverlay* overlay = GUI->showOverlay();
+        overlay->track(citiesGUI);
+        overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
+            if (chosen == nullptr) {
+                //u¿ytkownik wybra³ "anuluj"
+            }
+            else {
+                CCity* chosenCity = dynamic_cast<CCity*>(chosen);
+                engine->MoveEverywhere(chosenCity->toLogic());
+            }
+        });
+    }
+    else {
+        int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move there?").arg(card->getCityName()));
+        if (result != QMessageBox::Yes)
+            return;
+        engine->MoveToCard(dynamic_cast<PlayerCard*>(card->toLogic()));
+    }
 }
 
 void Mediator::addDiseaseCube(City *infectedCity, DiseaseType color, int count)
@@ -255,7 +294,7 @@ void Mediator::endGame(GameResult)
     // TODO: Mediator::endGame not implemented
 }
 
-void Mediator::chooseStationToRemove(std::vector<City*> stations, CALLBACK(Board, void, City *)callback)
+void Mediator::chooseStationToRemove(std::vector<City*> stations)
 {
     qDebug() << "choose station to remove" ;
     checkGUI();
@@ -266,7 +305,7 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations, CALLBACK(Board
     GUI->zoomOut();
     COverlay* overlay = GUI->showOverlay();
     overlay->track(stationsGUI);
-    overlay->connect(overlay, &COverlay::userMadeChoice, [callback, this](CBoardItem* chosen) {
+    overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
         if (chosen == nullptr) {
             //u¿ytkownik wybra³ "anuluj"
         }

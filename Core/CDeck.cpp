@@ -50,7 +50,7 @@ QString CDeck::createObjectName(DeckType dt)
     return QString("CDeck %1").arg(DeckType_SL[dt]);
 }
 
-void CDeck::addCard(CardType type, const QString& name)
+void CDeck::addCard(CardType type, const QString& name, Card* logicObj)
 {
     CCard* card = dynamic_cast<CCard*>(CBoardItemsFactory().create("CCard", zoomFactor, getStandardMiddle()));
     if (card == nullptr)
@@ -62,5 +62,6 @@ void CDeck::addCard(CardType type, const QString& name)
     card->setReversed(hasReversedCards);
     card->setStyleSheet("border: 1px outset black; background-color: rgba(200,200,200,128);");
     card->rename();
+    card->bindLogic(logicObj);
     container->addItem(card);
 }

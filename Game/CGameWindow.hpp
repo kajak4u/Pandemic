@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QWidget>
+#include <QMap>
 #include "ui_CGameWindow.h"
 #include "enums.h"
 #include "Lukasz\Board.h"
@@ -57,11 +58,8 @@ private:
     void dispatchDecisions(const QSet<Decision>&);
     CExtendedSignalWidget *menu_buildStation,
         *menu_discoverCure,
-        *menu_treatRed,
-        *menu_treatBlue,
-        *menu_treatYellow,
-        *menu_treatBlack,
         *menu_shareKnowledge;
+    QMap<DiseaseType, CExtendedSignalWidget*> menu_treat;
     QMetaObject::Connection conn;
 private slots:
     void hidePlayerArea();

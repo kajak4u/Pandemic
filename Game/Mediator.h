@@ -8,6 +8,7 @@ class PlayerCard;
 class DiseaseCard;
 class Player;
 class CardDeck;
+class CCard;
 #include <vector>
 #include <QVector>
 
@@ -40,6 +41,7 @@ public:
 			  const CardDeck& playerCardDeck, const CardDeck& playerDiscard, const CardDeck& diseaseCardDeck, const CardDeck& diseaseDiscard);
     void setCurrent(Player*);
     void setHand();
+    void playerUsedCard(CCard*);
     void addDiseaseCube(City*, DiseaseType, int count=1);
     void removeCube(City*, DiseaseType, int count=1);
     void movePawn(Player*, City*);
@@ -52,7 +54,7 @@ public:
     void removeResearchStation(City*); //jak chcemy zbudowaæ bazê a nie ma wiêcej kostek, to jak¹œ trzeba usun¹æ
 	void endGame(GameResult);
 
-    void chooseStationToRemove(std::vector<City*>, CALLBACK(Board, void, City*) callback);
+    void chooseStationToRemove(std::vector<City*>);
     void playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess);
     void playerMustDiscardCards(Player* which, int count, CALLBACK(Board, void, TWOPARAM(std::vector<PlayerCard*>, Player*)) callback);
     void playerMayGiveCard(CALLBACK(Board, void, TWOPARAM(Card*, Player*)) callback);

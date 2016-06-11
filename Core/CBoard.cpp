@@ -2,7 +2,6 @@
 #include <QApplication>
 #include <QResizeEvent>
 #include <QMainWindow>
-#include <algorithm>
 #include <QFile>
 #include <QTextStream>
 #include <QMessageBox>
@@ -26,9 +25,10 @@
 #include "Lukasz/Board.h"
 #include "CCard.hpp"
 #include "CPlayer.h"
+#include "CHandCard.hpp"
 
 CBoard::CBoard(QWidget * parent)
-    : CExtendedSignalWidget(parent), zoomFactor(1.0), actualInserted(CLASS_City), activeMenu(nullptr), animation(nullptr)
+    : CExtendedSignalWidget(parent), zoomFactor(1.0), actualInserted(CLASS_City), activeMenu(nullptr)
 {
     container = new CExtendedSignalWidget(this);
     container->setSizePolicy(QSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored));
@@ -49,8 +49,6 @@ CBoard::CBoard(QWidget * parent)
         for (CBoardItem* item : items)
             emit item->moved(item->pos());
     });
-    animation = new QParallelAnimationGroup(this);
-    connect(animation, &QAbstractAnimation::stateChanged, this, &CBoard::emitFinishedIfFinished);
     emit created();
 }
 void CBoard::afterCreate()
@@ -342,15 +340,10 @@ void CBoard::closeCityMenu() {
     cityMenu->hide();
 }
 
-void CBoard::emitFinishedIfFinished(QAbstractAnimation::State state) {
-    QParallelAnimationGroup* snd = dynamic_cast<QParallelAnimationGroup*>(sender());
-    if (state == QAbstractAnimation::Stopped) {
-        if (snd->currentTime() != snd->totalDuration()) {
-            snd->pause();
-            snd->resume();
-        }
-            emit animationFinished();
-    }
+void CBoard::useCard(CCard *card)
+{
+    mediator().playerUsedCard(card);
+    emit cardActivated();
 }
 
 void CBoard::setCityMenu(CCircleMenu *menu)
@@ -446,25 +439,10 @@ bool CBoard::isCurrentCity(CCity *city) const
 void CBoard::addCardToHand(CCard *card)
 {
     qDebug() << "CBoard::addCard " << card;
-    DiseaseType type;
-    CCity* city = container->findChild<CCity*>(CCity::createObjectName(card->getCityName()));
-    if (city == nullptr) {
-        type = UNKNOWN;
-    }
-    else {
-        type = city->getColor();
-    }
-    QLabel* item = new QLabel();
-    item->setText(QString("<h2>%1</h2>").arg(card->getCityName()));
-    item->setObjectName(QString("CardInHand_%1").arg(card->getCityName()));
-    QString fontColor = type == BLACK ? "white" : "black";
-    QString backgroundColor = type == UNKNOWN ? "orange; font-style: italic" : DiseaseType_SL[type];
-    item->setStyleSheet(QString("border: 2px outset grey; border-radius: 10px; background-color: %1; color: %2;").arg(backgroundColor).arg(fontColor));
-    item->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    item->setMinimumHeight(70);
-    item->setWordWrap(true);
+    CHandCard* item = new CHandCard(card);
     hand.push_back(item);
     dynamic_cast<QVBoxLayout*>(playerArea)->insertWidget(hand.size(), item);
+    connect(item, &CHandCard::cardActivated, this, &CBoard::useCard);
     item->show();
 }
 
@@ -473,7 +451,7 @@ void CBoard::removeCardFromHand(CCard *card)
     QString desiredName = QString("CardInHand_%1").arg(card->getCityName());
     for (int i = 0; i < hand.size(); ++i) {
         if (hand[i]->objectName() == desiredName) {
-            delete hand[i];
+            hand[i]->deleteLater();
             hand.erase(&hand[i]);
             return;
         }
