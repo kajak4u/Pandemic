@@ -55,6 +55,7 @@ Disease::Disease(QString color)
 {
 	diseaseID = (DiseaseType)DiseaseType_SL.indexOf(color);
 	markersLeft = 24;
+	status = NEW;
 }		
 //enum DiseaseType
 //{

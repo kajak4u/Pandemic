@@ -89,11 +89,11 @@ void Board::DiscoverCure()
 {
 	if (currentPlayer->GetRole() == ROLE_SCIENTIST)
 	{
-		mediator().playerMayDiscardCards(4, THISMETHOD(&Board::DiscoverCure_FinalStep)); //do poprawy  - brak parametru VECTOR<CARD*> cardsInColor
+		mediator().playerMayDiscardCards(4, THISMETHOD(&Board::DiscoverCure_FinalStep)); 
 	}
 	else
 	{
-		mediator().playerMayDiscardCards(5, THISMETHOD(&Board::DiscoverCure_FinalStep)); //do poprawy ;
+		mediator().playerMayDiscardCards(5, THISMETHOD(&Board::DiscoverCure_FinalStep)); 
 	}
 }
 
