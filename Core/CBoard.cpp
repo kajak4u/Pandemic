@@ -432,7 +432,7 @@ void CBoard::setActiveCities(const QSet<CCity*>&newActive)
     for (CCity* city : newActive) {
         city->select();
         city->update();
-        connect(city, &CCity::leftButtonUp, this, &CBoard::clickCity);
+        connect(city, &CCity::leftButtonUp, this, &CBoard::clickCity, Qt::QueuedConnection);
     }
 }
 
