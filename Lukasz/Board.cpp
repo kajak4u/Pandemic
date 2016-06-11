@@ -141,7 +141,7 @@ GameResult Board::Pass()
 							diseasesNew.Rethrow(&diseasesDiscarded);
 							InfectionIncrease();
 							playerDiscarded.PutCard(card);
-							m.moveCard(card, &(this->playerDiscarded));		//czy tak adres bedzie przekazany? czyli uzyskam pointer?
+							//m.moveCard(card, &(this->playerDiscarded));		//czy tak adres bedzie przekazany? czyli uzyskam pointer?
 						}
 						else
 						{

@@ -18,7 +18,6 @@ public:
     CureStatus getStatus() const;
     void setStatus(const CureStatus& s);
     void connectIcon(QLabel*);
-    //virtual void scale(double factor);
 private:
     void updateOptions();
     QString imagePath(CureStatus) const;

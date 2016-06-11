@@ -38,7 +38,6 @@ public:
     void setEngine(Board*);
 	void init(const std::vector<Player*>& players, const std::vector<City*>& cities, 
 			  const CardDeck& playerCardDeck, const CardDeck& playerDiscard, const CardDeck& diseaseCardDeck, const CardDeck& diseaseDiscard);
-    void setActions(QSet<Decision>);
     void setCurrent(Player*);
     void addDiseaseCube(City*, DiseaseType, int count=1);
     void removeCube(City*, DiseaseType, int count=1);
@@ -63,11 +62,5 @@ public:
 
     friend Mediator& mediator(); //ta metoda mo¿e wywo³aæ prywatny konstruktor
 };
-//////////////////////////////////////////////////////////////////////////////////////////////
-//
-// poprzednia propozycja wywo³ywania: chooseCityToRemove( CALL_METHOD_PARAM( fn(x), int x) )
-// obecna propozycja wywo³ywania:     chooseCityToRemove( THISMETHOD(&Klasa::fn) )
-//
-//////////////////////////////////////////////////////////////////////////////////////////////
 
 Mediator& mediator();

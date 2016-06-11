@@ -38,6 +38,8 @@ public slots:
     void invert();
     void scaleAnimationChanged(QAbstractAnimation::State);
     void gotoPlayer();
+    void restoreParent();
 private slots:
     void invertStateChanged(QAbstractAnimation::State); // wywoływane przez animację z ::invert() - bo lambda może rzucać nullpointerexceptionem
+
 };

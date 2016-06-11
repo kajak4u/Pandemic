@@ -5,12 +5,14 @@
 #include "enums.h"
 #include "Lukasz\Board.h"
 #include <QVector>
+#include <QPushButton>
 
 
 class CGameWindow_UI : public Ui::CGameWindow {
 public:
     QToolButton* playerAreaMaximizeButton;
     QLabel* playerLabels[4];
+    QPushButton* passButton;
     void setupUi(QWidget *CGameWindow) {
         Ui::CGameWindow::setupUi(CGameWindow);
 
@@ -29,6 +31,11 @@ public:
             label->hide();
             playerLabels[i] = label;
         }
+        passButton = new QPushButton(CGameWindow);
+        passButton->setObjectName(QStringLiteral("passPushButton"));
+        passButton->setText("Pass");
+        passButton->setToolTip("End your turn");
+        passButton->setGeometry(160, 115, 105, 30);
     }
 };
 

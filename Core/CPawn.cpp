@@ -45,7 +45,6 @@ void CPawn::updateOptions()
 
 QString CPawn::getPath(PlayerRole role) const
 {
-    //:/pawns/img/dispatcherPawn.png
     return QString(":/pawns/img/")+PlayerRole_SL[role].toLower()+"Pawn.png";
 }
 
@@ -77,8 +76,6 @@ void CPawn::moveTo(CCity * dest)
     int nth = position->pawnEnters();
     CPoint newPos = position->getStandardMiddle() + CPoint(17,40) + nth*CPoint(0, -12);
     setStandardMiddleAnim(newPos);
-    //QPropertyAnimation *animation = createPropertyAnimation(this, "middlePos", getStandardMiddle(), newPos, 2000, QEasingCurve::InOutQuart);
-    //animation->start();
 }
 
 void CPawn::onRightBtnUp(QMouseEvent *event)
@@ -92,7 +89,6 @@ void CPawn::onRightBtnUp(QMouseEvent *event)
             QMessageBox::critical(nullptr, "Invalid action", QString("Error - you can move CPawn object only to CCity object (tried to move to ") + selected->metaObject()->className() + " object)");
             return;
         }
-        //pathSelected->unselect();
         moveTo(pathSelected);
     }
 }

@@ -33,6 +33,7 @@ public:
     void zoom(double factor, CPoint refPoint = { 0,0 });
     void zoomTo(double newZoomFactor);
     void zoomOut();
+    double getZoom() const;
     void setPos(CPoint pos);
     void move(CPoint offset);
     void loadFrom(const QString&);
@@ -54,6 +55,7 @@ public:
     void setActiveCities(const QSet<CCity*>&);
     bool isCurrentCity(CCity*) const;
     void addCardToHand(CCard*);
+    void removeCardFromHand(CCard*);
 private:
     QLayout* playerArea;
     double minZoomFactor() const;
@@ -81,7 +83,7 @@ private:
     QMap<Decision, QWidget*> decisions;
     QParallelAnimationGroup* animation;
     QMetaObject::Connection closeMenuConn;
-
+// NOTE sprawdzić, czy nie będzie tego trzeba usunąć:
 ////////////////////////////// Czy to tak ma być? //////////////////////////
     QSet<QWidget*> cityDecisions; // healDisease x4, findCure, buildResearchStation, shareKnowledge
     QSet<QWidget*> cardDecisions; // (moveFrom / moveTo / use), discard
@@ -93,6 +95,7 @@ private slots:
     void setMode(Qt::TransformationMode);
     void setSmoothMode();
     void closeCityMenu();
+    void emitFinishedIfFinished(QAbstractAnimation::State);
 signals:
     void created();
     void cityClicked(CCity*);

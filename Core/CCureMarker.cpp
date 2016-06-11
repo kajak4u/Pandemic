@@ -9,8 +9,6 @@
 CCureMarker::CCureMarker(QWidget * parent, DiseaseType _color)
     : CBoardItem(parent), status(NEW), color(_color), connectedIcon(nullptr)
 {
-    /*for (int i = 0; i < CureStatus_SL.size();++i)
-        options += new CStringOption(CureStatus_SL[i]+" Disease's image src", images[(CureStatus)i]);*/
     options += new CEnumOption<DiseaseType>("Color", DiseaseType_SL, color);
     options += new CStringOption("Object name", name);
     connect(this, &CCureMarker::rightButtonUp, this, &CCureMarker::increaseStatus);
@@ -24,8 +22,6 @@ CCureMarker::~CCureMarker() {
 void CCureMarker::loadFrom(QTextStream &ts)
 {
     CBoardItem::loadFrom(ts);
-    //for (int i = 0; i < CureStatus_SL.size(); ++i)
-    //    images[(CureStatus)i] = ts.readLine();
     QString colorStr = ts.readLine();
     color = (DiseaseType)DiseaseType_SL.indexOf(colorStr);
     QString statusStr = ts.readLine();
@@ -106,15 +102,6 @@ QString CCureMarker::iconPath(CureStatus) const
         return "";
     }
 }
-
-//void CCureMarker::scale(double factor)
-//{
-//    zoomFactor *= factor;
-//    move(standardPos*zoomFactor);
-//    resize(standardSize*zoomFactor);
-//    setPixmap(images[status].scaled(images[status].size()*zoomFactor, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
-//    update();
-//}
 
 void CCureMarker::updateOptions()
 {

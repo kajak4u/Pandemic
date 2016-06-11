@@ -209,8 +209,7 @@ void CCity::addCube(DiseaseType color)
 
 void CCity::removeCube(DiseaseType type)
 {
-    diseaseCubes[type].back()->disappear();/*
-    delete diseaseCubes[type].back();*/
+    diseaseCubes[type].back()->disappear();
     diseaseCubes[type].pop_back();
 }
 

@@ -12,7 +12,6 @@ public:
     static CDiseaseCube* createIn(CCity*, DiseaseType color);
     void disappear();
     DiseaseType getColor() const;
-    //void scale(double factor);
     void setDestination(CCity *newLocation);
     bool isFirst() const;
     void setAlpha(double newAlpha);
@@ -27,7 +26,6 @@ private:
     virtual void saveTo(QTextStream &) const;
     static CPoint offsetOf(DiseaseType);
     static const QPixmap& pixmapOf(DiseaseType);
-    //QString whereStr;
     int nth;
 };
 Q_DECLARE_METATYPE(CDiseaseCube)

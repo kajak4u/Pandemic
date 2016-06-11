@@ -50,7 +50,7 @@ CBoard::CBoard(QWidget * parent)
             emit item->moved(item->pos());
     });
     animation = new QParallelAnimationGroup(this);
-    connect(animation, &QAbstractAnimation::finished, this, &CBoard::animationFinished);
+    connect(animation, &QAbstractAnimation::stateChanged, this, &CBoard::emitFinishedIfFinished);
     emit created();
 }
 void CBoard::afterCreate()
@@ -149,6 +149,11 @@ void CBoard::zoomOut()
     offsetAnimation->setEasingCurve(QEasingCurve::InOutCubic);
     group->addAnimation(offsetAnimation);
     group->start(QAbstractAnimation::DeleteWhenStopped);
+}
+
+double CBoard::getZoom() const
+{
+    return zoomFactor;
 }
 
 void CBoard::setPos(CPoint pos)
@@ -335,6 +340,11 @@ void CBoard::closeCityMenu() {
     cityMenu->hide();
 }
 
+void CBoard::emitFinishedIfFinished(QAbstractAnimation::State state) {
+    if (state == QAbstractAnimation::Stopped)
+        emit animationFinished();
+}
+
 void CBoard::setCityMenu(CCircleMenu *menu)
 {
     cityMenu = menu;
@@ -392,14 +402,12 @@ void CBoard::setActiveCities(const QSet<CCity*>&newActive)
 {
     for (CCity* city : activeCities) {
         city->unselect();
-        //city->setProperty("selected", false);
         city->update();
         disconnect(city, &CCity::leftButtonUp, this, &CBoard::clickCity);
     }
     activeCities = newActive;
     for (CCity* city : newActive) {
         city->select();
-        //city->setProperty("selected", true);
         city->update();
         connect(city, &CCity::leftButtonUp, this, &CBoard::clickCity);
     }
@@ -422,7 +430,7 @@ void CBoard::addCardToHand(CCard *card)
     }
     QLabel* item = new QLabel();
     item->setText(QString("<h2>%1</h2>").arg(card->getCityName()));
-    //item->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    item->setObjectName(QString("CardInHand_%1").arg(card->getCityName()));
     QString fontColor = type == BLACK ? "white" : "black";
     QString backgroundColor = type == UNKNOWN ? "orange; font-style: italic" : DiseaseType_SL[type];
     item->setStyleSheet(QString("border: 2px outset grey; border-radius: 10px; background-color: %1; color: %2;").arg(backgroundColor).arg(fontColor));
@@ -430,8 +438,18 @@ void CBoard::addCardToHand(CCard *card)
     item->setMinimumHeight(70);
     item->setWordWrap(true);
     dynamic_cast<QVBoxLayout*>(playerArea)->insertWidget(playerArea->count(), item);
-    //playerArea->addWidget(item);
     item->show();
+}
+
+void CBoard::removeCardFromHand(CCard *card)
+{
+    QString desiredName = QString("CardInHand_%1").arg(card->getCityName());
+    for (int i = 0; i < playerArea->count(); ++i) {
+        QWidget* widget = dynamic_cast<QWidget*>(playerArea->itemAt(i)->widget());
+        if (widget != nullptr && widget->objectName() == desiredName)
+            delete widget;
+    }
+
 }
 
 double CBoard::minZoomFactor() const

@@ -20,9 +20,6 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     ui.board->setPlayerWidgets(ui.playerLabels, ui.playerCardsVBLayout);
     ui.board->loadFrom("basic.ini");
     connect(ui.playerAreaMinimizeButton, &QToolButton::clicked, this, &CGameWindow::hidePlayerArea);
-    /*connect(ui.playerAreaMinimizeButton, &QToolButton::clicked, [this]() {
-        ui.playerAreaWidget->move(ui.playerAreaWidget->pos() - CPoint(10, 0));
-    });*/
     connect(ui.playerAreaMaximizeButton, &QToolButton::clicked, this, &CGameWindow::showPlayerArea);
     dynamic_cast<CCureMarker*>(ui.board->findItemByName("CureMarker_BLUE"))->connectIcon(ui.cureStatus_blue);
     dynamic_cast<CCureMarker*>(ui.board->findItemByName("CureMarker_YELLOW"))->connectIcon(ui.cureStatus_yellow);
@@ -31,8 +28,12 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     createMenus();
     mediator().setGUI(ui.board);
     connect(this, &CGameWindow::created, this, &CGameWindow::afterCreate, Qt::ConnectionType(Qt::QueuedConnection | Qt::UniqueConnection));
+    connect(ui.board, &CBoard::cityClicked, this, &CGameWindow::targetCityClicked);
+    connect(ui.passButton, &QPushButton::clicked, [this]() {
+        engine()->Pass();
+        waitForNextAction();
+    });
     emit created();
-//    game->
 }
 
 CGameWindow::CGameWindow(const QString & filename) //load game from a file
@@ -52,8 +53,7 @@ CGameWindow::~CGameWindow()
 void CGameWindow::afterCreate()
 {
     game = new Board(diff, players);
-    connect(ui.board, &CBoard::cityClicked, this, &CGameWindow::targetCityClicked);
-    nextAction();
+    waitForNextAction();
 }
 
 void CGameWindow::targetCityClicked(CCity* target)
@@ -64,6 +64,7 @@ void CGameWindow::targetCityClicked(CCity* target)
 
 void CGameWindow::nextAction()
 {
+    qDebug() << "ACTION";
     disconnect(conn);
     QVector<Decision> decisions = QVector<Decision>::fromStdVector(game->IsAbleTo());
     QSet<Decision> decisionsSet;
@@ -75,6 +76,16 @@ void CGameWindow::nextAction()
 void CGameWindow::waitForNextAction()
 {
     conn = connect(ui.board, &CBoard::animationFinished, this, &CGameWindow::nextAction);
+    //blokada przed wykonaniem innych akcji w czasie trwania bie¿¹cej
+    ui.board->setActiveCities(QSet<CCity*>());
+    menu_buildStation->setEnabled(false);
+    menu_discoverCure->setEnabled(false);
+    menu_shareKnowledge->setEnabled(false);
+    menu_treatBlack->setEnabled(false);
+    menu_treatBlue->setEnabled(false);
+    menu_treatRed->setEnabled(false);
+    menu_treatYellow->setEnabled(false);
+    ui.passButton->setEnabled(false);
 }
 
 Board * CGameWindow::engine() const
@@ -97,8 +108,6 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
             citiesGUI << ui.board->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
         ui.board->setActiveCities(citiesGUI);
     }
-    else
-        ui.board->setActiveCities(QSet<CCity*>());
     if (decisions.contains(DEC_MOVE_TO_CARD)) {
         // TODO decision
     }
@@ -113,12 +122,6 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
         menu_treatRed->setEnabled(currentCity->cubesOf(RED)>0);
         menu_treatYellow->setEnabled(currentCity->cubesOf(YELLOW)>0);
     }
-    else {
-        menu_treatBlack->setEnabled(false);
-        menu_treatBlue->setEnabled(false);
-        menu_treatRed->setEnabled(false);
-        menu_treatYellow->setEnabled(false);
-    }
     if (decisions.contains(DEC_GAIN_CARD)) {
         // TODO decision
     }
@@ -129,7 +132,7 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
         // TODO decision
     }
     if (decisions.contains(DEC_PASS)) {
-        // TODO decision
+        ui.passButton->setEnabled(true);
     }
 }
 

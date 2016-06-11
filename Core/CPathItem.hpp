@@ -23,4 +23,3 @@ private:
     static std::unique_ptr<QBitmap> pathItemMask;
     void changeNext(QMouseEvent * event);
 };
-//Q_DECLARE_METATYPE(CPathItem)

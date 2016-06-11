@@ -98,7 +98,7 @@ void CDiseaseCube::setDestination(CCity * newLocation)
     CPoint verticalOffset = CPoint(0, -20)*nth;
     CPoint diseaseOffset = offsetOf(color);
     CPoint endPos = cityPoint + verticalOffset + diseaseOffset + standardSize/2;
-    setStandardMiddle(CPoint(endPos.x(), -100));
+    setStandardMiddle(CPoint(endPos.x(), endPos.y()%100));
     CPoint stdm1 = getStandardMiddle();
     QPropertyAnimation *anim = createPropertyAnimation(this, "middlePos", getStandardMiddle(), endPos, 1500, QEasingCurve::OutBounce);
     container->addAnimation(anim);

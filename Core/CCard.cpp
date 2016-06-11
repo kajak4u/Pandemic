@@ -1,4 +1,6 @@
-﻿#include "CCard.hpp"
+﻿#define _NOCARDS
+
+#include "CCard.hpp"
 #include "CStringOption.h"
 #include <QPropertyAnimation>
 #include <QSequentialAnimationGroup>
@@ -65,10 +67,7 @@ QString CCard::createObjectName(const QString & cardName, CardType type)
 
 void CCard::scale(double factor)
 {
-    if (1 || parent() != container)
-        CBoardItem::scale(factor);
-    else
-        qDebug() << objectName() << " not scaled" << endl;
+    CBoardItem::scale(factor);
 }
 
 void CCard::loadStaticGraphics()
@@ -80,7 +79,9 @@ void CCard::loadStaticGraphics()
 void CCard::updateOptions()
 {
     QString typeStr = CardType_SL[type];
+#ifndef _NOCARDS
     pxm = QPixmap(":/img/cards/" + typeStr + "/" + cardName + ".png");
+#endif
     setText(QString("<h1>%1</h1><h2>%2</h2>").arg(cardName).arg(typeStr));
     if(!pxm.isNull())
         pxm = pxm.scaledToWidth(standardSize.width(), Qt::SmoothTransformation);
@@ -143,11 +144,17 @@ void CCard::gotoPlayer()
     if (cardPos.intersects(playerIcoRect))
         container->addCardToHand(this);
     hide();
-    /*
-        getPos()
-        find label over it / calculate
-        move to player GUI deck
-    */
+}
+
+void CCard::restoreParent()
+{
+    auto children = container->children();
+    QWidget* newParent = dynamic_cast<QWidget*>(children[0]);
+    QWidget* par = dynamic_cast<QWidget*>(parent());
+    QPoint newPos = newParent->mapFrom(par, mapTo(par, CPoint(size()) / 2));
+    setParent(newParent);
+    show();
+    setStandardMiddle(newPos / zoomFactor);
 }
 
 void CCard::invert()

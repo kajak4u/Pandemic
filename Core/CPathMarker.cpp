@@ -22,6 +22,7 @@ void CPathMarker::loadFrom(QTextStream & ts)
     int pos = ts.readLine().toInt();
     references[(CBoardItem**)&position] = pos;
     imgSrc = ts.readLine();
+    setObjectName(name);
     QPixmap pixmap(imgSrc);
     setImage(pixmap);
     setMask(pixmap.createMaskFromColor(Qt::transparent));
@@ -59,8 +60,6 @@ void CPathMarker::moveTo(CPathItem * dest)
     if (dest == nullptr)
         return;
     position = dest;
-    //setStandardMiddle(position->getStandardMiddle());
-    /*Animacja goto(position->getPos)*/
     QPropertyAnimation *animation = createPropertyAnimation(this, "middlePos", getStandardMiddle(), position->getStandardMiddle(), 2000, QEasingCurve::InOutQuad);
     animation->start(QAbstractAnimation::DeleteWhenStopped);
 }
