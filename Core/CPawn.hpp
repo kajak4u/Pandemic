@@ -26,4 +26,6 @@ protected:
     PlayerRole role;
     void updateOptions();
     QString getPath(PlayerRole) const;
+private slots:
+    virtual void raiseOnAnimation(QAbstractAnimation::State);
 };

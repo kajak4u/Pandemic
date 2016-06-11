@@ -56,6 +56,7 @@ public:
     bool isCurrentCity(CCity*) const;
     void addCardToHand(CCard*);
     void removeCardFromHand(CCard*);
+    void clearHand();
     void nextPlayer();
 private:
     QLayout* playerArea;
@@ -71,6 +72,7 @@ private:
     QVector<QLabel*> playerLabels; //wskazują kolejkę - [0]-current ... [3]-last
     QVector<CPlayer*> players;
     QVector<CBoardItem*> items;
+    QVector<QLabel*> hand;
     QSet<CCity*> activeCities;
     CPathItem* outbreaksPath;
     CPathItem* infectionsPath;

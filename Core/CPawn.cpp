@@ -112,3 +112,9 @@ CCity * CPawn::getPosition() const
 {
     return position;
 }
+
+void CPawn::raiseOnAnimation(QAbstractAnimation::State state)
+{
+    if (state == QAbstractAnimation::Running)
+        stackUnder(position);
+}

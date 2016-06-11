@@ -87,7 +87,13 @@ void Mediator::setCurrent(Player *current)
 {
     qDebug() << "set current to " << PlayerRole_SL[current->GetRole()];
     checkGUI();
-// TODO "Mediator::setCurrent - not implemented"
+    vector<PlayerCard*> hand = current->SeeCards();
+    GUI->clearHand();
+    for (PlayerCard* card : hand) {
+        CCard* cardGUI = GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+        GUI->addCardToHand(cardGUI);
+        qDebug() << "add card " << cardGUI;
+    }
 }
 
 void Mediator::addDiseaseCube(City *infectedCity, DiseaseType color, int count)

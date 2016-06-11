@@ -11,7 +11,6 @@ public:
 	~CResearchStation();
     static CResearchStation* createIn(CCity*);
     void disappear();
-    QSet<CCity*> citiesWithStation() const;
     QString createToolTip();
     void setDestination(CCity * newLocation);
     void onRightBtnUp(QMouseEvent * event);

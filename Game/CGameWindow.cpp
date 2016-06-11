@@ -10,6 +10,7 @@
 #include "Mediator.h"
 #include "CPlayer.h"
 #include "CCity.hpp"
+#include "CCard.hpp"
 
 CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRole>>& players, QWidget *parent)
     : QWidget(parent), game(nullptr), diff(diff), players(players)
@@ -65,9 +66,8 @@ void CGameWindow::targetCityClicked(CCity* target)
 void CGameWindow::nextAction()
 {
     qDebug() << "ACTION";
-    while (game->GetCurrentPlayer()->GetRole() != ui.board->currentPlayer()->getRole())
-        ui.board->nextPlayer();
-    game->GetCurrentPlayer()->SeeCards();
+    if (game->GetCurrentPlayer()->GetRole() != ui.board->currentPlayer()->getRole())
+        mediator().setCurrent(game->GetCurrentPlayer());
     disconnect(conn);
     QVector<Decision> decisions = QVector<Decision>::fromStdVector(game->IsAbleTo());
     QSet<Decision> decisionsSet;
