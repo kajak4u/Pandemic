@@ -39,6 +39,7 @@ public:
 	void init(const std::vector<Player*>& players, const std::vector<City*>& cities, 
 			  const CardDeck& playerCardDeck, const CardDeck& playerDiscard, const CardDeck& diseaseCardDeck, const CardDeck& diseaseDiscard);
     void setCurrent(Player*);
+    void setHand();
     void addDiseaseCube(City*, DiseaseType, int count=1);
     void removeCube(City*, DiseaseType, int count=1);
     void movePawn(Player*, City*);

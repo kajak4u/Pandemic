@@ -65,8 +65,6 @@ private:
     CCircleMenu* cityMenu;
     QWidget* activeMenu;
     double scaleContent(double factor);
-    void onMouseMove(QMouseEvent*);
-    void startDragging(QMouseEvent*);
     void addItemFromClick(QMouseEvent*);
     void changeInsertableClass(QMouseEvent*);
     QVector<QLabel*> playerLabels; //wskazują kolejkę - [0]-current ... [3]-last
@@ -93,6 +91,8 @@ private:
     QSet<QWidget*> playersDecisions; // moveAnother
 public slots:
     void clickCity(QMouseEvent*);
+    void onMouseMove(QMouseEvent*);
+    void startDragging(QMouseEvent*);
 private slots:
     void afterCreate();
     void setMode(Qt::TransformationMode);
