@@ -365,52 +365,40 @@ COverlay * CBoard::showOverlay()
     return overlay;
 }
 
+//chciałem to zrobić ładniej, ale się nie da... bo Qt robi jaja jak dostanie dwie animacje tej samej cechy tego samego obiektu...
 void CBoard::addAnimation(QAbstractAnimation *newAnim)
 {
-    connect(newAnim, &QAbstractAnimation::stateChanged, [newAnim](QAbstractAnimation::State state) {
-        auto propAnim = dynamic_cast<QPropertyAnimation*>(newAnim);
-        if (propAnim == nullptr)
-            return;
-        qDebug() << propAnim->targetObject() << " - " << propAnim->propertyName() << " - state " << (state==QAbstractAnimation::Running ? "Running" : state==QAbstractAnimation::Stopped ? "Stopped" : "Paused") << " at " << propAnim->currentTime() << " / " << propAnim->totalDuration();
+    static int maxduration = 0;
+    static int animCount = 0;
+    static int lastStart = 0;
+    static QAbstractAnimation* lastAnim = nullptr;
+    int pauseDuration = animCount==0 ? 0 : qMax(lastStart - lastAnim->currentTime(), 0);
+    QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
+    newGroup->addPause(pauseDuration);
+    newGroup->addAnimation(newAnim);
+    lastStart = pauseDuration + 50;
+    lastAnim = newGroup;
+    ++animCount;
+    connect(newGroup, &QAbstractAnimation::stateChanged, [this](QAbstractAnimation::State state) {
+        if (state == QAbstractAnimation::Stopped) {
+            --animCount;
+            qDebug() << "anim finished, left " << animCount;
+            if (animCount == 0)
+                emit animationFinished();
+        }
     });
-    int lastStart = 1000;
-    if (animation->animationCount() != 0) {
-        QSequentialAnimationGroup* lastGroup = dynamic_cast<QSequentialAnimationGroup*>(animation->animationAt(animation->animationCount() - 1));
-        QPauseAnimation* pause = dynamic_cast<QPauseAnimation*>(lastGroup->animationAt(0));
-        lastStart = qMax(pause->duration() - animation->currentTime(), 0);
-    }
-    if (animation->state() == QAbstractAnimation::Stopped) {
-        animation->clear();
-        QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
-        newGroup->addPause(lastStart + 50);
-        newGroup->addAnimation(newAnim);
-        animation->addAnimation(newGroup);
-        animation->start();
-    }
-    else {
-        //brzydkie zabezpieczenie, bo jeżeli naraz animowana jest dwa razy ta sama cecha tego samego obiektu, to cała animacja się przerywa...
-        QPropertyAnimation* animProp = dynamic_cast<QPropertyAnimation*>(newAnim);
-        if(animProp != nullptr)
-            for (int i = animation->animationCount() - 1; i >= 0; --i) {
-                auto group = dynamic_cast<QSequentialAnimationGroup*>(animation->animationAt(i));
-                QPropertyAnimation* anim = dynamic_cast<QPropertyAnimation*>(group->animationAt(1));
-                if (anim && anim->targetObject() == animProp->targetObject() && anim->propertyName() == animProp->propertyName()) {
-                    animation->pause();
-                    group->addPause(50);
-                    group->addAnimation(newAnim);
-                    animProp->setStartValue(anim->endValue());
-                    qDebug() << animProp->targetObject()->objectName() << " - " << animProp->propertyName() << " conflict";
-                    animation->resume();
-                    return;
-                }
-            }
-        animation->pause();
-        QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
-        newGroup->addPause(lastStart + 50);
-        newGroup->addAnimation(newAnim);
-        animation->addAnimation(newGroup);
-        animation->resume();
-    }
+    //connect(newGroup, &QAbstractAnimation::stateChanged, [newAnim](QAbstractAnimation::State state) {
+    //    auto propAnim = dynamic_cast<QPropertyAnimation*>(newAnim);
+    //    if (propAnim != nullptr)
+    //        qDebug() << propAnim->targetObject() << " - " << propAnim->propertyName() << " - state " << (state == QAbstractAnimation::Running ? "Running" : state == QAbstractAnimation::Stopped ? "Stopped" : "Paused") << " at " << propAnim->currentTime() << " / " << propAnim->totalDuration();
+    //    else
+    //        qDebug() << "ANIM GROUP - state " << (state == QAbstractAnimation::Running ? "Running" : state == QAbstractAnimation::Stopped ? "Stopped" : "Paused") << " at " << newAnim->currentTime() << " / " << newAnim->totalDuration();
+    //}); auto propAnim = dynamic_cast<QPropertyAnimation*>(newAnim);
+    //if (propAnim != nullptr)
+    //    qDebug() << "ADD ANIM " << propAnim->targetObject() << " - " << propAnim->propertyName() << ", count " << animCount;
+    //else
+    //    qDebug() << "ADD ANIM GROUP, count " << animCount;
+    newGroup->start(QAbstractAnimation::DeleteWhenStopped);
 }
 
 void CBoard::addPlayer(CPlayer* newPlayer)

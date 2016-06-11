@@ -86,6 +86,8 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
 void Mediator::setCurrent(Player *current)
 {
     qDebug() << "set current to " << PlayerRole_SL[current->GetRole()];
+    while(GUI->currentPlayer()->getRole() != current->GetRole())
+        GUI->nextPlayer();
     checkGUI();
     vector<PlayerCard*> hand = current->SeeCards();
     GUI->clearHand();
