@@ -111,12 +111,12 @@ void Mediator::setHand()
 
 }
 
-void Mediator::playerUsedCard(CCard* card)
+bool Mediator::playerUsedCard(CCard* card)
 {
     if (card->getType() == CT_SPECIAL) {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to use %1 Special Card?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
-            return;
+            return false;
         SpecialCardType cardType = (SpecialCardType) SpecialCardType_SL.indexOf(card->getCityName());
         switch (cardType)
         {
@@ -124,6 +124,25 @@ void Mediator::playerUsedCard(CCard* card)
             engine->QuietNight();
             break;
         case SC_FORECAST:
+            {
+            QSet<City*> cities = engine->ChooseCitiesToBuildStation();
+            QSet<CBoardItem*> citiesGUI;
+            for (City* city : cities)
+                citiesGUI += GUI->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
+            GUI->zoomOut();
+            COverlay* overlay = GUI->showOverlay();
+            overlay->track(citiesGUI);
+            overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
+                if (chosen == nullptr) {
+                    //u¿ytkownik wybra³ "anuluj"
+                    throw "nie ma takiej opcji";
+                }
+                else {
+                    CCity* chosenCity = dynamic_cast<CCity*>(chosen);
+                    engine->GovernmentGrant(chosenCity->toLogic());
+                }
+            });
+            }
             // Overlay
             // Wrzuæ karty
             // odrzucaj po jednym, kolejnoœæ do ustalenia: albo jak na stos (czyli ostatnia odrzucona wejdzie jako pierwsza), albo w kolejnoœci wchodzenia...
@@ -154,6 +173,7 @@ void Mediator::playerUsedCard(CCard* card)
                 overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
                     if (chosen == nullptr) {
                         //u¿ytkownik wybra³ "anuluj"
+                        emit GUI->actionCancelled();
                     }
                     else {
                         CCity* chosenCity = dynamic_cast<CCity*>(chosen);
@@ -166,12 +186,13 @@ void Mediator::playerUsedCard(CCard* card)
             throw "dupa, z³y typ karty";
             break;
         }
-// TODO        engine->UseSpecialCard(card->toLogic());
+        return true;
+// TODO        Mediator::UseCard - special
     }
     else if (card->getCityName().toStdString() == engine->GetCurrentPlayer()->GetPosition()->GetName()) {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move anywhere?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
-            return;
+            return false;
         QSet<City*> cities = engine->ChooseMoveEverywhere(engine->GetCurrentPlayer());
         QSet<CBoardItem*> citiesGUI;
         for (City* city : cities)
@@ -182,18 +203,21 @@ void Mediator::playerUsedCard(CCard* card)
         overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
             if (chosen == nullptr) {
                 //u¿ytkownik wybra³ "anuluj"
+                emit GUI->actionCancelled();
             }
             else {
                 CCity* chosenCity = dynamic_cast<CCity*>(chosen);
                 engine->MoveEverywhere(chosenCity->toLogic());
             }
         });
+        return true;
     }
     else {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move there?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
-            return;
+            return false;
         engine->MoveToCard(dynamic_cast<PlayerCard*>(card->toLogic()));
+        return true;
     }
 }
 
@@ -357,6 +381,7 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
     overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
         if (chosen == nullptr) {
             //u¿ytkownik wybra³ "anuluj"
+            emit GUI->actionCancelled();
         }
         else {
             CCity* chosenCity = dynamic_cast<CCity*>(chosen);

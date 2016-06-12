@@ -31,6 +31,7 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     connect(this, &CGameWindow::created, this, &CGameWindow::afterCreate, Qt::ConnectionType(Qt::QueuedConnection | Qt::UniqueConnection));
     connect(ui.board, &CBoard::cityClicked, this, &CGameWindow::targetCityClicked);
     connect(ui.board, &CBoard::cardActivated, this, &CGameWindow::waitForNextAction);
+    connect(ui.board, &CBoard::actionCancelled, this, &CGameWindow::nextAction);
     connect(ui.passButton, &QPushButton::clicked, [this]() {
         engine()->Pass();
         waitForNextAction();
@@ -82,7 +83,10 @@ void CGameWindow::nextAction()
 
 void CGameWindow::waitForNextAction()
 {
-    conn = connect(ui.board, &CBoard::animationFinished, this, &CGameWindow::nextAction);
+    if (!conn)
+        conn = connect(ui.board, &CBoard::animationFinished, this, &CGameWindow::nextAction);
+    else
+        qDebug() << "dupa";
     //blokada przed wykonaniem innych akcji w czasie trwania bie¿¹cej
     ui.board->setActiveCities(QSet<CCity*>());
     menu_buildStation->setEnabled(false);

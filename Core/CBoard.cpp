@@ -342,8 +342,8 @@ void CBoard::closeCityMenu() {
 
 void CBoard::useCard(CCard *card)
 {
-    mediator().playerUsedCard(card);
-    emit cardActivated();
+    if(mediator().playerUsedCard(card))
+        emit cardActivated();
 }
 
 void CBoard::setCityMenu(CCircleMenu *menu)
