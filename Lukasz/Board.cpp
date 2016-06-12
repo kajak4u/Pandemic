@@ -102,11 +102,6 @@ void Board::DiscoverCure_FinalStep(QVector<Card*> cardsRemoved)
 	vector<Card*> cards = cardsRemoved.toStdVector();
 	Disease* dis = FindDisease(cardsInColor[0]->GetColor());//wszystkie karty maja ten sam kolor - wczesniej.. wiec wez pierwsza z brzegu i sprawdz
 	currentPlayer->DiscoverCure(cards, dis);
-	Mediator m = mediator();
-	for (Card* card : cards)
-	{
-		m.moveCard(card, &playerDiscarded);
-	}
 	--movesLeft;
 	for (Player* play : players)
 	{
@@ -283,6 +278,7 @@ vector<Decision> Board::IsAbleTo()
 				}
 			}
 			supPlayers.clear();
+			playersToGetCardFrom.clear();
 			isResearcher = false;
 			anotherPlayersCityCard = nullptr;
 			for (Player* play : players)				//wybierz graczy w miescie BEZ obecnego gracza
@@ -298,13 +294,18 @@ vector<Decision> Board::IsAbleTo()
 							if (areTheyNotOnlySpecial == nullptr)//jak choc jedna karta NIE jest specjalna
 							{
 								isResearcher = true;//wtedy ma sens informowanie, ze jest Researcher	- inaczej nic jego rola nie da
-								break;//..i nie szukaj dalej w kjego kartach
+								playersToGetCardFrom.push_back(play);//od niego mozna wziac karte
+								break;//..i nie szukaj dalej w jego kartach
 							}
 						}
-					}
-					if (cityCard == nullptr && anotherPlayersCityCard == nullptr) //czy juz ktos SPRAWDZONY wczesniej tej karty nie ma
+					} 
+					else if (cityCard == nullptr) //jak obecny nie ma miasta, to czy sprawdzany (NIE-researcher) jej nie posiada
 					{
 						anotherPlayersCityCard = play->FindCard(currentCity->GetName());
+						if (anotherPlayersCityCard != nullptr)//jesli posiada..
+						{
+							playersToGetCardFrom.push_back(play);//..dodaj go do listy potencjalnych dawcow organow
+						}
 					}
 				}
 			}
@@ -328,7 +329,7 @@ vector<Decision> Board::IsAbleTo()
 				}
 				if (isResearcher || anotherPlayersCityCard != nullptr)				   //GAIN_CARD
 				{
-					decisionsAvailable.push_back(DEC_GAIN_CARD);//warunek Researchera - poprawiony
+					decisionsAvailable.push_back(DEC_GAIN_CARD);
 				}
 			}
 			if (currentCity->IsStation())											   //DISCOVER_CURE
@@ -385,9 +386,14 @@ vector<Player*> Board::ChoosePlayer() const
 	return players;
 }
 
-vector<Player*> Board::ChoosePlayerInCity()
+vector<Player*> Board::ChoosePlayerInCityToGIVE() const
 {
 	return supPlayers;
+}
+
+vector<Player*> Board::ChoosePlayerInCityToGAIN() const
+{
+	return playersToGetCardFrom;
 }
 
 QSet<City*> Board::SeeFREECitiesAsDispatcher(Player* toMove)
@@ -637,7 +643,6 @@ vector<PlayerCard*> Board::ChooseCardToGain(Player* source)
 	vector<PlayerCard*> toReturn;
 	if (source->GetRole() == ROLE_RESEARCHER)
 	{
-
 		for (PlayerCard* card : source->SeeCards())
 		{
 			if (card->GetColor() != UNKNOWN)
