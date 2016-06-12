@@ -10,7 +10,7 @@ class CNewGameMenu : public QWidget
 public:
     CNewGameMenu(QWidget *parent = 0);
     virtual ~CNewGameMenu();
-    void filterRoles();
+    void filterRoles(int i);
     void exit();
     void newGame();
 private:

@@ -15,17 +15,17 @@ CNewGameMenu::CNewGameMenu(QWidget *parent) {
 
     connect(ui.backButton, &QPushButton::clicked, this, &CNewGameMenu::exit);
     void (QComboBox::*indexChanged)(int) = &QComboBox::currentIndexChanged;
-    auto applyChangeTo = [](QLabel* receiver) {
-        return [receiver](int i) {
-            if (i == -1)
-                receiver->setText("[Empty]");
-            else
-                receiver->setText(RoleDescriptions_SL[i]);
-        };
-    };
+    //auto applyChangeTo = [](QLabel* receiver) {
+    //    return [receiver](int i) {
+    //        if (i == -1)
+    //            receiver->setText("[Empty]");
+    //        else
+    //            receiver->setText(RoleDescriptions_SL[i]);
+    //    };
+    //};
     for (int i = 0; i < playersCombobox.size(); ++i) {
         playersCombobox[i]->clear();
-        connect(playersCombobox[i], indexChanged, applyChangeTo(roleDescriptionLabels[i]));
+        //connect(playersCombobox[i], indexChanged, applyChangeTo(roleDescriptionLabels[i]));
         connect(playersCombobox[i], indexChanged, this, &CNewGameMenu::filterRoles);
         playersCombobox[i]->insertItems(0, PlayerRole_SL);
         playersCombobox[i]->setCurrentIndex(-1);
@@ -49,8 +49,14 @@ CNewGameMenu::~CNewGameMenu()
 {
 }
 
-void CNewGameMenu::filterRoles()
+void CNewGameMenu::filterRoles(int i)
 {
+    QComboBox* source = dynamic_cast<QComboBox*>(sender());
+    QLabel* target = roleDescriptionLabels[playersCombobox.indexOf(source)];
+    if (i == -1)
+        target->setText("[Empty]");
+    else
+        target->setText(RoleDescriptions_SL[i]);
     for (QComboBox* role : playersCombobox) {
         for (int i = 0; i < role->count(); ++i)
             role->setItemData(i, 33, Qt::UserRole - 1);
