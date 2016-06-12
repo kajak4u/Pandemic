@@ -75,6 +75,16 @@ void CCureMarker::connectIcon(QLabel *label)
     connectedIcon = label;
 }
 
+QString CCureMarker::createObjectName() const
+{
+    return QString("CCureMarker ")+DiseaseType_SL[color];
+}
+
+QString CCureMarker::createObjectName(DiseaseType color)
+{
+    return QString("CCureMarker ") + DiseaseType_SL[color];
+}
+
 QString CCureMarker::imagePath(CureStatus status) const
 {
     switch (status) {

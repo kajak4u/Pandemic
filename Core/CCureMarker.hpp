@@ -18,6 +18,8 @@ public:
     CureStatus getStatus() const;
     void setStatus(const CureStatus& s);
     void connectIcon(QLabel*);
+    virtual QString createObjectName() const;
+    static QString createObjectName(DiseaseType color);
 private:
     void updateOptions();
     QString imagePath(CureStatus) const;

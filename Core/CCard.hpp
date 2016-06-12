@@ -24,6 +24,7 @@ public:
     void bindLogic(Card*);
     Card* toLogic() const;
     CardType getType() const;
+    virtual void cloneTo(CBoardItem*) const;
 private:
     static std::unique_ptr<QPixmap> playerReverse,
         diseaseReverse,

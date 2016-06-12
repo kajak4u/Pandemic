@@ -55,6 +55,7 @@ public:
 	void endGame(GameResult);
 
     void chooseStationToRemove(std::vector<City*>);
+    void ShareKnowledge();
     void playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess);
     void playerMustDiscardCards(Player* which, int count, CALLBACK(Board, void, TWOPARAM(std::vector<PlayerCard*>, Player*)) callback);
     void playerMayGiveCard(CALLBACK(Board, void, TWOPARAM(Card*, Player*)) callback);

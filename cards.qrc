@@ -51,5 +51,53 @@
         <file>img/cards/Player/Tokyo.png</file>
         <file>img/cards/Disease/reverse.png</file>
         <file>img/cards/Epidemic/epidemy.png</file>
+        <file>img/cards/Disease/Algiers.png</file>
+        <file>img/cards/Disease/Atlanta.png</file>
+        <file>img/cards/Disease/Baghdad.png</file>
+        <file>img/cards/Disease/Bangkok.png</file>
+        <file>img/cards/Disease/Bejing.png</file>
+        <file>img/cards/Disease/Bogota.png</file>
+        <file>img/cards/Disease/Buenos Aires.png</file>
+        <file>img/cards/Disease/Cairo.png</file>
+        <file>img/cards/Disease/Chennai.png</file>
+        <file>img/cards/Disease/Chicago.png</file>
+        <file>img/cards/Disease/Delhi.png</file>
+        <file>img/cards/Disease/Essen.png</file>
+        <file>img/cards/Disease/Ho Chi Minh City.png</file>
+        <file>img/cards/Disease/Hong Kong.png</file>
+        <file>img/cards/Disease/Istanbul.png</file>
+        <file>img/cards/Disease/Jakarta.png</file>
+        <file>img/cards/Disease/Johannesburg.png</file>
+        <file>img/cards/Disease/Karachi.png</file>
+        <file>img/cards/Disease/Khartoum.png</file>
+        <file>img/cards/Disease/Kinshasa.png</file>
+        <file>img/cards/Disease/Kolkata.png</file>
+        <file>img/cards/Disease/Lagos.png</file>
+        <file>img/cards/Disease/Lima.png</file>
+        <file>img/cards/Disease/London.png</file>
+        <file>img/cards/Disease/Los Angeles.png</file>
+        <file>img/cards/Disease/Madrid.png</file>
+        <file>img/cards/Disease/Manila.png</file>
+        <file>img/cards/Disease/Mexico City.png</file>
+        <file>img/cards/Disease/Miami.png</file>
+        <file>img/cards/Disease/Milan.png</file>
+        <file>img/cards/Disease/Moscow.png</file>
+        <file>img/cards/Disease/Mumbai.png</file>
+        <file>img/cards/Disease/New York.png</file>
+        <file>img/cards/Disease/Osaka.png</file>
+        <file>img/cards/Disease/Paris.png</file>
+        <file>img/cards/Disease/Riyadh.png</file>
+        <file>img/cards/Disease/San Francisco.png</file>
+        <file>img/cards/Disease/Santiago.png</file>
+        <file>img/cards/Disease/Sao Paulo.png</file>
+        <file>img/cards/Disease/Seoul.png</file>
+        <file>img/cards/Disease/Shanghai.png</file>
+        <file>img/cards/Disease/St. Petersburg.png</file>
+        <file>img/cards/Disease/Sydney.png</file>
+        <file>img/cards/Disease/Taipei.png</file>
+        <file>img/cards/Disease/Tehran.png</file>
+        <file>img/cards/Disease/Tokyo.png</file>
+        <file>img/cards/Disease/Toronto.png</file>
+        <file>img/cards/Disease/Washington.png</file>
     </qresource>
 </RCC>

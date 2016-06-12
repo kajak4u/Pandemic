@@ -31,6 +31,7 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     connect(this, &CGameWindow::created, this, &CGameWindow::afterCreate, Qt::ConnectionType(Qt::QueuedConnection | Qt::UniqueConnection));
     connect(ui.board, &CBoard::cityClicked, this, &CGameWindow::targetCityClicked);
     connect(ui.board, &CBoard::cardActivated, this, &CGameWindow::waitForNextAction);
+    connect(ui.board, &CBoard::actionPerformed, this, &CGameWindow::waitForNextAction);
     connect(ui.board, &CBoard::actionCancelled, this, &CGameWindow::nextAction);
     connect(ui.passButton, &QPushButton::clicked, [this]() {
         engine()->Pass();
@@ -69,10 +70,6 @@ void CGameWindow::nextAction()
 {
     qDebug() << "ACTION, left " << game->GetMovesLeft();
     mediator().setHand();
-    //if (game->GetCurrentPlayer()->GetRole() != ui.board->currentPlayer()->getRole()) {
-    //    mediator().setCurrent(game->GetCurrentPlayer());
-    //    return;
-    //}
     disconnect(conn);
     QVector<Decision> decisions = QVector<Decision>::fromStdVector(game->IsAbleTo());
     QSet<Decision> decisionsSet;
@@ -215,8 +212,7 @@ void CGameWindow::createMenus()
         waitForNextAction();
     });
     menu_shareKnowledge = cityMenu->addOption(QPixmap(":/icons/img/icons/card.png"), "Share Knowledge", [this]() {
-        // TODO "Share Knowledge not implemented";
-        //engine()->ShareKnowledge();
+        mediator().ShareKnowledge();
     });
     cityMenu->hide();
     ui.board->setCityMenu(cityMenu);

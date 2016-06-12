@@ -244,6 +244,11 @@ void CBoardItem::setStandardSize(const QSize & s)
     resize(s*zoomFactor);
 }
 
+QSize CBoardItem::getStandardSize() const
+{
+    return standardSize;
+}
+
 CPoint CBoardItem::getStandardMiddle() const
 {
     return standardPos + standardSize / 2;
@@ -348,6 +353,16 @@ void CBoardItem::setMask(const QBitmap & m)
         QWidget::setMask(itemMask);
     else
         QWidget::setMask(itemMask.scaled(itemMask.size()*zoomFactor, Qt::IgnoreAspectRatio, Qt::SmoothTransformation));
+}
+
+void CBoardItem::cloneTo(CBoardItem *target) const
+{
+    target->standardSize = standardSize;
+    target->standardPos = standardPos;
+    target->setImage(image);
+    target->setMask(itemMask);
+    target->scaleTo(zoomFactor);
+    target->setToolTip(toolTip());
 }
 
 void CBoardItem::raiseOnAnimation(QAbstractAnimation::State state)

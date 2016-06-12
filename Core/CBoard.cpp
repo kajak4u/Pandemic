@@ -438,7 +438,7 @@ bool CBoard::isCurrentCity(CCity *city) const
 
 void CBoard::addCardToHand(CCard *card)
 {
-    qDebug() << "CBoard::addCard " << card;
+    qDebug() << "CBoard::addCard " << card << "to hand of " << PlayerRole_SL[currentPlayer()->getRole()];
     CHandCard* item = new CHandCard(card);
     hand.push_back(item);
     dynamic_cast<QVBoxLayout*>(playerArea)->insertWidget(hand.size(), item);
@@ -461,7 +461,7 @@ void CBoard::removeCardFromHand(CCard *card)
 
 void CBoard::clearHand()
 {
-    qDebug() << "CBoard::clearHand";
+    qDebug() << "CBoard::clearHand of " << PlayerRole_SL[currentPlayer()->getRole()];;
     while (!hand.isEmpty()) { // itemAt(0) == spacer
         qDebug() << "removed " << hand.back();
         delete hand.back();

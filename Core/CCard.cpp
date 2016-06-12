@@ -1,4 +1,4 @@
-﻿#ifdef _DEBUG
+﻿#ifndef _DEBUG
 #define _NOCARDS
 #endif
 
@@ -85,6 +85,13 @@ Card * CCard::toLogic() const
 CardType CCard::getType() const
 {
     return type;
+}
+
+void CCard::cloneTo(CBoardItem *target) const
+{
+    CBoardItem::cloneTo(target);
+    if(reversed)
+        target->setImage(pxm);
 }
 
 void CCard::loadStaticGraphics()

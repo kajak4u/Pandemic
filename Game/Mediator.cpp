@@ -125,23 +125,23 @@ bool Mediator::playerUsedCard(CCard* card)
             break;
         case SC_FORECAST:
             {
-            QSet<City*> cities = engine->ChooseCitiesToBuildStation();
-            QSet<CBoardItem*> citiesGUI;
-            for (City* city : cities)
-                citiesGUI += GUI->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
-            GUI->zoomOut();
-            COverlay* overlay = GUI->showOverlay();
-            overlay->track(citiesGUI);
-            overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
-                if (chosen == nullptr) {
-                    //u¿ytkownik wybra³ "anuluj"
-                    throw "nie ma takiej opcji";
-                }
-                else {
-                    CCity* chosenCity = dynamic_cast<CCity*>(chosen);
-                    engine->GovernmentGrant(chosenCity->toLogic());
-                }
-            });
+                vector<Card*> cards = engine->Forecast();
+                QVector<CBoardItem*> cardsGUI;
+                for (Card* card : cards)
+                    cardsGUI += GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+                GUI->zoomOut();
+                COverlay* overlay = GUI->showOverlay();
+                overlay->displayItems(cardsGUI);
+                overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
+                    if (chosen == nullptr) {
+                        //u¿ytkownik wybra³ "anuluj"
+                        throw "nie ma takiej opcji";
+                    }
+                    else {
+                        CCity* chosenCity = dynamic_cast<CCity*>(chosen);
+                        engine->GovernmentGrant(chosenCity->toLogic());
+                    }
+                });
             }
             // Overlay
             // Wrzuæ karty
@@ -149,6 +149,27 @@ bool Mediator::playerUsedCard(CCard* card)
             // engine->Forecast(discarded);
             break;
         case SC_RESILIENT_POPULATION:
+            {
+                vector<Card*> cards = engine->ResilientPopulation();
+                QVector<CBoardItem*> cardsGUI;
+                for (Card* card : cards)
+                    cardsGUI += GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+                GUI->zoomOut();
+                COverlay* overlay = GUI->showOverlay();
+                overlay->displayItems(cardsGUI);
+                overlay->letPlayerChoose(1, true);
+                overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
+                    if (chosen == nullptr) {
+                        //u¿ytkownik wybra³ "anuluj"
+                    }
+                    else {
+                        CCard* chosenCard = dynamic_cast<CCard*>(chosen);
+                        engine->ResilientPopulation(chosenCard->toLogic());
+                        chosenCard->deleteLater();
+                        emit GUI->actionPerformed();
+                    }
+                });
+            }
             // Overlay
             // Wrzuæ karty z DiseaseDiscard
             // Wybierz jedn¹ kartê
@@ -170,7 +191,7 @@ bool Mediator::playerUsedCard(CCard* card)
                 GUI->zoomOut();
                 COverlay* overlay = GUI->showOverlay();
                 overlay->track(citiesGUI);
-                overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
+                overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
                     if (chosen == nullptr) {
                         //u¿ytkownik wybra³ "anuluj"
                         emit GUI->actionCancelled();
@@ -200,7 +221,7 @@ bool Mediator::playerUsedCard(CCard* card)
         GUI->zoomOut();
         COverlay* overlay = GUI->showOverlay();
         overlay->track(citiesGUI);
-        overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
+        overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
             if (chosen == nullptr) {
                 //u¿ytkownik wybra³ "anuluj"
                 emit GUI->actionCancelled();
@@ -323,7 +344,7 @@ void Mediator::setDiseaseStatus(DiseaseType color, CureStatus status)
 {
     qDebug() << "set disease status";
     checkGUI();
-    CCureMarker* diseaseMarker = GUI->findChild<CCureMarker*>("CureMarker_" + CureStatus_SL[color]);
+    CCureMarker* diseaseMarker = GUI->findChild<CCureMarker*>(CCureMarker::createObjectName(color));
     diseaseMarker->setStatus(status);
 }
 
@@ -378,7 +399,7 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
     GUI->zoomOut();
     COverlay* overlay = GUI->showOverlay();
     overlay->track(stationsGUI);
-    overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
+    overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
         if (chosen == nullptr) {
             //u¿ytkownik wybra³ "anuluj"
             emit GUI->actionCancelled();
@@ -390,9 +411,37 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
     });
 }
 
+void Mediator::ShareKnowledge()
+{
+
+}
+
 void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess)
 {
     qDebug() << "player may discard cards" ;
+    Player* player = engine->GetCurrentPlayer();
+    vector<PlayerCard*> cards = player->SeeCards();
+    QVector<CBoardItem*> cardsGUI;
+    for (PlayerCard* card : cards)
+        cardsGUI += GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+    COverlay* overlay = GUI->showOverlay();
+    overlay->displayItems(cardsGUI);
+    QString description = QString("<h2>Choose <b>%1</b> cards in the same color to discover a cure for the disease in this color</h2>").arg(count);
+    overlay->setDescription(description);
+    overlay->letPlayerChoose(count, true);
+    overlay->connect(overlay, &COverlay::userChoseMany, [this](const QSet<CBoardItem*> chosenGUI) {
+        if (chosenGUI.size()==0) {
+            //u¿ytkownik wybra³ "anuluj"
+            emit GUI->actionCancelled();
+        }
+        else {
+            QVector<Card*> chosen;
+            for (CBoardItem* item : chosenGUI)
+                chosen += dynamic_cast<CCard*>(item)->toLogic();
+            engine->DiscoverCure_FinalStep(chosen);
+            emit GUI->actionPerformed();
+        }
+    });
 }
 
 void Mediator::playerMustDiscardCards(Player * which, int count, CALLBACK(Board, void, TWOPARAM(std::vector<PlayerCard*>, Player *))callback)

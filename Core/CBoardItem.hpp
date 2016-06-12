@@ -49,6 +49,7 @@ public:
     CPoint getStandardPos() const;
     void setStandardSize(int w, int h);
     void setStandardSize(const QSize &s);
+    QSize getStandardSize() const;
     CPoint getStandardMiddle() const;
     void setStandardMiddle(const CPoint &p);
     QPropertyAnimation* createStandardMiddleAnim(const CPoint& p);
@@ -69,6 +70,7 @@ public:
     static QString createObjectName(const QString& name);
     void setImage(const QPixmap&);
     void setMask(const QBitmap&);
+    virtual void cloneTo(CBoardItem*) const;
 protected:
     CPoint standardPos;
     QSize standardSize;

@@ -59,9 +59,9 @@ public:
     void removeCardFromHand(CCard*);
     void clearHand();
     void nextPlayer();
+    double minZoomFactor() const;
 private:
     QLayout* playerArea;
-    double minZoomFactor() const;
     Qt::TransformationMode scaleMode;
     CCircleMenu* cityMenu;
     QWidget* activeMenu;
@@ -104,5 +104,6 @@ signals:
     void cityClicked(CCity*);
     void cardActivated();
     void actionCancelled();
+    void actionPerformed();
     void animationFinished();
 };
