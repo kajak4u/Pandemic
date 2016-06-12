@@ -714,6 +714,18 @@ void Board::Airlift(Player* toMove, City* target)
 	DiscardSpecialCard(SpecialCardType_SL[number].toStdString());
 	toMove->MoveToNeighbour(target);   //bo tylko ta nie usunie karty z reki
 }
+QSet<City*> Board::ChooseCitiesToBuildStation()
+{
+	QSet<City*> toReturn;
+	for (City* c : Cities)
+	{
+		if (!c->IsStation())
+		{
+			toReturn.insert(c);
+		}
+	}	
+	return toReturn;
+}
 void Board::GovernmentGrant(City* toBuild)
 {
 	SpecialCardType  number = SC_GOVERNMENT_GRANT;
