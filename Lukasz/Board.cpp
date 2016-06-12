@@ -732,7 +732,7 @@ void Board::GovernmentGrant(City* toBuild)
 	DiscardSpecialCard(SpecialCardType_SL[number].toStdString());
 	toBuild->BuildResearchStation();
 	Stations.push_back(toBuild);
-	mediator().buildResearchStation(currentCity);
+	mediator().buildResearchStation(toBuild);
 	if (stationsLeft > 0)
 	{
 		--stationsLeft;
