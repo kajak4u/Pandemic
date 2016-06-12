@@ -38,7 +38,8 @@ class Board
 	Player* currentPlayer;
 	City* currentCity;
 	PlayerCard* cityCard;
-	vector<Player*> supPlayers;	  //gracze w tym samym miescie, co obecny (BEZ NIEGO w tym vectorze)
+	vector<Player*> supPlayers;	  //gracze w tym samym miescie BY IM DAC KARTE, co obecny (BEZ NIEGO w tym vectorze)
+	vector<Player*> playersToGetCardFrom;
 	bool isResearcher;
 	PlayerCard* anotherPlayersCityCard;
 	vector<PlayerCard*> cardsInColor;
@@ -57,7 +58,8 @@ public:
 //w turze znamy: OBECNY GRACZ, JEGO POLOZENIE, INNI GRACZE W TYM MIESCIE, STACJE, CHOROBY, karty do wynalezienia choroby
 	vector<Decision> IsAbleTo();
 	vector<Player*> ChoosePlayer() const; //praktycznie getter
-	vector<Player*> ChoosePlayerInCity();  //see players in the same city as current player
+	vector<Player*> ChoosePlayerInCityToGIVE() const;  //wybierz tego, kto OTRZYMA OD currentPlayera karte
+	vector<Player*> ChoosePlayerInCityToGAIN() const;  //OD KOGO currentPlayer moze POBRAC karte
 	QSet<City*> SeeFREECitiesAsDispatcher(Player* toMove);
 	QSet<City*> ChooseMoveShort(Player* toMove);
 	QSet<City*> ChooseMoveEverywhere(Player* toMove);
