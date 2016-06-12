@@ -103,5 +103,6 @@ signals:
     void created();
     void cityClicked(CCity*);
     void cardActivated();
+    void actionCancelled();
     void animationFinished();
 };

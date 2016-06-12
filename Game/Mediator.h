@@ -41,7 +41,7 @@ public:
 			  const CardDeck& playerCardDeck, const CardDeck& playerDiscard, const CardDeck& diseaseCardDeck, const CardDeck& diseaseDiscard);
     void setCurrent(Player*);
     void setHand();
-    void playerUsedCard(CCard*);
+    bool playerUsedCard(CCard*);
     void addDiseaseCube(City*, DiseaseType, int count=1);
     void removeCube(City*, DiseaseType, int count=1);
     void movePawn(Player*, City*);

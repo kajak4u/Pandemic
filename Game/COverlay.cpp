@@ -3,7 +3,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 
-COverlay::COverlay(QWidget * parent) : QLabel(parent) {
+COverlay::COverlay(QWidget * parent) : QLabel(parent), deleteOnClick(true) {
     setGeometry(0, 0, 1366, 768);
     setStyleSheet("background: rgba(200, 200, 200, 128);");
     
@@ -34,7 +34,13 @@ void COverlay::track(const QSet<CBoardItem*>& items)
         });
         references += connect(newItem, &CBoardItem::leftButtonUp, [this, item]() {
             emit userMadeChoice(item);
-            deleteLater();
+            if(deleteOnClick)
+                deleteLater();
         });
     }
+}
+
+void COverlay::setDeleteOnClick(bool delOnClick)
+{
+    deleteOnClick = delOnClick;
 }
