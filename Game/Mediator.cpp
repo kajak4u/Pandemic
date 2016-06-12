@@ -189,7 +189,7 @@ bool Mediator::playerUsedCard(CCard* card)
                 static Player* chosenPlayer;
                 overlay->connect(overlay, &COverlay::userChosePlayer, [this, overlay](CPlayer* player) {
                     chosenPlayer = player->toLogic();
-                    vector<City*> targetCities = engine->Airlift(chosenPlayer);
+                    QSet<City*> targetCities = engine->ChooseMoveEverywhere(chosenPlayer);
                     QSet<CBoardItem*> citiesGUI;
                     for (City* city : targetCities)
                         citiesGUI += GUI->FIND(CCity, QSTR(city->GetName()));
