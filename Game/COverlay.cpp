@@ -7,9 +7,11 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QPushButton>
+#include "CPlayer.h"
 
-COverlay::COverlay(QWidget * parent) : QLabel(parent), deleteOnClick(true), deleteItemOnClick(false) {
-    //setGeometry(0, 0, 1366, 768);
+COverlay::COverlay(QWidget * parent) 
+    : QLabel(parent), deleteOnClick(true), deleteItemOnClick(false), cancelButton(nullptr), performButton(nullptr)
+{
     setGeometry(0, 0, parent->width(), parent->height());
     setStyleSheet("COverlay {background: rgba(200, 200, 200, 128);}");
     
@@ -19,29 +21,55 @@ COverlay::~COverlay()
 {
 }
 
-void COverlay::track(const QSet<CBoardItem*>& items)
+void COverlay::track(const QSet<CBoardItem*>& items, bool canCancel)
 {
     for (CBoardItem* item : items) {
         CBoardItem* newItem = new CBoardItem(this);
         newItem->move(mapFromGlobal(item->mapToGlobal(QPoint(0, 0))));
         newItem->resize(item->size());
         dynamic_cast<QWidget*>(newItem)->setMask(item->mask());
-        newItem->setStyleSheet("background-color: #0CE");
+        newItem->setStyleSheet("background-color: rgba(64, 238, 64, 128)");
         newItem->setToolTip(item->getName());
         newItem->show();
         links[newItem] = item;
+        links[item] = newItem;
         connect(item, &CBoardItem::moved, this, &COverlay::itemMoved);
         connect(item, &CBoardItem::resized, this, &COverlay::itemResized);
         connect(newItem, &CBoardItem::leftButtonUp, this, &COverlay::itemClicked);
     }
 }
 
+void COverlay::track(const QSet<CPlayer*>& players, bool canCancel)
+{
+    int iks = 100, igrek=100;
+    for (CPlayer* player : players) {
+        QLabel* ico = player->getIco();
+        CBoardItem* newItem = new CBoardItem(dynamic_cast<QWidget*>(ico->parent()));
+        newItem->setGeometry(ico->geometry());
+        //newItem->setPixmap(*ico->pixmap());
+        newItem->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
+        newItem->setToolTip(PlayerRole_SL[player->getRole()]);
+        newItem->show();
+        connect(newItem, &CBoardItem::leftButtonUp, [this, newItem, player]() {
+            newItem->setStyleSheet("background-color: rgba(0,255,0,64); border: 3px solid green;");
+            for(CBoardItem* sel : selected)
+                sel->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
+            selected.clear();
+            selected += newItem;
+            emit userChosePlayer(player);
+        });
+        connect(this, &COverlay::destroyed, newItem, &CBoardItem::deleteLater);
+    }
+}
+
 void COverlay::setDescription(const QString &desc)
 {
     QLabel* descLabel = new QLabel(desc, this);
+    descLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
     descLabel->setWordWrap(true);
     if (layout() == nullptr) {
         descLabel->setGeometry(geometry().marginsRemoved(QMargins(100,100,100,100)));
+        descLabel->show();
     }
     else {
         QVBoxLayout* lay = dynamic_cast<QVBoxLayout*>(layout());
@@ -123,16 +151,16 @@ void COverlay::letPlayerChoose(int count, bool canCancel)
 
 void COverlay::itemMoved(const QPoint& pt)
 {
-    CBoardItem* overlayItem = dynamic_cast<CBoardItem*>(sender());
-    CBoardItem* originItem = links[overlayItem];
+    CBoardItem* originItem = dynamic_cast<CBoardItem*>(sender());
+    CBoardItem* overlayItem = links[originItem];
     QPoint pt2 = dynamic_cast<QWidget*>(originItem->parent())->mapToGlobal(pt);
     overlayItem->move(dynamic_cast<QWidget*>(overlayItem->parent())->mapFromGlobal(pt2));
 }
 
 void COverlay::itemResized(const QSize& siz)
 {
-    CBoardItem* overlayItem = dynamic_cast<CBoardItem*>(sender());
-    CBoardItem* originItem = links[overlayItem];
+    CBoardItem* originItem = dynamic_cast<CBoardItem*>(sender());
+    CBoardItem* overlayItem = links[originItem];
     dynamic_cast<QWidget*>(overlayItem)->setMask(originItem->mask());
     overlayItem->resize(siz);
 }

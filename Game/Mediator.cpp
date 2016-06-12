@@ -18,6 +18,9 @@
 #include <QParallelAnimationGroup>
 #include <QMessageBox>
 
+#define FIND(CLASS, ...) findChild<CLASS*>(CLASS::createObjectName(__VA_ARGS__))
+#define QSTR(s) QString::fromStdString(s)
+
 CardType findType(Card* card)
 {
     CardType type = CT_UNKNOWN;
@@ -31,7 +34,6 @@ CardType findType(Card* card)
         type = CT_PLAYER;
     return type;
 }
-
 
 Mediator::Mediator(): GUI(nullptr), engine(nullptr)
 {
@@ -60,18 +62,18 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
     qDebug() << "init start";
     checkGUI();
     for (Player* player : players) {
-        CPlayer* newPlayer = new CPlayer(player, GUI->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(player->GetPosition()->GetName()))));
+        CPlayer* newPlayer = new CPlayer(player, GUI->FIND(CCity, QSTR(player->GetPosition()->GetName())));
         GUI->addPlayer(newPlayer);
     }
     qDebug() << "connect cities";
     for (City* city : cities)
-        dynamic_cast<CCity*>(GUI->findItemByName(QString::fromStdString(city->GetName())))->bindLogic(city);
+        GUI->FIND(CCity, QSTR(city->GetName()))->bindLogic(city);
     qDebug() << "bind decks";
     QVector<QPair<const CardDeck*, CDeck*> > deckPairs;
-    deckPairs << qMakePair(&playerCardDeck, GUI->findChild<CDeck*>(CDeck::createObjectName(DT_PLAYER)))
-        << qMakePair(&playerDiscard, GUI->findChild<CDeck*>(CDeck::createObjectName(DT_PLAYERDISCARD)))
-        << qMakePair(&diseaseCardDeck, GUI->findChild<CDeck*>(CDeck::createObjectName(DT_DISEASE)))
-        << qMakePair(&diseaseDiscard, GUI->findChild<CDeck*>(CDeck::createObjectName(DT_DISEASEDISCARD)));
+    deckPairs << qMakePair(&playerCardDeck, GUI->FIND(CDeck, DT_PLAYER))
+        << qMakePair(&playerDiscard, GUI->FIND(CDeck, DT_PLAYERDISCARD))
+        << qMakePair(&diseaseCardDeck, GUI->FIND(CDeck, DT_DISEASE))
+        << qMakePair(&diseaseDiscard, GUI->FIND(CDeck, DT_DISEASEDISCARD));
     bool reversed = true;
     for (const QPair<const CardDeck*, CDeck*>& pair : deckPairs) {
         qDebug() << "deck " << pair.second->objectName();
@@ -79,7 +81,7 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
         pair.second->setReversed(reversed);
         reversed = !reversed;
         for (Card* card : cards) {
-            pair.second->addCard(findType(card), QString::fromStdString(card->GetName()), card);
+            pair.second->addCard(findType(card), QSTR(card->GetName()), card);
         }
     }
     qDebug() << "init end";
@@ -104,7 +106,7 @@ void Mediator::setHand()
     vector<PlayerCard*> hand = engine->GetCurrentPlayer()->SeeCards();
     GUI->clearHand();
     for (PlayerCard* card : hand) {
-        CCard* cardGUI = GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+        CCard* cardGUI = GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
         GUI->addCardToHand(cardGUI);
         qDebug() << "add card " << cardGUI;
     }
@@ -128,7 +130,7 @@ bool Mediator::playerUsedCard(CCard* card)
                 vector<Card*> cards = engine->Forecast();
                 QVector<CBoardItem*> cardsGUI;
                 for (Card* card : cards)
-                    cardsGUI += GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+                    cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
                 GUI->zoomOut();
                 COverlay* overlay = GUI->showOverlay();
                 overlay->displayItems(cardsGUI);
@@ -147,24 +149,22 @@ bool Mediator::playerUsedCard(CCard* card)
                     }
                 });
             }
-            // Overlay
-            // Wrzuæ karty
-            // odrzucaj po jednym, kolejnoœæ do ustalenia: albo jak na stos (czyli ostatnia odrzucona wejdzie jako pierwsza), albo w kolejnoœci wchodzenia...
-            // engine->Forecast(discarded);
             break;
         case SC_RESILIENT_POPULATION:
             {
                 vector<Card*> cards = engine->ResilientPopulation();
                 QVector<CBoardItem*> cardsGUI;
                 for (Card* card : cards)
-                    cardsGUI += GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+                    cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
                 GUI->zoomOut();
                 COverlay* overlay = GUI->showOverlay();
                 overlay->displayItems(cardsGUI);
+                overlay->setDescription("<h2>Choose a Disease Card to remove it from game.</h2>");
                 overlay->letPlayerChoose(1, true);
                 overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
                     if (chosen == nullptr) {
                         //u¿ytkownik wybra³ "anuluj"
+                        emit GUI->actionCancelled();
                     }
                     else {
                         CCard* chosenCard = dynamic_cast<CCard*>(chosen);
@@ -177,20 +177,46 @@ bool Mediator::playerUsedCard(CCard* card)
             }
             break;
         case SC_AIRLIFT:
-            // Overlay
-            // wybierz gracza
-            // wybierz miasto docelowe
-            // engine->Airlift(player, target);
+            {
+                GUI->zoomOut();
+                vector<Player*> players = engine->ChoosePlayer();
+                QSet<CPlayer*> playersGUI;
+                for (Player* player : players)
+                    playersGUI += GUI->findPlayer(player->GetRole());
+                COverlay* overlay = GUI->showOverlay();
+                overlay->setDescription("<h2>Choose player and then click city to move his pawn.</h2>");
+                overlay->track(playersGUI, true);
+                static Player* chosenPlayer;
+                overlay->connect(overlay, &COverlay::userChosePlayer, [this, overlay](CPlayer* player) {
+                    chosenPlayer = player->toLogic();
+                    vector<City*> targetCities = engine->Airlift(chosenPlayer);
+                    QSet<CBoardItem*> citiesGUI;
+                    for (City* city : targetCities)
+                        citiesGUI += GUI->FIND(CCity, QSTR(city->GetName()));
+                    overlay->track(citiesGUI, true);
+                });
+                overlay->connect(overlay, &COverlay::userChoseOne, [this, overlay](CBoardItem* chosen) {
+                    if (chosen == nullptr) {
+                        //u¿ytkownik wybra³ "anuluj"
+                        emit GUI->actionCancelled();
+                    }
+                    else {
+                        CCity* chosenCity = dynamic_cast<CCity*>(chosen);
+                        engine->Airlift(chosenPlayer, chosenCity->toLogic());
+                    }
+                });
+            }
             break;
         case SC_GOVERNMENT_GRANT:
             {
                 QSet<City*> cities = engine->ChooseCitiesToBuildStation();
                 QSet<CBoardItem*> citiesGUI;
                 for (City* city : cities)
-                    citiesGUI += GUI->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
+                    citiesGUI += GUI->FIND(CCity, QSTR(city->GetName()));
                 GUI->zoomOut();
                 COverlay* overlay = GUI->showOverlay();
-                overlay->track(citiesGUI);
+                overlay->setDescription("<h2>Choose a city to build a Research Station for free.</h2>");
+                overlay->track(citiesGUI, true);
                 overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
                     if (chosen == nullptr) {
                         //u¿ytkownik wybra³ "anuluj"
@@ -208,7 +234,6 @@ bool Mediator::playerUsedCard(CCard* card)
             break;
         }
         return true;
-// TODO        Mediator::UseCard - special
     }
     else if (card->getCityName().toStdString() == engine->GetCurrentPlayer()->GetPosition()->GetName()) {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move anywhere?").arg(card->getCityName()));
@@ -217,10 +242,11 @@ bool Mediator::playerUsedCard(CCard* card)
         QSet<City*> cities = engine->ChooseMoveEverywhere(engine->GetCurrentPlayer());
         QSet<CBoardItem*> citiesGUI;
         for (City* city : cities)
-            citiesGUI += GUI->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
+            citiesGUI += GUI->FIND(CCity, QSTR(city->GetName()));
         GUI->zoomOut();
         COverlay* overlay = GUI->showOverlay();
-        overlay->track(citiesGUI);
+        overlay->setDescription("<h2>Choose a city to move your pawn.</h2>");
+        overlay->track(citiesGUI, true);
         overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
             if (chosen == nullptr) {
                 //u¿ytkownik wybra³ "anuluj"
@@ -244,47 +270,38 @@ bool Mediator::playerUsedCard(CCard* card)
 
 void Mediator::addDiseaseCube(City *infectedCity, DiseaseType color, int count)
 {
-    qDebug() << "add cube to " << QString::fromStdString(infectedCity->GetName());
+    qDebug() << "add cube to " << QSTR(infectedCity->GetName());
     checkGUI();
-    QString cityName = QString::fromStdString(infectedCity->GetName());
-    CCity* cityGUI = dynamic_cast<CCity*>(GUI->findItemByName(cityName));
-    if (cityGUI == nullptr)
-        throw QString("City ") + cityName + " not found";
+    CCity* cityGUI = GUI->FIND(CCity, QSTR(infectedCity->GetName()));
     for (int i = 0; i < count; ++i)
         cityGUI->addCube(color);
 }
 
 void Mediator::removeCube(City *healedCity, DiseaseType color, int count)
 {
-    qDebug() << "remove cube from " << QString::fromStdString(healedCity->GetName());
+    qDebug() << "remove cube from " << QSTR(healedCity->GetName());
     checkGUI();
-    QString cityName = QString::fromStdString(healedCity->GetName());
-    CCity* cityGUI = dynamic_cast<CCity*>(GUI->findItemByName(cityName));
-    if (cityGUI == nullptr)
-        throw QString("City ") + cityName + " not found";
+    CCity* cityGUI = GUI->FIND(CCity, QSTR(healedCity->GetName()));
     for (int i = 0; i < count; ++i)
         cityGUI->removeCube(color);
 }
 
 void Mediator::movePawn(Player *player, City *destination)
 {
-    qDebug() << "move pawn " << PlayerRole_SL[player->GetRole()] << " to " << QString::fromStdString(destination->GetName());
+    qDebug() << "move pawn " << PlayerRole_SL[player->GetRole()] << " to " << QSTR(destination->GetName());
     checkGUI();
-    QString cityName = QString::fromStdString(destination->GetName());
-    CCity* cityGUI = dynamic_cast<CCity*>(GUI->findItemByName(cityName));
-    if (cityGUI == nullptr)
-        throw QString("City ") + cityName + " not found";
+    CCity* cityGUI = GUI->FIND(CCity, QSTR(destination->GetName()));
     GUI->findPawn(player->GetRole())->moveTo(cityGUI);
 }
 
 void Mediator::moveCard(Card *card, CardDeck * dest)
 {
-    qDebug() << "move card " << QString::fromStdString(card->GetName()) << "to deck " << DeckType_SL[dest->GetType()];
+    qDebug() << "move card " << QSTR(card->GetName()) << "to deck " << DeckType_SL[dest->GetType()];
     checkGUI();
-    CCard* cardGUI = GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
-    CDeck* deckGUI = GUI->findChild<CDeck*>(CDeck::createObjectName(dest->GetType()));
+    CCard* cardGUI = GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+    CDeck* deckGUI = GUI->FIND(CDeck, dest->GetType());
     if (cardGUI == nullptr)
-        throw QString("Card %1 not found in game!").arg(QString::fromStdString(card->GetName()));
+        throw QString("Card %1 not found in game!").arg(QSTR(card->GetName()));
     if (deckGUI == nullptr)
         throw QString("Deck %1 not found in game!").arg(DeckType_SL[dest->GetType()]);
     if (!cardGUI->isVisible()) { //jest u gracza
@@ -311,12 +328,12 @@ void Mediator::moveCard(Card *card, CardDeck * dest)
 
 void Mediator::moveCard(Card *card, Player * dest)
 {
-    qDebug() << "move card" << QString::fromStdString(card->GetName()) << " to player " << PlayerRole_SL[dest->GetRole()];
+    qDebug() << "move card" << QSTR(card->GetName()) << " to player " << PlayerRole_SL[dest->GetRole()];
     checkGUI();
-    CCard* cardGUI = GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+    CCard* cardGUI = GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
     CPlayer* playerGUI = GUI->findPlayer(dest->GetRole());
     if (cardGUI == nullptr)
-        throw QString("Card %1 not found in game!").arg(QString::fromStdString(card->GetName()));
+        throw QString("Card %1 not found in game!").arg(QSTR(card->GetName()));
     if(playerGUI==nullptr)
         throw QString("Player %1 not found in game!").arg(PlayerRole_SL[dest->GetRole()]);
     if (cardGUI->isReversed())
@@ -343,16 +360,15 @@ void Mediator::setDiseaseStatus(DiseaseType color, CureStatus status)
 {
     qDebug() << "set disease status";
     checkGUI();
-    CCureMarker* diseaseMarker = GUI->findChild<CCureMarker*>(CCureMarker::createObjectName(color));
+    CCureMarker* diseaseMarker = GUI->FIND(CCureMarker, color);
     diseaseMarker->setStatus(status);
 }
 
 void Mediator::buildResearchStation(City *destination)
 {
-    qDebug() << "build station in " << QString::fromStdString(destination->GetName());
+    qDebug() << "build station in " << QSTR(destination->GetName());
     checkGUI();
-    QString cityName = QString::fromStdString(destination->GetName());
-    CCity* cityGUI = dynamic_cast<CCity*>(GUI->findItemByName(cityName));
+    CCity* cityGUI = GUI->FIND(CCity, QSTR(destination->GetName()));
     cityGUI->buildResearchStation();
 }
 
@@ -376,8 +392,7 @@ void Mediator::removeResearchStation(City *destination)
 {
     qDebug() << "remove research station" ;
     checkGUI();
-    QString cityName = QString::fromStdString(destination->GetName());
-    CCity* cityGUI = dynamic_cast<CCity*>(GUI->findItemByName(cityName));
+    CCity* cityGUI = GUI->FIND(CCity, QSTR(destination->GetName()));
     cityGUI->removeResearchStation();
 }
 
@@ -393,11 +408,11 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
     checkGUI();
     QSet<CBoardItem*> stationsGUI;
     for (City* city : stations)
-        stationsGUI << GUI->findItemByName(QString::fromStdString(city->GetName()));
+        stationsGUI << GUI->FIND(CCity, QSTR(city->GetName()));
 
     GUI->zoomOut();
     COverlay* overlay = GUI->showOverlay();
-    overlay->track(stationsGUI);
+    overlay->track(stationsGUI, true);
     overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
         if (chosen == nullptr) {
             //u¿ytkownik wybra³ "anuluj"
@@ -413,6 +428,7 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
 void Mediator::ShareKnowledge()
 {
     //TODO share knowledge not implemented
+    //vector<Player*> players = engine->GetPlayersToShareKnowledgeWith(engine->GetCurrentPlayer());
 }
 
 void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess)
@@ -422,7 +438,7 @@ void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Ca
     vector<PlayerCard*> cards = player->SeeCards();
     QVector<CBoardItem*> cardsGUI;
     for (PlayerCard* card : cards)
-        cardsGUI += GUI->findChild<CCard*>(CCard::createObjectName(QString::fromStdString(card->GetName()), findType(card)));
+        cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
     COverlay* overlay = GUI->showOverlay();
     overlay->displayItems(cardsGUI);
     QString description = QString("<h2>Choose <b>%1</b> cards in the same color to discover a cure for the disease in this color</h2>").arg(count);

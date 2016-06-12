@@ -117,4 +117,6 @@ public:
 
 	Board(Difficulty difficulty, QVector<QPair<QString,PlayerRole>> players);		   
 	~Board();
+
+    vector<City*> Airlift(Player* toMove) const { return Cities; } //chyba ¿e wy³¹czyæ bie¿¹ce miasto...
 };

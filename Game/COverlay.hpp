@@ -5,6 +5,7 @@
 
 class CBoardItem;
 class QPushButton;
+class CPlayer;
 
 class COverlay : public QLabel {
 	Q_OBJECT
@@ -12,7 +13,8 @@ class COverlay : public QLabel {
 public:
 	COverlay(QWidget * parent = Q_NULLPTR);
 	~COverlay();
-    void track(const QSet<CBoardItem*>& items);
+    void track(const QSet<CBoardItem*>& items, bool canCancel);
+    void track(const QSet<CPlayer*>& players, bool canCancel);
     void setDescription(const QString&);
     void displayItems(const QVector<CBoardItem*>& items);
     void setDeleteOnClick(bool);
@@ -34,6 +36,7 @@ private slots:
     void perform();
     void cancel();
 signals:
+    void userChosePlayer(CPlayer*);
     void userChoseOne(CBoardItem*);
     void userChoseMany(const QSet<CBoardItem*>&);
 };
