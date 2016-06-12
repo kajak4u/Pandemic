@@ -15,6 +15,7 @@ public:
 	virtual ~CDeck();
     void setType(DeckType);
     void setReversed(bool reversed);
+    bool isReversed() const;
     virtual QString createObjectName() const;
     static QString createObjectName(const QString& name);
     static QString createObjectName(DeckType dt);

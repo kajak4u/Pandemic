@@ -90,6 +90,7 @@ public:
 	vector<Card*> ResilientPopulation();//pytanie do gracza
 	void ResilientPopulation(Card* toRemove);//akcja wlasciwa
 	void Airlift(Player* toMove, City* target);
+    QSet<City*> ChooseCitiesToBuildStation(); //part1?
 	void GovernmentGrant(City* toBuild);
 /*
 	enum SpecialCardType

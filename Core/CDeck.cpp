@@ -35,6 +35,11 @@ void CDeck::setReversed(bool reversed)
     hasReversedCards = reversed;
 }
 
+bool CDeck::isReversed() const
+{
+    return hasReversedCards;
+}
+
 QString CDeck::createObjectName() const
 {
     return QString("CDeck %1").arg(DeckType_SL[type]);

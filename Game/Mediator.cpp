@@ -117,6 +117,55 @@ void Mediator::playerUsedCard(CCard* card)
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to use %1 Special Card?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
             return;
+        SpecialCardType cardType = (SpecialCardType) SpecialCardType_SL.indexOf(card->getCityName());
+        switch (cardType)
+        {
+        case SC_ONE_QUIET_NIGHT:
+            engine->QuietNight();
+            break;
+        case SC_FORECAST:
+            // Overlay
+            // Wrzuæ karty
+            // odrzucaj po jednym, kolejnoœæ do ustalenia: albo jak na stos (czyli ostatnia odrzucona wejdzie jako pierwsza), albo w kolejnoœci wchodzenia...
+            // engine->Forecast(discarded);
+            break;
+        case SC_RESILIENT_POPULATION:
+            // Overlay
+            // Wrzuæ karty z DiseaseDiscard
+            // Wybierz jedn¹ kartê
+            // GUI->removeCard(...) - bo chyba logika z tym nic nie robi...
+            // engine->ResilientPopulation(toRemove);
+            break;
+        case SC_AIRLIFT:
+            // Overlay
+            // wybierz gracza
+            // wybierz miasto docelowe
+            // engine->Airlift(player, target);
+            break;
+        case SC_GOVERNMENT_GRANT:
+            {
+                QSet<City*> cities = engine->ChooseCitiesToBuildStation();
+                QSet<CBoardItem*> citiesGUI;
+                for (City* city : cities)
+                    citiesGUI += GUI->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
+                GUI->zoomOut();
+                COverlay* overlay = GUI->showOverlay();
+                overlay->track(citiesGUI);
+                overlay->connect(overlay, &COverlay::userMadeChoice, [this](CBoardItem* chosen) {
+                    if (chosen == nullptr) {
+                        //u¿ytkownik wybra³ "anuluj"
+                    }
+                    else {
+                        CCity* chosenCity = dynamic_cast<CCity*>(chosen);
+                        engine->GovernmentGrant(chosenCity->toLogic());
+                    }
+                });
+            }
+            break;
+        default:
+            throw "dupa, z³y typ karty";
+            break;
+        }
 // TODO        engine->UseSpecialCard(card->toLogic());
     }
     else if (card->getCityName().toStdString() == engine->GetCurrentPlayer()->GetPosition()->GetName()) {
@@ -209,10 +258,10 @@ void Mediator::moveCard(Card *card, CardDeck * dest)
         GUI->addAnimation(group);
     }
     else {
-        if (cardGUI->isReversed())
-            cardGUI->invert();
         cardGUI->setStandardMiddleAnim(deckGUI->getStandardMiddle());
     }
+    if (cardGUI->isReversed() != deckGUI->isReversed())
+        cardGUI->invert();
 }
 
 void Mediator::moveCard(Card *card, Player * dest)

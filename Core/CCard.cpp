@@ -1,4 +1,6 @@
-﻿#define _NOCARDS
+﻿#ifdef _DEBUG
+#define _NOCARDS
+#endif
 
 #include "CCard.hpp"
 #include "CStringOption.h"
