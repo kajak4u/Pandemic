@@ -102,6 +102,11 @@ void Board::DiscoverCure_FinalStep(QVector<Card*> cardsRemoved)
 	vector<Card*> cards = cardsRemoved.toStdVector();
 	Disease* dis = FindDisease(cardsInColor[0]->GetColor());//wszystkie karty maja ten sam kolor - wczesniej.. wiec wez pierwsza z brzegu i sprawdz
 	currentPlayer->DiscoverCure(cards, dis);
+	Mediator m = mediator();
+	for (Card* card : cards)
+	{
+		m.moveCard(card, &playerDiscarded);
+	}
 	--movesLeft;
 	for (Player* play : players)
 	{
