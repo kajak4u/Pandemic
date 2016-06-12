@@ -365,6 +365,15 @@ void CBoardItem::cloneTo(CBoardItem *target) const
     target->setToolTip(toolTip());
 }
 
+void CBoardItem::scaleAnimationChanged(QAbstractAnimation::State state)
+{
+    if (state == QAbstractAnimation::Running)
+        mode = Qt::FastTransformation;
+    else if (state == QAbstractAnimation::Stopped)
+        mode = Qt::SmoothTransformation;
+    scale(1.0);
+}
+
 void CBoardItem::raiseOnAnimation(QAbstractAnimation::State state)
 {
     if (state == QAbstractAnimation::Running)

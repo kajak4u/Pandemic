@@ -132,14 +132,18 @@ bool Mediator::playerUsedCard(CCard* card)
                 GUI->zoomOut();
                 COverlay* overlay = GUI->showOverlay();
                 overlay->displayItems(cardsGUI);
-                overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
-                    if (chosen == nullptr) {
-                        //u¿ytkownik wybra³ "anuluj"
-                        throw "nie ma takiej opcji";
-                    }
-                    else {
-                        CCity* chosenCity = dynamic_cast<CCity*>(chosen);
-                        engine->GovernmentGrant(chosenCity->toLogic());
+                overlay->setDescription("<h2>Choose order of the disease card. Click the card to place it at the top of Disease Deck.</h2><p>Note: later clicked cards will appear sooner.</p>");
+                overlay->setDeleteOnClick(false);
+                overlay->setItemDeleteOnClick(true);
+                overlay->letPlayerChoose(1, false);
+                int numberOfCards = cards.size();
+                overlay->connect(overlay, &COverlay::userChoseOne, [this, overlay, numberOfCards](CBoardItem* chosen) {
+                    static vector<Card*> cards;
+                    cards.push_back(dynamic_cast<CCard*>(chosen)->toLogic());
+                    if (cards.size() == numberOfCards) {
+                        engine->Forecast(cards);
+                        cards.clear();
+                        overlay->deleteLater();
                     }
                 });
             }
@@ -165,16 +169,12 @@ bool Mediator::playerUsedCard(CCard* card)
                     else {
                         CCard* chosenCard = dynamic_cast<CCard*>(chosen);
                         engine->ResilientPopulation(chosenCard->toLogic());
+                        GUI->removeItem(chosenCard);
                         chosenCard->deleteLater();
                         emit GUI->actionPerformed();
                     }
                 });
             }
-            // Overlay
-            // Wrzuæ karty z DiseaseDiscard
-            // Wybierz jedn¹ kartê
-            // GUI->removeCard(...) - bo chyba logika z tym nic nie robi...
-            // engine->ResilientPopulation(toRemove);
             break;
         case SC_AIRLIFT:
             // Overlay
@@ -334,7 +334,6 @@ void Mediator::moveCard(Card *card, Player * dest)
     group->addAnimation( cardGUI->createStandardMiddleAnim(boardEndPos / endFactor) );
     QPropertyAnimation* scaleAnim = createPropertyAnimation(cardGUI, "zoomFactor", cardGUI->getZoom(), endFactor, 1000, QEasingCurve::InQuad);
     scaleAnim->connect(scaleAnim, &QPropertyAnimation::stateChanged, cardGUI, &CCard::scaleAnimationChanged);
-    /*scaleAnim->connect(group, &QPropertyAnimation::finished, cardGUI, &CCard::gotoPlayer);*/
     scaleAnim->connect(group, &QPropertyAnimation::finished, cardGUI, &CCard::hide);
     group->addAnimation(scaleAnim);
     GUI->addAnimation(group);
@@ -413,7 +412,7 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
 
 void Mediator::ShareKnowledge()
 {
-
+    //TODO share knowledge not implemented
 }
 
 void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess)

@@ -65,7 +65,6 @@ void CDeck::addCard(CardType type, const QString& name, Card* logicObj)
     card->setType(type);
     card->setCardName(name);
     card->setReversed(hasReversedCards);
-    card->setStyleSheet("border: 1px outset black; background-color: rgba(200,200,200,128);");
     card->rename();
     card->bindLogic(logicObj);
     container->addItem(card);

@@ -116,7 +116,7 @@ void CCard::updateOptions()
     setMask(pxm.createMaskFromColor(Qt::transparent));
     update();
     repaint();
-    QString tooltip = CBoardItem::createToolTip() + "\ncardName: " + cardName + "\ntype: " + typeStr + (reversed ? "\nreversed" : "");
+    QString tooltip = CBoardItem::createToolTip() + "\ncardName: " + cardName + "\ntype: " + typeStr;
     setToolTip(tooltip);
 }
 
@@ -149,15 +149,6 @@ void CCard::saveTo(QTextStream &ts) const
     CBoardItem::saveTo(ts);
     ts << cardName << endl;
     ts << QString::number((int)reversed) << endl;
-}
-
-void CCard::scaleAnimationChanged(QAbstractAnimation::State state)
-{
-    if (state == QAbstractAnimation::Running)
-        mode = Qt::FastTransformation;
-    else if (state == QAbstractAnimation::Stopped)
-        mode = Qt::SmoothTransformation;
-    scale(1.0);
 }
 
 void CCard::gotoPlayer()

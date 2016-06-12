@@ -8,10 +8,10 @@
 #include <QVBoxLayout>
 #include <QPushButton>
 
-COverlay::COverlay(QWidget * parent) : QLabel(parent), deleteOnClick(true) {
+COverlay::COverlay(QWidget * parent) : QLabel(parent), deleteOnClick(true), deleteItemOnClick(false) {
     //setGeometry(0, 0, 1366, 768);
     setGeometry(0, 0, parent->width(), parent->height());
-    setStyleSheet("background: rgba(200, 200, 200, 128);");
+    setStyleSheet("COverlay {background: rgba(200, 200, 200, 128);}");
     
 }
 
@@ -54,12 +54,14 @@ void COverlay::displayItems(const QVector<CBoardItem*>& items)
     if (layout() == nullptr) {
         QVBoxLayout* overlayLayout = new QVBoxLayout(this);
         overlayLayout->setSpacing(0);
-        overlayLayout->setContentsMargins(0, 0, 0, 0);
+        overlayLayout->setContentsMargins(0, 100, 0, 0);
     }
     QScrollArea* area = new QScrollArea(this);
     area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     QWidget* areaWidget = new QWidget();
+    areaWidget->setStyleSheet("background: transparent; border: none;");
+    area->setStyleSheet("background: transparent; border: none;");
     area->setWidgetResizable(true);
     area->setWidget(areaWidget);
     area->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
@@ -68,6 +70,7 @@ void COverlay::displayItems(const QVector<CBoardItem*>& items)
     areaHorzLayout->setSpacing(0);
     areaHorzLayout->setObjectName(QStringLiteral("areaHorzLayout"));
     areaHorzLayout->setContentsMargins(0, 0, 0, 0);
+    areaHorzLayout->setAlignment(Qt::AlignBottom | Qt::AlignHCenter);
     for (CBoardItem* item : items) {
         CBoardItem* newItem = new CBoardItem(areaWidget);
         links[newItem] = item;
@@ -84,6 +87,11 @@ void COverlay::displayItems(const QVector<CBoardItem*>& items)
 void COverlay::setDeleteOnClick(bool delOnClick)
 {
     deleteOnClick = delOnClick;
+}
+
+void COverlay::setItemDeleteOnClick(bool delOnClick)
+{
+    deleteItemOnClick = delOnClick;
 }
 
 void COverlay::letPlayerChoose(int count, bool canCancel)
@@ -134,6 +142,10 @@ void COverlay::itemClicked()
     CBoardItem* overlayItem = dynamic_cast<CBoardItem*>(sender());
     CBoardItem* originItem = links[overlayItem];
     emit userChoseOne(originItem);
+    if (deleteItemOnClick)
+    {
+        overlayItem->deleteLater();
+    }
     if (deleteOnClick)
         deleteLater();
 }
@@ -150,7 +162,7 @@ void COverlay::itemToggled()
     else {
         selected += originItem;
         overlayItem->select();
-        overlayItem->setStyleSheet("border: 10px solid red; opacity: 0.5;");
+        overlayItem->setStyleSheet("border: 10px solid red;");
     }
     performButton->setEnabled(selected.size() == numberToSelect);
 }

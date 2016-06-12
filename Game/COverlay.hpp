@@ -16,9 +16,11 @@ public:
     void setDescription(const QString&);
     void displayItems(const QVector<CBoardItem*>& items);
     void setDeleteOnClick(bool);
+    void setItemDeleteOnClick(bool);
     void letPlayerChoose(int count, bool canCancel);
 private:
     bool deleteOnClick;
+    bool deleteItemOnClick;
     QMap<CBoardItem*, CBoardItem*> links;
     int numberToSelect;
     QSet<CBoardItem*> selected;
@@ -29,9 +31,9 @@ private slots:
     void itemResized(const QSize & siz);
     void itemClicked();
     void itemToggled();
-signals:
     void perform();
     void cancel();
+signals:
     void userChoseOne(CBoardItem*);
     void userChoseMany(const QSet<CBoardItem*>&);
 };

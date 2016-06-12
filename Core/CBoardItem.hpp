@@ -93,6 +93,8 @@ private:
     bool allowResize;
     int id;
     friend class CBoardItemsFactory;
+public slots:
+    void scaleAnimationChanged(QAbstractAnimation::State state);
 private slots:
     virtual void raiseOnAnimation(QAbstractAnimation::State);
 signals:

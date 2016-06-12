@@ -42,7 +42,6 @@ private:
     
 public slots:
     void invert();
-    void scaleAnimationChanged(QAbstractAnimation::State);
     void gotoPlayer();
     void restoreParent();
 private slots:
