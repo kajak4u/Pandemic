@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Board">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>OMGggAiQSiQAErSAoBDC1JCAaA+DjQCQaiINMCAQACU=</HashCode>
+      <FileName>Lukasz\Board.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Card">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABgAAAgCAAAAAAAAAAAAAAAAAAAAACAAAAAAAAABAA=</HashCode>
+      <FileName>Lukasz\Card.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CardDeck">
+    <Position X="10.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAJQAIRAAAAAAAYAAAEEAAAACAABAAEAgABAAAAIAAA=</HashCode>
+      <FileName>Lukasz\CardDeck.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Disease">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAEAAAEogCAACAgAAAAAAIAAIAAAAAgkAEAIAA=</HashCode>
+      <FileName>Lukasz\Disease.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DiseaseCard">
+    <Position X="4.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Lukasz\DiseaseCard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EpidemicCard">
+    <Position X="8.75" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Lukasz\EpidemicCard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQggAEIQCAAEAAgMBCAIJAAAAAAAAAQABAAAQAAADE=</HashCode>
+      <FileName>Lukasz\Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerCard">
+    <Position X="7.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Lukasz\PlayerCard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SpecialCard">
+    <Position X="6.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAQAAAAAAAAAAAAAwAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Lukasz\SpecialCard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
