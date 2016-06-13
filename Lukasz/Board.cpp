@@ -836,6 +836,14 @@ Board::Board(Difficulty difficulty, QVector<QPair<QString, PlayerRole>> players)
 						break;
 					}
 				}
+				for (QPair<QString, PlayerRole> one : players)
+				{	
+					if (role == one.second)
+					{
+						isUnique = false;
+						break;
+					}
+				}
 			} while (!isUnique);
 			onePlayer.second = role;
 		}

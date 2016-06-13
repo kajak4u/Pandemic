@@ -40,13 +40,13 @@ Card* Player::MoveToCard(City* target)
 	{
 		if ((*it)->GetName() == target->GetName())
 		{
-			thisCard = (*it);
-			position = target;
-			hand.erase(it);	  // vector::erase(Iterator position) :P
-			mediator().movePawn(this, target);
+			thisCard = (*it);			
+			hand.erase(it);	  // vector::erase(Iterator position) :P			
 			return thisCard;
 		}
 	}
+	position = target;
+	mediator().movePawn(this, target);
 	return nullptr;
 }
 
