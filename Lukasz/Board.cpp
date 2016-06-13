@@ -68,18 +68,17 @@ int Board::GetMovesLeft() const
 	return movesLeft;
 }
 
-const vector<Card*>& Board::SeeDeck(DeckType number) const
+vector<Card*> Board::SeeDeck(DeckType number) const
 {
 	switch (number)
 	{
-	case DT_PLAYER:
-		return playerNew.SeeDeck();
 	case DT_PLAYERDISCARD:
 		return playerDiscarded.SeeDeck();
-	case DT_DISEASE:
-		return diseasesNew.SeeDeck();
 	case DT_DISEASEDISCARD:
 		return diseasesDiscarded.SeeDeck();
+	default:  {
+		vector<Card*> toReturn;
+		return toReturn; }
 	}
 }
 
@@ -401,14 +400,11 @@ vector<Player*> Board::ChoosePlayer() const
 	return players;
 }
 
-vector<Player*> Board::ChoosePlayerInCityToGIVE() const
-{
-	return supPlayers;
-}
-
-vector<Player*> Board::ChoosePlayerInCityToGAIN() const
-{
-	return playersToGetCardFrom;
+vector<Player*> Board::ChoosePlayerToShareKnowledge() const
+{		 
+	if (!supPlayers.empty())
+		return supPlayers; // jeœli mo¿e daæ kart, to ka¿demu, wiêc give + gain == give
+	return playersToGetCardFrom; //a jeœli give=={} to give + gain == gain
 }
 
 QSet<City*> Board::SeeFREECitiesAsDispatcher(Player* toMove)

@@ -58,15 +58,7 @@ public:
 //w turze znamy: OBECNY GRACZ, JEGO POLOZENIE, INNI GRACZE W TYM MIESCIE, STACJE, CHOROBY, karty do wynalezienia choroby
 	vector<Decision> IsAbleTo();
 	vector<Player*> ChoosePlayer() const; //praktycznie getter
-	vector<Player*> ChoosePlayerInCityToGIVE() const;  //wybierz tego, kto OTRZYMA OD currentPlayera karte
-	vector<Player*> ChoosePlayerInCityToGAIN() const;  //OD KOGO currentPlayer moze POBRAC karte
-// NOTE rozwi¹zanie konfliktu
-    vector<Player*> ChoosePlayerToShareKnowledge() const {
-        vector<Player*> canGive = ChoosePlayerInCityToGIVE();
-        if (!canGive.empty())
-            return canGive; // jeœli mo¿e daæ kart, to ka¿demu, wiêc give + gain == give
-        return ChoosePlayerInCityToGAIN(); //a jeœli give=={} to give + gain == gain
-    }
+	vector<Player*> ChoosePlayerToShareKnowledge() const;
 	QSet<City*> SeeFREECitiesAsDispatcher(Player* toMove);
 	QSet<City*> ChooseMoveShort(Player* toMove);
 	QSet<City*> ChooseMoveEverywhere(Player* toMove);
@@ -117,7 +109,7 @@ public:
 	GameResult GameStatus() const;
 	Player* GetCurrentPlayer() const;
 	int GetMovesLeft() const;
-	const vector<Card*>& SeeDeck(DeckType) const;
+	vector<Card*> SeeDeck(DeckType) const;
 
 	static void Outbreak(); //throw out_of_range() -> catch w PASS() //wywolane tez wewnatrz
 	static void InfectionIncrease();
