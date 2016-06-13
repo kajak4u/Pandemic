@@ -32,7 +32,6 @@ private:
 #endif
 private slots:
     void newGame();
-    void loadGame();
     void howToPlay();
     void about();
 };

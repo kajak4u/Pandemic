@@ -232,3 +232,4 @@ ModelManifest.xml
 *.db
 *.opendb
 *.bat
+/img/big/karty

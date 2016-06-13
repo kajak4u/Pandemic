@@ -7,6 +7,7 @@
 #include "CNewGameMenu.hpp"
 #include "CHowToPlayWindow.hpp"
 #include <QFile>
+#include <QMessageBox>
 
 void reloadStyle() {
     QFile styleFile(":/style.qss");
@@ -88,7 +89,6 @@ void CMainWindow::setupWidgets()
     menu->setLayout(menuLayout);
     menuLayout->setMargin(50);
     menuLayout->addButton("New game", this, &CMainWindow::newGame);
-    menuLayout->addButton("Load game", this, &CMainWindow::loadGame);
     menuLayout->addButton("How to play", this, &CMainWindow::howToPlay);
     menuLayout->addButton("About", this, &CMainWindow::about);
     menuLayout->addButton("Quit game", qApp, &QApplication::quit);
@@ -103,10 +103,6 @@ void CMainWindow::newGame()
     return;
 }
 
-void CMainWindow::loadGame()
-{
-}
-
 void CMainWindow::howToPlay()
 {
     CHowToPlayWindow *newWindow = new CHowToPlayWindow();
@@ -117,4 +113,5 @@ void CMainWindow::howToPlay()
 
 void CMainWindow::about()
 {
+    QMessageBox::information(this, "About Pandemic PC", QString::fromLocal8Bit("<h1>Pandemic PC</h1><h2>Based on board game Pandemic</h2><h2>Authors:</h2><h3>£ukasz Wiœniewski</h3><h3>Krzysztof Krawczyk</h3>"));
 }
