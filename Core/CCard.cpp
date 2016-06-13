@@ -25,6 +25,9 @@ CCard::CCard(QWidget * parent) : CBoardItem(parent), reversed(false), type(CT_UN
     if (isDesigner()) {
         connect(this, &CCard::rightButtonUp, this, &CCard::invert);
     }
+    else {
+        connect(this, &CCard::leftButtonUp, container, &CBoard::seeDeck);
+    }
 }
 
 CCard::~CCard()

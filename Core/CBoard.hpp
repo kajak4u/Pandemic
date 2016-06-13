@@ -93,6 +93,7 @@ public slots:
     void clickCity(QMouseEvent*);
     void onMouseMove(QMouseEvent*);
     void startDragging(QMouseEvent*);
+    void seeDeck();
 private slots:
     void afterCreate();
     void setMode(Qt::TransformationMode);

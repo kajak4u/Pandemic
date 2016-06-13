@@ -396,6 +396,32 @@ void Mediator::removeResearchStation(City *destination)
     cityGUI->removeResearchStation();
 }
 
+void Mediator::seeDeck(DeckType type)
+{
+    vector<Card*> cards = engine->SeeDeck(type);
+    QVector<CBoardItem*> cardsGUI;
+    for (Card* card : cards)
+        cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+    COverlay* overlay = GUI->showOverlay();
+    overlay->displayItems(cardsGUI);
+    QString description = QString("<h2>See the contant of the Deck. Press Ok when winished.</h2>");
+    overlay->setDescription(description);
+    overlay->letPlayerChoose(0, false);
+    //overlay->connect(overlay, &COverlay::userChoseMany, [this](const QSet<CBoardItem*> chosenGUI) {
+    //    if (chosenGUI.size() == 0) {
+    //        //u¿ytkownik wybra³ "anuluj"
+    //        emit GUI->actionCancelled();
+    //    }
+    //    else {
+    //        vector<PlayerCard*> chosen;
+    //        for (CBoardItem* item : chosenGUI)
+    //            chosen.push_back(dynamic_cast<PlayerCard*>(dynamic_cast<CCard*>(item)->toLogic()));
+    //        engine->DiscardToLimit(chosen, player);
+    //        emit GUI->actionPerformed();
+    //    }
+    //});
+}
+
 void Mediator::endGame(GameResult)
 {
     qDebug() << "end game" ;

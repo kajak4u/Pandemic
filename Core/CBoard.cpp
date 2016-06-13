@@ -3,6 +3,7 @@
 #include <QResizeEvent>
 #include <QMainWindow>
 #include <QFile>
+#include "CDeck.hpp"
 #include <QTextStream>
 #include <QMessageBox>
 #include <QInputDialog>
@@ -184,6 +185,24 @@ void CBoard::startDragging(QMouseEvent *event)
 {
     dragStart = event->pos();
     isDragging = false;
+}
+
+void CBoard::seeDeck()
+{
+    CCard* snd = dynamic_cast<CCard*>(sender());
+    if (snd == nullptr)
+        return;
+    QSet<DeckType> typesToSee = {
+        DT_DISEASEDISCARD,
+        DT_PLAYERDISCARD
+    };
+    for (DeckType type: typesToSee) {
+        CDeck* deck = findChild<CDeck*>(CDeck::createObjectName(type));
+        if (snd->geometry().intersects(deck->geometry())) {
+            mediator().seeDeck(type);
+            break;
+        }
+    }
 }
 
 void CBoard::addItemFromClick(QMouseEvent *event)

@@ -168,9 +168,10 @@ void COverlay::letPlayerChoose(int count, bool canCancel)
     QWidget* btns = new QWidget(this);
     QHBoxLayout* btnLayout = new QHBoxLayout(btns);
     if (count != 1) {
-        performButton = new QPushButton("perform", this);
+        performButton = new QPushButton(count==0 ? "Ok" : "perform", this);
         btnLayout->addWidget(performButton);
         connect(performButton, &QPushButton::clicked, this, &COverlay::perform);
+        performButton->setEnabled(selected.size() == numberToSelect);
     }
     btnLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Expanding, QSizePolicy::Minimum));
     if (canCancel) {
