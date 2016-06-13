@@ -8,12 +8,25 @@
 #include <QVector>
 #include <QPushButton>
 
+class CPushButton : public QPushButton {
+    Q_OBJECT
+    Q_PROPERTY(QColor color READ getColor WRITE setColor)
+public:
+    CPushButton(QWidget* parent = 0) : QPushButton(parent) {}
+    virtual ~CPushButton() {}
+    QColor getColor() {
+        return Qt::transparent;
+    }
+    void setColor(QColor color) {
+        setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+    }
+};
 
 class CGameWindow_UI : public Ui::CGameWindow {
 public:
     QToolButton* playerAreaMaximizeButton;
     QLabel* playerLabels[4];
-    QPushButton* passButton;
+    CPushButton* passButton;
     void setupUi(QWidget *CGameWindow) {
         Ui::CGameWindow::setupUi(CGameWindow);
 
@@ -32,7 +45,7 @@ public:
             label->hide();
             playerLabels[i] = label;
         }
-        passButton = new QPushButton(CGameWindow);
+        passButton = new CPushButton(CGameWindow);
         passButton->setObjectName(QStringLiteral("passPushButton"));
         passButton->setText("Pass");
         passButton->setToolTip("End your turn");

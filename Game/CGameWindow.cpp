@@ -124,6 +124,7 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
     CPlayer* currentPlayer = ui.board->currentPlayer();
     CCity* currentCity = currentPlayer->getLocation();
     if (decisions.contains(DEC_MOVE_ANOTHER)) {
+        //todo implement dispatcher MOVE_ANOTHER
     }
     if (decisions.contains(DEC_MOVE_SHORT)) {
         QSet<City*> cities = game->ChooseMoveShort(game->GetCurrentPlayer());
@@ -150,6 +151,26 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
     }
     if (decisions.contains(DEC_PASS)) {
         ui.passButton->setEnabled(true);
+    }
+    if ((decisions - QSet<Decision>({ DEC_PASS, DEC_USE_SPECIAL })).isEmpty()) {
+        //gracz mo¿e tylko spasowaæ / zagraæ kartê specjaln¹
+        QColor startColor = ui.passButton->palette().color(QPalette::Button);
+        QPropertyAnimation* animation = new QPropertyAnimation(ui.passButton, "color");
+        animation->setLoopCount(-1);
+        animation->setKeyValueAt(0.0, startColor);
+        animation->setKeyValueAt(0.25, QColor(0,255,0));
+        animation->setKeyValueAt(0.5, startColor);
+        animation->setKeyValueAt(1.0, startColor);
+        animation->setDuration(2000);
+        QMetaObject::Connection* conn = new QMetaObject::Connection;
+        *conn = connect(ui.passButton, &CPushButton::clicked, [animation, conn]() {
+            animation->pause();
+            animation->setLoopCount(1);
+            animation->resume();
+            animation->disconnect(*conn);
+            delete conn;
+        });
+        animation->start(QAbstractAnimation::DeleteWhenStopped);
     }
 }
 
