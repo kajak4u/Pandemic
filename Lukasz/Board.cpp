@@ -508,12 +508,10 @@ vector<SpecialCard*> Board::ChooseSpecial()
 
 void Board::DiscardToLimit(vector<PlayerCard*> toRemove, Player* Braian)
 {
-	Mediator& m = mediator();
 	Braian->Discard(toRemove);
 	for (PlayerCard* card : toRemove)
 	{
 		playerDiscarded.PutCard(card);
-		m.moveCard((Card*)card, &playerDiscarded);
 	}
 	if (movesLeft == 0)
 	{
