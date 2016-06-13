@@ -131,7 +131,7 @@ void Disease::diseaseAppearsIn(City *source, int count)
 
 void Disease::healDisease(City * location, PlayerRole role)	   //nalozyc WYZEJ sprawdzenie, czy mozna wywolac...	||wywolac w przemieszczaniu medyka po wynalezieniu choroby
 {
-	Mediator m = mediator();
+	Mediator& m = mediator();
 	if (status == NEW && role != ROLE_MEDIC)
 	{
 		location->RemoveCube(diseaseID);

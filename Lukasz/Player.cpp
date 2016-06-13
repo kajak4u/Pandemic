@@ -133,7 +133,7 @@ int Player::ShareKnowledge(Player* targetPlayer, PlayerCard* card) //warunki - W
 int Player::EarnCards(vector<PlayerCard*> cards)
 {
 	int mustDiscardCount = 0;
-	Mediator m = mediator();
+	Mediator& m = mediator();
 	// TODO	 - zmienic wszedzie na dodawanie kilku (max 2) kart, a potem porzadkowanie EWENTUALNIE - poczatkowe rozdanie kart tez tutaj (mediator w petli)
 	for (PlayerCard* card : cards)
 	{

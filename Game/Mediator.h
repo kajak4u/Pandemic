@@ -27,6 +27,8 @@ class Mediator {
     Board* engine; // jednak te¿ jest potrzebny
     Player* selectedPlayer;
     Mediator(); //prywatny konstruktor - celowo, ¿eby nie da³o siê tworzyæ obiektów tej klasy poza wyznaczonymi miejscami
+    Mediator(const Mediator&) {}
+    Mediator& operator=(const Mediator& m) {}
     void checkGUI() const;
 public:
     void setGUI(CBoard*);

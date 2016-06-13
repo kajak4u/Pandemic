@@ -143,7 +143,7 @@ GameResult Board::Pass()
                 movesLeft = 0;
 				Card* card;
 				EpidemicCard* eCard;
-				Mediator m = mediator();
+				Mediator& m = mediator();
 				vector<PlayerCard*> cardsForPlayer;
 				for (int j = 0; j < 2; ++j) //nie rozbijam ciagniecia kart na 2 pojedyncze rozdzielane uzyciem specjalnej
 				{
@@ -508,7 +508,7 @@ vector<SpecialCard*> Board::ChooseSpecial()
 
 void Board::DiscardToLimit(vector<PlayerCard*> toRemove, Player* Braian)
 {
-	Mediator m = mediator();
+	Mediator& m = mediator();
 	Braian->Discard(toRemove);
 	for (PlayerCard* card : toRemove)
 	{
