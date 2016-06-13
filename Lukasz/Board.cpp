@@ -791,8 +791,6 @@ void Board::INFECTION_TIME()
 	{
 		PlayTheInfection(skipInfecting); //ROZSZERZ CHOROBY
 		skipInfecting = false;
-		//++currentPlayerNumber;
-		//movesLeft = 4;
 	    NewTurn();
 	}
 	catch (GameResult res) 

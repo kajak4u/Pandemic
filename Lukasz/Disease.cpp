@@ -117,7 +117,7 @@ void Disease::diseaseAppearsIn(City *source, int count)
 			processed += actual;
 			if (actual->DiseaseCounter(diseaseID) == 3)
 			{
-				Board::Outbreak();
+				Board::Outbreak(); //mozna zlapac tutaj i dodac info, ktore poleca wyzej
 				for (City *neighbour : actual->Neighbours())
 					if (!processed.contains(neighbour))
 						toProcess += neighbour;
