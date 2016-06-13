@@ -152,7 +152,7 @@ GameResult Board::Pass()
 			{
 				if (playerNew.IsEmpty())
 				{
-					gameStatus = LOST_CARDS;
+					WinOrLoose(LOST_CARDS);
 				}
 				else
 				{
@@ -185,27 +185,8 @@ GameResult Board::Pass()
 					INFECTION_TIME();
 				}
 			}
-				
-				
-			if (gameStatus != IN_PROGRESS)
-			{
-				mediator().endGame(gameStatus);
-			}
-			//}
-			//catch (GameResult res) //DA SIE TAK???
-			//{
-			//	gameStatus = res;
 		}
-	}		
-	/*if (gameStatus<0)
-	{
-		cout << "PORAZKA" << endl;
-	}
-	else
-	{
-		cout << "Wygrana !!!" << endl;
-	}*/
-	//NewTurn();
+	}	
 	return gameStatus;
 }
 
