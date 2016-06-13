@@ -393,7 +393,7 @@ vector<Decision> Board::IsAbleTo()
 		}
 		decisionsAvailable.push_back(DEC_PASS);	//PASS
 	}		
-	if (none_of(decisionsAvailable.begin(), decisionsAvailable.end(), [](Decision decided){return decided == DEC_GIVE_CARD; }))
+	if ((!supPlayers.empty()) && none_of(decisionsAvailable.begin(), decisionsAvailable.end(), [](Decision decided){return decided == DEC_GIVE_CARD; }))
 	{
 		supPlayers.clear();
 	}
@@ -446,7 +446,7 @@ QSet<City*> Board::ChooseMoveShort(Player* toMove)
 	{
 		for (Player* play : players)
 		{
-			if (play != toMove)
+			if (play != toMove && play->GetPosition() != toMove->GetPosition())
 			{
 				toSend.insert(play->GetPosition());
 			}
