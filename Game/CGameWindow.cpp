@@ -221,10 +221,12 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
         for (int i = 0; i < players.size(); ++i) {
             ui.playerOverlays[i]->show();
             ui.playerOverlays[i]->raise();
+            if(actualMovedPlayer->getIco()->geometry().intersects(ui.playerOverlays[i]->geometry()))
+                ui.playerOverlays[0]->setStyleSheet("background-color: rgba(0,255,0,128); border: 3px solid green;");
+            else
+                ui.playerOverlays[i]->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
             ui.playerOverlays[i]->setToolTip(ui.board->findPlayer(players[i]->GetRole())->getIco()->toolTip());
         }
-        if(actualMovedPlayer == ui.board->currentPlayer())
-            ui.playerOverlays[0]->setStyleSheet("background-color: rgba(0,255,0,128); border: 3px solid green;");
     }
     if (decisions.contains(DEC_MOVE_SHORT)) {
         QSet<City*> cities = game->ChooseMoveShort(actualMovedPlayer->toLogic());
