@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     CGameWindow* w = new CGameWindow(DIFF_MEDIUM, players);
     w->showFullScreen();
 #else
-    CMainWindow* w = new CMainWindow(false);
+    CMainWindow* w = new CMainWindow(true);
     w->showFullScreen();
 #endif
     return a.exec();

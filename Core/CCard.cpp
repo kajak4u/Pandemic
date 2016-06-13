@@ -1,4 +1,4 @@
-﻿#ifndef _DEBUG
+﻿#ifdef _DEBUG
 #define _NOCARDS 
 #endif
 
@@ -38,19 +38,16 @@ CCard::~CCard()
 void CCard::setCardName(const QString & name)
 {
     cardName = name;
-    updateOptions();
 }
 
 void CCard::setType(CardType newType)
 {
     type = newType;
-    updateOptions();
 }
 
 void CCard::setReversed(bool rev)
 {
     reversed = rev;
-    updateOptions();
 }
 
 bool CCard::isReversed() const
@@ -104,13 +101,20 @@ void CCard::loadStaticGraphics()
 {
     playerReverse = std::unique_ptr<QPixmap>(new QPixmap(":/img/cards/Player/reverse.png"));
     diseaseReverse = std::unique_ptr<QPixmap>(new QPixmap(":/img/cards/Disease/reverse.png"));
-    epidemicObverse = std::unique_ptr<QPixmap>(new QPixmap(":/img/cards/Epidemic/epidemy.png"));
+    epidemicObverse = std::unique_ptr<QPixmap>(new QPixmap(":/img/cards/Epidemic/epidemic.png"));
 }
 void CCard::updateOptions()
 {
     QString typeStr = CardType_SL[type];
 #ifndef _NOCARDS
-    pxm = QPixmap(":/img/cards/" + typeStr + "/" + cardName + ".png");
+    if (type == CT_EPIDEMIC) {
+        pxm = *epidemicObverse;
+        imgsrc = ":/img/cards/Epidemic/epidemic.png";
+    }
+    else {
+        imgsrc = ":/img/cards/" + typeStr + "/" + cardName + ".png";
+        pxm = QPixmap(imgsrc);
+    }
 #endif
     setText(QString("<h1>%1</h1><h2>%2</h2>").arg(cardName).arg(typeStr));
     if(!pxm.isNull())
@@ -124,6 +128,11 @@ void CCard::updateOptions()
     repaint();
     QString tooltip = CBoardItem::createToolTip() + "\ncardName: " + cardName + "\ntype: " + typeStr;
     setToolTip(tooltip);
+}
+
+QString CCard::getSrc() const
+{
+    return imgsrc;
 }
 
 const QPixmap & CCard::getReverse() const

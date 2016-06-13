@@ -21,6 +21,7 @@ CHandCard::CHandCard(CCard* origin, QWidget * parent) : CExtendedSignalWidget(pa
     QString fontColor = type == BLACK ? "white" : "black";
     QString backgroundColor = type == UNKNOWN ? "orange; font-style: italic" : DiseaseType_SL[type];
     setStyleSheet(QString("border: 2px outset grey; border-radius: 10px; background-color: %1; color: %2;").arg(backgroundColor).arg(fontColor));
+    setToolTip(QString("<img src=\"%1\" width=\"303\"/>").arg(origin->getSrc()));
     setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
     setMinimumHeight(70);
     setWordWrap(true);

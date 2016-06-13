@@ -50,7 +50,6 @@
         <file>img/cards/Player/Tehran.png</file>
         <file>img/cards/Player/Tokyo.png</file>
         <file>img/cards/Disease/reverse.png</file>
-        <file>img/cards/Epidemic/epidemy.png</file>
         <file>img/cards/Disease/Algiers.png</file>
         <file>img/cards/Disease/Atlanta.png</file>
         <file>img/cards/Disease/Baghdad.png</file>
@@ -99,5 +98,11 @@
         <file>img/cards/Disease/Tokyo.png</file>
         <file>img/cards/Disease/Toronto.png</file>
         <file>img/cards/Disease/Washington.png</file>
+        <file>img/cards/Special/Airlift.png</file>
+        <file>img/cards/Special/Forecast.png</file>
+        <file>img/cards/Special/Government Grant.png</file>
+        <file>img/cards/Special/One Quiet Night.png</file>
+        <file>img/cards/Special/Resilient Population.png</file>
+        <file>img/cards/Epidemic/epidemic.png</file>
     </qresource>
 </RCC>

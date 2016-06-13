@@ -25,15 +25,17 @@ public:
     Card* toLogic() const;
     CardType getType() const;
     virtual void cloneTo(CBoardItem*) const;
+    void updateOptions();
+    QString getSrc() const;
 private:
     static std::unique_ptr<QPixmap> playerReverse,
         diseaseReverse,
         epidemicObverse; //epidemicReverse==playerReverse
     QString cardName;
+    QString imgsrc;
     CardType type;
     Card* logicObj;
     void loadStaticGraphics();
-    void updateOptions();
     const QPixmap& getReverse() const;
     void loadFrom(QTextStream & ts);
     void saveTo(QTextStream & ts) const;
