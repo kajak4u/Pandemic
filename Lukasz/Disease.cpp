@@ -79,8 +79,12 @@ void Disease::addSingleCube(City* city)
 	if (city->DiseaseCounter(diseaseID) < 3)	  //krytyczne sprawdzanie
 	{
 		city->AddCube(diseaseID);
-		--markersLeft;
+		--markersLeft;		
 		mediator().addDiseaseCube(city, diseaseID, 1);
+		if (markersLeft < 0)
+		{
+			Board::WinOrLoose(LOST_CUBES);
+		}
 	}
 	else
 		throw exception("PONAD 3 KOSTKI W MIESCIE !!!");	//critical error
