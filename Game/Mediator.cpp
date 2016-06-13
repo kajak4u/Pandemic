@@ -104,8 +104,13 @@ void Mediator::setCurrent(Player *current)
         while (GUI->currentPlayer()->getRole() != current->GetRole())
             GUI->nextPlayer();
         setHand();
+        emit GUI->actionPerformed();
     });
-    emit GUI->actionPerformed();
+}
+
+void Mediator::setActualMovedPlayer(Player *player)
+{
+    actualMovedPlayer = player;
 }
 
 void Mediator::setPlayerToolTips()
@@ -265,7 +270,7 @@ void Mediator::playerUsedCard(CCard* card)
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move anywhere?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
             return;
-        QSet<City*> cities = engine->ChooseMoveEverywhere(engine->GetCurrentPlayer());
+        QSet<City*> cities = engine->ChooseMoveEverywhere(actualMovedPlayer);
         QSet<CBoardItem*> citiesGUI;
         for (City* city : cities)
             citiesGUI += GUI->FIND(CCity, QSTR(city->GetName()));
@@ -280,7 +285,7 @@ void Mediator::playerUsedCard(CCard* card)
             }
             else {
                 CCity* chosenCity = dynamic_cast<CCity*>(chosen);
-                engine->MoveEverywhere(chosenCity->toLogic());
+                engine->MoveEverywhere(chosenCity->toLogic(), actualMovedPlayer);
                 emit GUI->actionPerformed();
             }
         });
@@ -290,7 +295,7 @@ void Mediator::playerUsedCard(CCard* card)
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move there?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
             return;
-        engine->MoveToCard(dynamic_cast<PlayerCard*>(card->toLogic()));
+        engine->MoveToCard(dynamic_cast<PlayerCard*>(card->toLogic()), actualMovedPlayer);
         emit GUI->actionPerformed();
     }
 }

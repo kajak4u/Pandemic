@@ -58,6 +58,7 @@ class CGameWindow_UI : public Ui::CGameWindow {
 public:
     QToolButton* playerAreaMaximizeButton;
     QLabel* playerLabels[4];
+    CExtendedSignalWidget* playerOverlays[4];
     CPushButton* passButton;
     void setupUi(QWidget *CGameWindow) {
         Ui::CGameWindow::setupUi(CGameWindow);
@@ -76,6 +77,10 @@ public:
             label->setStyleSheet("border: 1px solid black;");
             label->hide();
             playerLabels[i] = label;
+            CExtendedSignalWidget* overlay = new CExtendedSignalWidget(CGameWindow);
+            overlay->setGeometry(label->geometry().marginsAdded(QMargins(2, 2, 2, 2)));
+            overlay->hide();
+            playerOverlays[i] = overlay;
         }
         passButton = new CPushButton(CGameWindow);
         passButton->setObjectName(QStringLiteral("passPushButton"));
@@ -99,6 +104,7 @@ private:
     CGameWindow_UI ui;
     Board *game;
     Difficulty diff;
+    CPlayer* actualMovedPlayer;
     QVector<QPair<QString, PlayerRole>> players;
     void dispatchDecisions(const QSet<Decision>&);
     CExtendedSignalWidget *menu_buildStation,
@@ -118,6 +124,7 @@ private slots:
     void setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate);
     void endGame(GameResult);
     void gotoMenu();
+    void choosePlayerToMove();
 signals:
     void created();
 };

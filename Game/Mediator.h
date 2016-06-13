@@ -27,6 +27,7 @@ class Mediator {
     CBoard* GUI;
     Board* engine; // jednak te¿ jest potrzebny
     Player* selectedPlayer;
+    Player* actualMovedPlayer;
     COverlay* activeOverlay;
     Mediator(); //prywatny konstruktor - celowo, ¿eby nie da³o siê tworzyæ obiektów tej klasy poza wyznaczonymi miejscami
     Mediator(const Mediator&) {}
@@ -39,6 +40,7 @@ public:
 			  const CardDeck& playerCardDeck, const CardDeck& playerDiscard, const CardDeck& diseaseCardDeck, const CardDeck& diseaseDiscard);
     void setCurrentStatus(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate);
     void setCurrent(Player*);
+    void setActualMovedPlayer(Player*); //dispatcher mo¿e ruszaæ innych i wtedy moved != current
     void setPlayerToolTips();
     void setHand();
     void playerUsedCard(CCard*);

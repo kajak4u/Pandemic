@@ -24,6 +24,8 @@
         <file>img/icons/action_healBlue.png</file>
         <file>img/icons/action_healRed.png</file>
         <file>img/icons/action_healYellow.png</file>
+        <file>img/icons/action_discoverCure.png</file>
+        <file>img/icons/action_shareKnowledge.png</file>
     </qresource>
     <qresource prefix="/roles">
         <file>img/random.png</file>

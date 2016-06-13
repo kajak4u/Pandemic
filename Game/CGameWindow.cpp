@@ -14,7 +14,7 @@
 #include "CMainWindow.hpp"
 
 CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRole>>& players, QWidget *parent)
-    : QWidget(parent), game(nullptr), diff(diff), players(players)
+    : QWidget(parent), game(nullptr), diff(diff), players(players), actualMovedPlayer(nullptr)
 {
     ui.setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -37,9 +37,12 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     connect(ui.board, &CBoard::actionCancelled, this, &CGameWindow::nextAction);
     connect(ui.board, &CBoard::setCurrentStatus, this, &CGameWindow::setStatusBar);
     connect(ui.board, &CBoard::endGame, this, &CGameWindow::endGame);
+    for (int i = 0; i < 4;++i)
+        connect(ui.playerOverlays[i], &CExtendedSignalWidget::leftButtonUp, this, &CGameWindow::choosePlayerToMove);
     connect(ui.passButton, &QPushButton::clicked, [this]() {
         engine()->Pass();
         disableAll();
+        actualMovedPlayer = nullptr;
     });
     emit created();
 }
@@ -66,7 +69,7 @@ void CGameWindow::afterCreate()
 
 void CGameWindow::targetCityClicked(CCity* target)
 {
-    game->MoveShort(target->toLogic());
+    game->MoveShort(target->toLogic(), actualMovedPlayer->toLogic());
     waitForNextAction();
 }
 
@@ -104,6 +107,8 @@ void CGameWindow::disableAll()
     menu_treat[RED]->setEnabled(false);
     menu_treat[YELLOW]->setEnabled(false);
     ui.passButton->setEnabled(false);
+    for (int i = 0; i < 4; ++i)
+        ui.playerOverlays[i]->hide();
 }
 
 void CGameWindow::setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate)
@@ -176,6 +181,30 @@ void CGameWindow::gotoMenu()
     this->close();
 }
 
+void CGameWindow::choosePlayerToMove()
+{
+    if (actualMovedPlayer != nullptr)
+        for (int i = 0; i < 4;++i)
+            if(ui.playerOverlays[i]->geometry().intersects(actualMovedPlayer->getIco()->geometry()))
+                ui.playerOverlays[i]->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
+    CExtendedSignalWidget* source = dynamic_cast<CExtendedSignalWidget*>(sender());
+    vector<Player*> players = game->ChoosePlayer();
+    for (Player* player : players) {
+        CPlayer* playerGUI = ui.board->findPlayer(player->GetRole());
+        if (playerGUI->getIco()->geometry().intersects(source->geometry())) {
+            QSet<City*> cities = game->ChooseMoveShort(player);
+            QSet<CCity*> citiesGUI;
+            for (City* city : cities)
+                citiesGUI << ui.board->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
+            ui.board->setActiveCities(citiesGUI);
+            actualMovedPlayer = playerGUI;
+            source->setStyleSheet("background-color: rgba(0,255,0,128); border: 3px solid green;");
+            break;
+        }
+    }
+    mediator().setActualMovedPlayer(actualMovedPlayer->toLogic());
+}
+
 Board * CGameWindow::engine() const
 {
     return game;
@@ -183,13 +212,22 @@ Board * CGameWindow::engine() const
 
 void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
 {
-    CPlayer* currentPlayer = ui.board->currentPlayer();
-    CCity* currentCity = currentPlayer->getLocation();
+    if (actualMovedPlayer == nullptr)
+        actualMovedPlayer = ui.board->currentPlayer();
+    mediator().setActualMovedPlayer(actualMovedPlayer->toLogic());
+    CCity* currentCity = actualMovedPlayer->getLocation();
     if (decisions.contains(DEC_MOVE_ANOTHER)) {
-        //todo implement dispatcher MOVE_ANOTHER
+        vector<Player*> players = game->ChoosePlayer();
+        for (int i = 0; i < players.size(); ++i) {
+            ui.playerOverlays[i]->show();
+            ui.playerOverlays[i]->raise();
+            ui.playerOverlays[i]->setToolTip(ui.board->findPlayer(players[i]->GetRole())->getIco()->toolTip());
+        }
+        if(actualMovedPlayer == ui.board->currentPlayer())
+            ui.playerOverlays[0]->setStyleSheet("background-color: rgba(0,255,0,128); border: 3px solid green;");
     }
     if (decisions.contains(DEC_MOVE_SHORT)) {
-        QSet<City*> cities = game->ChooseMoveShort(game->GetCurrentPlayer());
+        QSet<City*> cities = game->ChooseMoveShort(actualMovedPlayer->toLogic());
         QSet<CCity*> citiesGUI;
         for (City* city : cities)
             citiesGUI << ui.board->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
@@ -267,7 +305,7 @@ void CGameWindow::createMenus()
         engine()->BuildStation();
         waitForNextAction();
     });
-    menu_discoverCure = cityMenu->addOption(QPixmap(":/icons/img/icons/cure_black_discovered.png"), "Discover A Cure", [this]() {
+    menu_discoverCure = cityMenu->addOption(QPixmap(":/icons/img/icons/action_discoverCure.png"), "Discover A Cure", [this]() {
         engine()->DiscoverCure();
         waitForNextAction();
     });
@@ -287,7 +325,7 @@ void CGameWindow::createMenus()
         engine()->Treat(RED);
         waitForNextAction();
     });
-    menu_shareKnowledge = cityMenu->addOption(QPixmap(":/icons/img/icons/card.png"), "Share Knowledge", [this]() {
+    menu_shareKnowledge = cityMenu->addOption(QPixmap(":/icons/img/icons/action_shareKnowledge.png"), "Share Knowledge", [this]() {
         mediator().ShareKnowledge();
     });
     cityMenu->hide();
