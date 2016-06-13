@@ -26,10 +26,10 @@ class Board
 	vector<Disease> diseases; //Red, Blue, Yellow, Black;  //SPRAWDZIC !!!
 	vector<City*> Cities; 
 	int currentPlayerNumber;
-	int movesLeft;
-	GameResult gameStatus;
+	int movesLeft;	  	
 	int stationsLeft;
 	bool skipInfecting;
+	static GameResult gameStatus;
 	static int outbreaksMarker; //ten od przegrywania
 	static vector<int> infectionRateMarker;
 	vector<City*> Stations;
@@ -114,6 +114,7 @@ public:
 	static void Outbreak(); //throw out_of_range() -> catch w PASS() //wywolane tez wewnatrz
 	static void InfectionIncrease();
 	static int GetInfectionRateMarker();
+	static void WinOrLoose(GameResult);
 
 	Board(Difficulty difficulty, QVector<QPair<QString,PlayerRole>> players);		   
 	~Board();

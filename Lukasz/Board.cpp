@@ -12,6 +12,7 @@
 //PRIVATE:
 int Board::outbreaksMarker = 0;
 vector<int> Board::infectionRateMarker;
+GameResult gameStatus = IN_PROGRESS;
 
 void Board::MedicIncoming(Player* moved)
 {
@@ -142,53 +143,58 @@ GameResult Board::Pass()
 	{
 		case IN_PROGRESS:
 		{
-			try
+            movesLeft = 0;
+			Card* card;
+			EpidemicCard* eCard;
+			Mediator& m = mediator();
+			vector<PlayerCard*> cardsForPlayer;
+			for (int j = 0; j < 2; ++j) //nie rozbijam ciagniecia kart na 2 pojedyncze rozdzielane uzyciem specjalnej
 			{
-                movesLeft = 0;
-				Card* card;
-				EpidemicCard* eCard;
-				Mediator& m = mediator();
-				vector<PlayerCard*> cardsForPlayer;
-				for (int j = 0; j < 2; ++j) //nie rozbijam ciagniecia kart na 2 pojedyncze rozdzielane uzyciem specjalnej
+				if (playerNew.IsEmpty())
 				{
-					if (playerNew.IsEmpty())
+					gameStatus = LOST_CARDS;
+				}
+				else
+				{
+					card = playerNew.takeCard();
+					eCard = dynamic_cast<EpidemicCard*>(card);
+					if (eCard != nullptr)
 					{
-						throw LOST_CARDS;
+						Card* dCard = diseasesNew.TakeBottom();
+						Infect(dCard, 3);							//na podstawie karty zajmuje sie calym procesem infekowania
+						diseasesNew.Rethrow(&diseasesDiscarded);
+						InfectionIncrease();
+						playerDiscarded.PutCard(card);
+						//m.moveCard(card, &(this->playerDiscarded));		//czy tak adres bedzie przekazany? czyli uzyskam pointer?
 					}
 					else
 					{
-						card = playerNew.takeCard();
-						eCard = dynamic_cast<EpidemicCard*>(card);
-						if (eCard != nullptr)
-						{
-							Card* dCard = diseasesNew.TakeBottom();
-							Infect(dCard, 3);							//na podstawie karty zajmuje sie calym procesem infekowania
-							diseasesNew.Rethrow(&diseasesDiscarded);
-							InfectionIncrease();
-							playerDiscarded.PutCard(card);
-							//m.moveCard(card, &(this->playerDiscarded));		//czy tak adres bedzie przekazany? czyli uzyskam pointer?
-						}
-						else
-						{
-							cardsForPlayer.push_back((PlayerCard*)card);
-						}
+						cardsForPlayer.push_back((PlayerCard*)card);
 					}
 				}
+			}
+			if (gameStatus == IN_PROGRESS)
+			{
 				int toDiscardCount = currentPlayer->EarnCards(cardsForPlayer);
 				if (toDiscardCount > 0)
 				{
-                    m.playerMustDiscardCards(currentPlayer, toDiscardCount);
+					m.playerMustDiscardCards(currentPlayer, toDiscardCount);
 				}
 				else
 				{
 					INFECTION_TIME();
 				}
 			}
-			catch (GameResult res) //DA SIE TAK???
+				
+				
+			if (gameStatus != IN_PROGRESS)
 			{
-				gameStatus = res;
 				mediator().endGame(gameStatus);
 			}
+			//}
+			//catch (GameResult res) //DA SIE TAK???
+			//{
+			//	gameStatus = res;
 		}
 	}		
 	/*if (gameStatus<0)
@@ -217,11 +223,14 @@ Disease* Board::FindDisease(DiseaseType ID)
 
 void Board::Outbreak()
 {
-	++outbreaksMarker;
-	mediator().increaseOutbreaksMarker();
-	if (outbreaksMarker == 8)
+	if (outbreaksMarker < 8)   //potem juz pomijaj, bo gra moze tylko miec na koniec jeszcze serie wybuchow
 	{
-		throw LOST_OUTBREAKS;
+		++outbreaksMarker;
+		mediator().increaseOutbreaksMarker();
+		if (outbreaksMarker == 8)
+		{
+			WinOrLoose(LOST_OUTBREAKS);
+		}
 	}
 }
 
@@ -250,11 +259,17 @@ void Board::NewTurn()
 {
 	if (gameStatus == IN_PROGRESS && wasInfection)
 	{
+		Mediator& m = mediator();
 		wasInfection = false; //by nie wejsc tu znowu przed kolejna infekcja..
 		++currentPlayerNumber;
 		currentPlayer = players[currentPlayerNumber%players.size()];
-		mediator().setCurrent(currentPlayer);
+		m.setCurrent(currentPlayer);
 		movesLeft = 4;
+		int cubesBlue = FindDisease(BLUE)->MarkersLeft(),
+			cubesRed = FindDisease(RED)->MarkersLeft(),
+			cubesYellow = FindDisease(YELLOW)->MarkersLeft(),
+			cubesBlack = FindDisease(BLACK)->MarkersLeft();
+		m.setCurrentStatus(cubesBlue,cubesYellow,cubesBlack,cubesRed,stationsLeft,playerNew.CardsLeft());
 	}
 }
 
@@ -641,7 +656,7 @@ void Board::Treat(DiseaseType disType)
 	dis->healDisease(currentCity, currentPlayer->GetRole());
 	if (all_of(diseases.begin(), diseases.end(), IsEradicated))
 	{
-		gameStatus = WON; //zwyciestwo
+		WinOrLoose(WON); //zwyciestwo
 	}
 	--movesLeft;
 }
@@ -787,17 +802,9 @@ void Board::GovernmentGrant(City* toBuild)
 
 void Board::INFECTION_TIME()
 {
-	try
-	{
-		PlayTheInfection(skipInfecting); //ROZSZERZ CHOROBY
-		skipInfecting = false;
-	    NewTurn();
-	}
-	catch (GameResult res) 
-	{
-		gameStatus = res;
-		mediator().endGame(gameStatus);
-	}
+	PlayTheInfection(skipInfecting); //ROZSZERZ CHOROBY
+	skipInfecting = false;
+	NewTurn();	
 }
 
 //KONSTRUKCJA:
@@ -936,4 +943,10 @@ Board::~Board()
 GameResult Board::GameStatus() const
 {
 	return gameStatus;
+}
+
+void Board::WinOrLoose(GameResult res)
+{
+	gameStatus = res;
+	mediator().endGame(gameStatus);
 }

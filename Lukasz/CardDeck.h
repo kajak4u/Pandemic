@@ -23,6 +23,7 @@ public:
 	void Rethrow(CardDeck* used);
 	void putClearPlayerCards(vector<PlayerCard*> &cardsToAdd);
 	DeckType GetType() const;
+	int CardsLeft() const;
 
 	CardDeck(DeckType typeNumber);
 	CardDeck();
