@@ -79,7 +79,8 @@ const vector<Card*>& Board::SeeDeck(DeckType number) const
 	case DT_DISEASE:
 		return diseasesNew.SeeDeck();
 	case DT_DISEASEDISCARD:
-		return = diseasesDiscarded.SeeDeck();
+		return diseasesDiscarded.SeeDeck();
+	}
 }
 
 City* Board::FindCity(string name) const
