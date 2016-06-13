@@ -4,6 +4,8 @@
 #include <QPropertyAnimation>
 #include <QParallelAnimationGroup>
 #include <QSequentialAnimationGroup>
+#include <QMessageBox>
+#include <QKeyEvent>
 #include <QDebug>
 #include "CCureMarker.hpp"
 #include "CCircleMenu.hpp"
@@ -203,6 +205,15 @@ void CGameWindow::choosePlayerToMove()
         }
     }
     mediator().setActualMovedPlayer(actualMovedPlayer->toLogic());
+}
+
+void CGameWindow::keyReleaseEvent(QKeyEvent *event)
+{
+    if (event->key() != Qt::Key_Escape)
+        return;
+    int result = QMessageBox::question(this, "Exit to menu?", "Do you really want to abandon the game and exit to menu?");
+    if (result == QMessageBox::Yes)
+        gotoMenu();
 }
 
 Board * CGameWindow::engine() const

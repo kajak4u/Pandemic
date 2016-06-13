@@ -9,6 +9,8 @@
 #include <QPushButton>
 #include <QPropertyAnimation>
 
+class QKeyEvent;
+
 class CPushButton : public QPushButton {
     Q_OBJECT
     Q_PROPERTY(QColor color READ getColor WRITE setColor)
@@ -125,6 +127,7 @@ private slots:
     void endGame(GameResult);
     void gotoMenu();
     void choosePlayerToMove();
+    void keyReleaseEvent(QKeyEvent*);
 signals:
     void created();
 };
