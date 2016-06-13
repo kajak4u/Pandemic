@@ -97,7 +97,7 @@ void COverlay::setDescription(const QString &desc)
     }
 }
 
-void COverlay::displayItems(const QVector<CBoardItem*>& items)
+void COverlay::displayItems(const QVector<CBoardItem*>& items, const QString& color)
 {
     if (layout() == nullptr) {
         QVBoxLayout* overlayLayout = new QVBoxLayout(this);
@@ -108,11 +108,6 @@ void COverlay::displayItems(const QVector<CBoardItem*>& items)
     area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     QWidget* areaWidget = new QWidget();
-    QString color;
-    if (layout()->count() % 2 == 1)
-        color = "rgba(64, 238, 64, 128)";
-    else
-        color = "rgba(64, 64, 238, 128)";
     areaWidget->setStyleSheet("background: transparent; border: none;");
     area->setStyleSheet(QString("background: %1; border: none;").arg(color));
     area->setWidgetResizable(true);

@@ -17,7 +17,7 @@ public:
     void track(const QSet<CPlayer*>& players, const QSet<CPlayer*>& enabledPlayers, bool canCancel);
     void clearDisplay();
     void setDescription(const QString&);
-    void displayItems(const QVector<CBoardItem*>& items);
+    void displayItems(const QVector<CBoardItem*>& items, const QString& color="transparent");
     void setEnabledItems(const QSet<CBoardItem*>& items);
     void setDeleteOnClick(bool);
     void setItemDeleteOnClick(bool);

@@ -1,4 +1,4 @@
-﻿#ifdef _DEBUG
+﻿#ifndef _DEBUG
 #define _NOCARDS 
 #endif
 
