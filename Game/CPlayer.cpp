@@ -36,6 +36,30 @@ Player* CPlayer::toLogic()
     return logicObj;
 }
 
+QString CPlayer::getColor()
+{
+    switch (role)
+    {
+    case ROLE_DISPATCHER:
+        return "rgba(199,  52, 146, 192)";
+        break;
+    case ROLE_MEDIC:
+        return "rgba(218, 136,  18, 192)";
+        break;
+    case ROLE_OPERATIONSEXPERT:
+        return "rgba(158, 199,  59, 192)";
+        break;
+    case ROLE_RESEARCHER:
+        return "rgba(192, 130,  85, 192)";
+        break;
+    case ROLE_SCIENTIST:
+        return "rgba(229, 224, 220, 192)";
+        break;
+    default:
+        return "transparent";
+    }
+}
+
 CCity * CPlayer::getLocation() const
 {
     return pawn->getPosition();

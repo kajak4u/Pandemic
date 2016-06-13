@@ -499,8 +499,8 @@ void Mediator::ShareKnowledge()
         QSet<CBoardItem*> toGainGUI;
         for (PlayerCard* card : cardsToGain)
             toGainGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
-        overlay->displayItems(currentPlayerCardsGUI);
-        overlay->displayItems(guestCardsGUI);
+        overlay->displayItems(currentPlayerCardsGUI, GUI->currentPlayer()->getColor());
+        overlay->displayItems(guestCardsGUI, player->getColor());
         overlay->setEnabledItems(toGainGUI + toGiveGUI);
         overlay->letPlayerChoose(1, true);
     });
