@@ -1,5 +1,7 @@
 #pragma once
 #include "enums.h"
+#include <vector>
+#include <QVector>
 class CBoard;
 class Board;
 class City;
@@ -9,8 +11,7 @@ class DiseaseCard;
 class Player;
 class CardDeck;
 class CCard;
-#include <vector>
-#include <QVector>
+class COverlay;
 
 template<typename _OBJ, typename _MET> struct MethodCallback {
     _OBJ object;
@@ -26,6 +27,7 @@ class Mediator {
     CBoard* GUI;
     Board* engine; // jednak te¿ jest potrzebny
     Player* selectedPlayer;
+    COverlay* activeOverlay;
     Mediator(); //prywatny konstruktor - celowo, ¿eby nie da³o siê tworzyæ obiektów tej klasy poza wyznaczonymi miejscami
     Mediator(const Mediator&) {}
     Mediator& operator=(const Mediator& m) {}

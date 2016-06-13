@@ -35,7 +35,7 @@ CardType findType(Card* card)
     return type;
 }
 
-Mediator::Mediator(): GUI(nullptr), engine(nullptr)
+Mediator::Mediator(): GUI(nullptr), engine(nullptr), activeOverlay(nullptr)
 {
 }
 
@@ -218,7 +218,7 @@ void Mediator::playerUsedCard(CCard* card)
                         citiesGUI += GUI->FIND(CCity, QSTR(city->GetName()));
                     overlay->track(citiesGUI, true);
                 });
-                overlay->connect(overlay, &COverlay::userChoseOne, [this, overlay](CBoardItem* chosen) {
+                overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
                     if (chosen == nullptr) {
                         //u¿ytkownik wybra³ "anuluj"
                         emit GUI->actionCancelled();
@@ -331,6 +331,11 @@ void Mediator::moveCard(Card *card, CardDeck * dest)
         throw QString("Card %1 not found in game!").arg(QSTR(card->GetName()));
     if (deckGUI == nullptr)
         throw QString("Deck %1 not found in game!").arg(DeckType_SL[dest->GetType()]);
+    if (dest->GetType() == DT_PLAYERDISCARD && dynamic_cast<SpecialCard*>(card) != nullptr) { // ruch karty specjalnej, trzeba sprawdziæ, czy jest overlay do uaktualnienia
+        if (activeOverlay != nullptr) {
+            activeOverlay->removeItem(cardGUI);
+        }
+    }
     if (!cardGUI->isVisible()) { //jest u gracza
         QWidget* par = dynamic_cast<QWidget*>(GUI->parent());
         CPoint boardEndPos = GUI->mapFrom(par, deckGUI->mapTo(par, CPoint(deckGUI->size()) / 2));
@@ -440,7 +445,6 @@ void Mediator::endGame(GameResult res)
 {
     qDebug() << "end game" ;
     emit GUI->endGame(res);
-    // TODO: Mediator::endGame not implemented
 }
 
 void Mediator::chooseStationToRemove(std::vector<City*> stations)
@@ -506,7 +510,7 @@ void Mediator::ShareKnowledge()
         overlay->setEnabledItems(toGainGUI + toGiveGUI);
         overlay->letPlayerChoose(1, true);
     });
-    overlay->connect(overlay, &COverlay::userChoseOne, [this, overlay](CBoardItem* chosen) {
+    overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
         if (chosen == nullptr) {
             //u¿ytkownik wybra³ "anuluj"
             emit GUI->actionCancelled();
@@ -558,24 +562,20 @@ void Mediator::playerMustDiscardCards(Player * player, int count)
     QVector<CBoardItem*> cardsGUI;
     for (PlayerCard* card : cards)
         cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
-    COverlay* overlay = GUI->showOverlay();
-    overlay->displayItems(cardsGUI);
+    activeOverlay = GUI->showOverlay();
+    activeOverlay->displayItems(cardsGUI);
     QString description = QString("<h2>You've exceeded you card limit. Discard up to 7 cards - discard <b>%1</b> cards or use special cards.</h2>").arg(count);
-    overlay->setDescription(description);
-    overlay->letPlayerChoose(count, false);
+    activeOverlay->setDescription(description);
+    activeOverlay->letPlayerChoose(count, false);
+    activeOverlay->setDiscardReduces(true);
     selectedPlayer = player;
-    overlay->connect(overlay, &COverlay::userChoseMany, [this](const QSet<CBoardItem*> chosenGUI) {
-        if (chosenGUI.size() == 0) {
-            //u¿ytkownik wybra³ "anuluj"
-            emit GUI->actionCancelled();
-        }
-        else {
-            vector<PlayerCard*> chosen;
-            for (CBoardItem* item : chosenGUI)
-                chosen.push_back(dynamic_cast<PlayerCard*>(dynamic_cast<CCard*>(item)->toLogic()));
-            engine->DiscardToLimit(chosen, selectedPlayer);
-            emit GUI->actionPerformed();
-        }
+    activeOverlay->connect(activeOverlay, &COverlay::userChoseMany, [this](const QSet<CBoardItem*> chosenGUI) {
+        vector<PlayerCard*> chosen;
+        for (CBoardItem* item : chosenGUI)
+            chosen.push_back(dynamic_cast<PlayerCard*>(dynamic_cast<CCard*>(item)->toLogic()));
+        engine->DiscardToLimit(chosen, selectedPlayer);
+        emit GUI->actionPerformed();
+        activeOverlay = nullptr;
     });
 }
 

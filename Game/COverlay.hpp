@@ -19,10 +19,13 @@ public:
     void setDescription(const QString&);
     void displayItems(const QVector<CBoardItem*>& items, const QString& color="transparent");
     void setEnabledItems(const QSet<CBoardItem*>& items);
+    void removeItem(CBoardItem*);
     void setDeleteOnClick(bool);
+    void setDiscardReduces(bool);
     void setItemDeleteOnClick(bool);
     void letPlayerChoose(int count, bool canCancel);
 private:
+    bool discardReduces;
     bool deleteOnClick;
     bool deleteItemOnClick;
     QMap<CBoardItem*, CBoardItem*> links;

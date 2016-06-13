@@ -10,7 +10,7 @@
 #include "CPlayer.h"
 
 COverlay::COverlay(QWidget * parent) 
-    : QLabel(parent), deleteOnClick(true), deleteItemOnClick(false), cancelButton(nullptr), performButton(nullptr)
+    : QLabel(parent), deleteOnClick(true), deleteItemOnClick(false), cancelButton(nullptr), performButton(nullptr), discardReduces(true)
 {
     setGeometry(0, 0, parent->width(), parent->height());
     setStyleSheet("COverlay {background: rgba(200, 200, 200, 128);}");
@@ -91,6 +91,7 @@ void COverlay::clearDisplay()
 void COverlay::setDescription(const QString &desc)
 {
     QLabel* descLabel = new QLabel(desc, this);
+    descLabel->setObjectName("overlayDescriptionLabel");
     descLabel->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
     descLabel->setWordWrap(true);
     if (layout() == nullptr) {
@@ -146,9 +147,38 @@ void COverlay::setEnabledItems(const QSet<CBoardItem*>& items)
         iter.key()->setEnabled((items.contains(iter.value())));
 }
 
+void COverlay::removeItem(CBoardItem *toRemove)
+{
+    for (QMap<CBoardItem*, CBoardItem*>::iterator iter = links.begin(); iter != links.end();++iter)
+        if (iter.value() == toRemove) {
+            CBoardItem* overlayItem = iter.key();
+            links.remove(overlayItem);
+            overlayItem->deleteLater();
+            if (discardReduces) {
+                --numberToSelect;
+                if (numberToSelect == 0) {
+                    selected.clear();
+                    perform();
+                }
+                else {
+                    performButton->setEnabled(selected.size() == numberToSelect);
+                    QLabel* descLabel = performButton->findChild<QLabel*>("overlayDescriptionLabel");
+                    QString newText = descLabel->text().replace(QString("<b>%1</b>").arg(numberToSelect + 1), QString("<b>%1</b>").arg(numberToSelect));
+                    descLabel->setText(newText);
+                }
+            }
+            return;
+        }
+}
+
 void COverlay::setDeleteOnClick(bool delOnClick)
 {
     deleteOnClick = delOnClick;
+}
+
+void COverlay::setDiscardReduces(bool newVal)
+{
+    discardReduces = newVal;
 }
 
 void COverlay::setItemDeleteOnClick(bool delOnClick)
