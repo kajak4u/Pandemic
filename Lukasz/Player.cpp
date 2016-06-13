@@ -36,6 +36,8 @@ City* Player::GetPosition() const
 Card* Player::MoveToCard(City* target)
 {
 	Card* thisCard;
+	position = target;
+	mediator().movePawn(this, target);
 	for (vector<PlayerCard*>::iterator it = hand.begin(); it != hand.end();++it)
 	{
 		if ((*it)->GetName() == target->GetName())
@@ -44,9 +46,7 @@ Card* Player::MoveToCard(City* target)
 			hand.erase(it);	  // vector::erase(Iterator position) :P			
 			return thisCard;
 		}
-	}
-	position = target;
-	mediator().movePawn(this, target);
+	}	
 	return nullptr;
 }
 
