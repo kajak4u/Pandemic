@@ -527,7 +527,7 @@ void Mediator::ShareKnowledge()
     });
 }
 
-void Mediator::playerMayDiscardCards(int count)
+void Mediator::playerMayDiscardCards(int count, vector<PlayerCard*> avaible)
 {
     qDebug() << "player may discard cards" ;
     Player* player = engine->GetCurrentPlayer();
@@ -535,8 +535,12 @@ void Mediator::playerMayDiscardCards(int count)
     QVector<CBoardItem*> cardsGUI;
     for (PlayerCard* card : cards)
         cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+    QSet<CBoardItem*> avaibleGUI;
+    for(PlayerCard* card : avaible)
+        avaibleGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
     COverlay* overlay = GUI->showOverlay();
     overlay->displayItems(cardsGUI);
+    overlay->setEnabledItems(avaibleGUI);
     QString description = QString("<h2>Choose <b>%1</b> cards in the same color to discover a cure for the disease in this color</h2>").arg(count);
     overlay->setDescription(description);
     overlay->letPlayerChoose(count, true);

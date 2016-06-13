@@ -57,7 +57,7 @@ public:
 
     void chooseStationToRemove(std::vector<City*>);
     void ShareKnowledge();
-    void playerMayDiscardCards(int count);
+    void playerMayDiscardCards(int count, std::vector<PlayerCard*> avaible);
     void playerMustDiscardCards(Player* which, int count);
 
     friend Mediator& mediator(); //ta metoda mo¿e wywo³aæ prywatny konstruktor
