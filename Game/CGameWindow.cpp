@@ -229,14 +229,19 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
     CCity* currentCity = actualMovedPlayer->getLocation();
     if (decisions.contains(DEC_MOVE_ANOTHER)) {
         vector<Player*> players = game->ChoosePlayer();
-        for (int i = 0; i < players.size(); ++i) {
-            ui.playerOverlays[i]->show();
-            ui.playerOverlays[i]->raise();
-            if(actualMovedPlayer->getIco()->geometry().intersects(ui.playerOverlays[i]->geometry()))
-                ui.playerOverlays[0]->setStyleSheet("background-color: rgba(0,255,0,128); border: 3px solid green;");
-            else
-                ui.playerOverlays[i]->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
-            ui.playerOverlays[i]->setToolTip(ui.board->findPlayer(players[i]->GetRole())->getIco()->toolTip());
+        for (Player* player : players) {
+            CPlayer* playerGUI = ui.board->findPlayer(player->GetRole());
+            for (int i = 0; i < players.size(); ++i) {
+                if (ui.playerOverlays[i]->geometry().intersects(playerGUI->getIco()->geometry())) {
+                    ui.playerOverlays[i]->show();
+                    ui.playerOverlays[i]->raise();
+                    if (actualMovedPlayer == playerGUI)
+                        ui.playerOverlays[i]->setStyleSheet("background-color: rgba(0,255,0,128); border: 3px solid green;");
+                    else
+                        ui.playerOverlays[i]->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
+                    ui.playerOverlays[i]->setToolTip(playerGUI->getIco()->toolTip());
+                }
+            }
         }
     }
     if (decisions.contains(DEC_MOVE_SHORT)) {

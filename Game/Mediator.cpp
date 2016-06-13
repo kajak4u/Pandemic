@@ -266,7 +266,7 @@ void Mediator::playerUsedCard(CCard* card)
             break;
         }
     }
-    else if (card->getCityName().toStdString() == engine->GetCurrentPlayer()->GetPosition()->GetName()) {
+    else if (card->getCityName().toStdString() == actualMovedPlayer->GetPosition()->GetName()) {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move anywhere?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
             return;
