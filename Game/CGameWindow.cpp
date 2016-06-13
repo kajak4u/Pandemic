@@ -34,6 +34,7 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     connect(ui.board, &CBoard::cardActivated, this, &CGameWindow::waitForNextAction);
     connect(ui.board, &CBoard::actionPerformed, this, &CGameWindow::waitForNextAction);
     connect(ui.board, &CBoard::actionCancelled, this, &CGameWindow::nextAction);
+    connect(ui.board, &CBoard::setCurrentStatus, this, &CGameWindow::setStatusBar);
     connect(ui.passButton, &QPushButton::clicked, [this]() {
         engine()->Pass();
         waitForNextAction();
@@ -101,6 +102,16 @@ void CGameWindow::disableAll()
     menu_treat[RED]->setEnabled(false);
     menu_treat[YELLOW]->setEnabled(false);
     ui.passButton->setEnabled(false);
+}
+
+void CGameWindow::setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards)
+{
+    ui.blue_info->setText(QString::number(cubesBlue));
+    ui.yellow_info->setText(QString::number(cubesYellow));
+    ui.black_info->setText(QString::number(cubesBlack));
+    ui.red_info->setText(QString::number(cubesRed));
+    ui.base_info->setText(QString::number(stations));
+    ui.cards_info->setText(QString::number(playerCards));
 }
 
 Board * CGameWindow::engine() const

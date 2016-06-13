@@ -35,6 +35,7 @@ public:
     void setEngine(Board*);
 	void init(const std::vector<Player*>& players, const std::vector<City*>& cities, 
 			  const CardDeck& playerCardDeck, const CardDeck& playerDiscard, const CardDeck& diseaseCardDeck, const CardDeck& diseaseDiscard);
+    void setCurrentStatus(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards);
     void setCurrent(Player*);
     void setPlayerToolTips();
     void setHand();

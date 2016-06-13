@@ -87,6 +87,12 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
     qDebug() << "init end";
 }
 
+void Mediator::setCurrentStatus(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards)
+{
+    checkGUI();
+    emit GUI->setCurrentStatus(cubesBlue, cubesYellow, cubesBlack, cubesRed, stations, playerCards);
+}
+
 void Mediator::setCurrent(Player *current)
 {
     checkGUI();

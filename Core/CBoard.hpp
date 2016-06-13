@@ -102,4 +102,5 @@ signals:
     void actionStarted();
     void actionPerformed();
     void animationFinished();
+    void setCurrentStatus(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards);
 };

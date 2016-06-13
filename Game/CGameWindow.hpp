@@ -70,6 +70,7 @@ private slots:
     void nextAction();
     void waitForNextAction();
     void disableAll();
+    void setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards);
 signals:
     void created();
 };
