@@ -89,11 +89,11 @@ void Board::DiscoverCure()
 {
 	if (currentPlayer->GetRole() == ROLE_SCIENTIST)
 	{
-		mediator().playerMayDiscardCards(4, THISMETHOD(&Board::DiscoverCure_FinalStep)); 
+        mediator().playerMayDiscardCards(4);
 	}
 	else
 	{
-		mediator().playerMayDiscardCards(5, THISMETHOD(&Board::DiscoverCure_FinalStep)); 
+        mediator().playerMayDiscardCards(5);
 	}
 }
 
@@ -158,7 +158,7 @@ GameResult Board::Pass()
 				int toDiscardCount = currentPlayer->EarnCards(cardsForPlayer);
 				if (toDiscardCount > 0)
 				{
-					m.playerMustDiscardCards(currentPlayer, toDiscardCount, THISMETHOD(&Board::DiscardToLimit));
+                    m.playerMustDiscardCards(currentPlayer, toDiscardCount);
 				}
 				else
 				{
@@ -668,7 +668,7 @@ void Board::GiveCard(Player* target, PlayerCard* card)	  //niech GUI pobiera z p
 	--movesLeft;
 	if (toDiscardCount > 0)
 	{
-		mediator().playerMustDiscardCards(target, toDiscardCount, THISMETHOD(&Board::DiscardToLimit));
+        mediator().playerMustDiscardCards(target, toDiscardCount);
 	}
 }
 
@@ -678,7 +678,7 @@ void Board::GainCard(Player* source, PlayerCard* card)
 	int excessToDiscard	= currentPlayer->EarnCardFrom(source, card);	//wewnatrz jest przekazanie karty na ekranie
 	if (excessToDiscard > 0)
 	{
-		mediator().playerMustDiscardCards(currentPlayer, excessToDiscard, THISMETHOD(&Board::DiscardToLimit));
+        mediator().playerMustDiscardCards(currentPlayer, excessToDiscard);
 	}
 }
 

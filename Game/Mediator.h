@@ -21,13 +21,13 @@ template<typename _OBJ, typename _MET> MethodCallback<_OBJ, _MET> makeCallback(_
     MethodCallback<_OBJ, _MET> ret(o, m);
     return ret;
 }
-#define THISMETHOD(method) makeCallback(this, method)
-#define CALLBACK(class, retType, args) MethodCallback<class*, retType(class::*)(args)>
-#define TWOPARAM(x, y) x, y
-#define STRING2(x) #x
-#define STRING(x) STRING2(x)
-#define STAMP __FILE__  "(" STRING(__LINE__)"): "
-#define COMMENT(s) message(STAMP s)
+//#define THISMETHOD(method) makeCallback(this, method)
+//#define CALLBACK(class, retType, args) MethodCallback<class*, retType(class::*)(args)>
+//#define TWOPARAM(x, y) x, y
+//#define STRING2(x) #x
+//#define STRING(x) STRING2(x)
+//#define STAMP __FILE__  "(" STRING(__LINE__)"): "
+//#define COMMENT(s) message(STAMP s)
 
 class Mediator {
     CBoard* GUI;
@@ -56,13 +56,8 @@ public:
 
     void chooseStationToRemove(std::vector<City*>);
     void ShareKnowledge();
-    void playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess);
-    void playerMustDiscardCards(Player* which, int count, CALLBACK(Board, void, TWOPARAM(std::vector<PlayerCard*>, Player*)) callback);
-    void playerMayGiveCard(CALLBACK(Board, void, TWOPARAM(Card*, Player*)) callback);
-    void playerMayGainCard(CALLBACK(Board, void, TWOPARAM(Card*, Player*)) callback);
-    //karty specjalne
-    void seeTopDiseaseDeck(int count);
-    void playerMayRemoveDiscardedDisease(CALLBACK(Player, void, Card*) callback);
+    void playerMayDiscardCards(int count);
+    void playerMustDiscardCards(Player* which, int count);
 
     friend Mediator& mediator(); //ta metoda mo¿e wywo³aæ prywatny konstruktor
 };

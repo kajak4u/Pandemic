@@ -14,7 +14,7 @@ public:
 	COverlay(QWidget * parent = Q_NULLPTR);
 	~COverlay();
     void track(const QSet<CBoardItem*>& items, bool canCancel);
-    void track(const QSet<CPlayer*>& players, bool canCancel);
+    void track(const QSet<CPlayer*>& players, const QSet<CPlayer*>& enabledPlayers, bool canCancel);
     void clearDisplay();
     void setDescription(const QString&);
     void displayItems(const QVector<CBoardItem*>& items);

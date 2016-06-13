@@ -185,7 +185,7 @@ bool Mediator::playerUsedCard(CCard* card)
                     playersGUI += GUI->findPlayer(player->GetRole());
                 COverlay* overlay = GUI->showOverlay();
                 overlay->setDescription("<h2>Choose player and then click city to move his pawn.</h2>");
-                overlay->track(playersGUI, true);
+                overlay->track(playersGUI, playersGUI, true);
                 static Player* chosenPlayer;
                 overlay->connect(overlay, &COverlay::userChosePlayer, [this, overlay](CPlayer* player) {
                     chosenPlayer = player->toLogic();
@@ -427,13 +427,17 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
 
 void Mediator::ShareKnowledge()
 {
-    vector<Player*> players = engine->ChoosePlayerToShareKnowledge();
+    vector<Player*> players = engine->ChoosePlayer();
     QSet<CPlayer*> playersGUI;
     for (Player* player : players)
         playersGUI += GUI->findPlayer(player->GetRole());
+    vector<Player*> playersToShare = engine->ChoosePlayerToShareKnowledge();
+    QSet<CPlayer*> playersToShareGUI;
+    for (Player* player : playersToShare)
+        playersToShareGUI += GUI->findPlayer(player->GetRole());
     COverlay* overlay = GUI->showOverlay();
     overlay->setDescription("<h2>Choose player and then click card to share it.</h2>");
-    overlay->track(playersGUI, true);
+    overlay->track(playersGUI, playersToShareGUI, true);
     static Player* chosenPlayer;
     overlay->connect(overlay, &COverlay::userChosePlayer, [this, overlay](CPlayer* player) {
         chosenPlayer = player->toLogic();
@@ -477,7 +481,7 @@ void Mediator::ShareKnowledge()
     });
 }
 
-void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess)
+void Mediator::playerMayDiscardCards(int count)
 {
     qDebug() << "player may discard cards" ;
     Player* player = engine->GetCurrentPlayer();
@@ -505,11 +509,31 @@ void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Ca
     });
 }
 
-void Mediator::playerMustDiscardCards(Player * which, int count, CALLBACK(Board, void, TWOPARAM(std::vector<PlayerCard*>, Player *))callback)
+void Mediator::playerMustDiscardCards(Player * player, int count)
 {
     qDebug() << "player must discard cards" ;
-    engine->DiscardToLimit(std::vector<PlayerCard*>(), engine->GetCurrentPlayer());
-    // TODO: Mediator::playerMustDiscardCards not implemented
+    vector<PlayerCard*> cards = player->SeeCards();
+    QVector<CBoardItem*> cardsGUI;
+    for (PlayerCard* card : cards)
+        cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+    COverlay* overlay = GUI->showOverlay();
+    overlay->displayItems(cardsGUI);
+    QString description = QString("<h2>You've exceeded you card limit. Discard up to 7 cards - discard <b>%1</b> cards or use special cards.</h2>").arg(count);
+    overlay->setDescription(description);
+    overlay->letPlayerChoose(count, false);
+    overlay->connect(overlay, &COverlay::userChoseMany, [this, player](const QSet<CBoardItem*> chosenGUI) {
+        if (chosenGUI.size() == 0) {
+            //u¿ytkownik wybra³ "anuluj"
+            emit GUI->actionCancelled();
+        }
+        else {
+            vector<PlayerCard*> chosen;
+            for (CBoardItem* item : chosenGUI)
+                chosen.push_back(dynamic_cast<PlayerCard*>(dynamic_cast<CCard*>(item)->toLogic()));
+            engine->DiscardToLimit(chosen, player);
+            emit GUI->actionPerformed();
+        }
+    });
 }
 
 Mediator & mediator()

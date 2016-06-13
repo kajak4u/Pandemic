@@ -39,21 +39,29 @@ void COverlay::track(const QSet<CBoardItem*>& items, bool canCancel)
     }
 }
 
-void COverlay::track(const QSet<CPlayer*>& players, bool canCancel)
+void COverlay::track(const QSet<CPlayer*>& players, const QSet<CPlayer*>& enabledPlayers, bool canCancel)
 {
     int iks = 100, igrek=100;
     for (CPlayer* player : players) {
         QLabel* ico = player->getIco();
         CBoardItem* newItem = new CBoardItem(dynamic_cast<QWidget*>(ico->parent()));
         newItem->setGeometry(ico->geometry());
-        newItem->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
+        if (enabledPlayers.contains(player)) {
+            newItem->setEnabled(true);
+            newItem->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
+        }
+        else {
+            newItem->setEnabled(false);
+            newItem->setStyleSheet("background-color: rgba(64,64,64,196); border: 2px solid gray;");
+        }
+        newItem->setEnabled(enabledPlayers.contains(player));
         newItem->setToolTip(PlayerRole_SL[player->getRole()]);
         newItem->show();
         connect(newItem, &CBoardItem::leftButtonUp, [this, newItem, player]() {
-            newItem->setStyleSheet("background-color: rgba(0,255,0,64); border: 3px solid green;");
             for(CBoardItem* sel : selected)
                 sel->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
             selected.clear();
+            newItem->setStyleSheet("background-color: rgba(0,255,0,64); border: 3px solid green;");
             selected += newItem;
             emit userChosePlayer(player);
         });
