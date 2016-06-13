@@ -171,6 +171,13 @@ void CBoard::move(CPoint offset)
 }
 
 
+void CBoard::setCardsEnabled(CardType type, bool enable)
+{
+    for (int i = 0; i < hand.size(); ++i)
+        if (hand[i]->getType() == type)
+            hand[i]->setEnabled(enable);
+}
+
 void CBoard::onMouseMove(QMouseEvent *event)
 {
     move((event->pos() - dragStart)/zoomFactor);
@@ -360,8 +367,7 @@ void CBoard::closeCityMenu() {
 
 void CBoard::useCard(CCard *card)
 {
-    if(mediator().playerUsedCard(card))
-        emit cardActivated();
+    mediator().playerUsedCard(card);
 }
 
 void CBoard::setCityMenu(CCircleMenu *menu)

@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "CExtendedSignalWidget.hpp"
+#include "enums.h"
 
 class CCard;
 
@@ -8,7 +9,7 @@ class CHandCard : public CExtendedSignalWidget {
 public:
 	CHandCard(CCard* origin, QWidget * parent = 0);
 	~CHandCard();
-
+    CardType getType() const;
 private:
     CCard* origin;
 public slots:

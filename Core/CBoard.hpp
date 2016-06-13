@@ -58,6 +58,7 @@ public:
     void clearHand();
     void nextPlayer();
     double minZoomFactor() const;
+    void setCardsEnabled(CardType type, bool enable);
 private:
     QLayout* playerArea;
     Qt::TransformationMode scaleMode;
@@ -82,11 +83,6 @@ private:
     Insertable actualInserted;
     QMap<Decision, QWidget*> decisions;
     QMetaObject::Connection closeMenuConn;
-// NOTE sprawdzić, czy nie będzie tego trzeba usunąć:
-////////////////////////////// Czy to tak ma być? //////////////////////////
-    QSet<QWidget*> cityDecisions; // healDisease x4, findCure, buildResearchStation, shareKnowledge
-    QSet<QWidget*> cardDecisions; // (moveFrom / moveTo / use), discard
-    QSet<QWidget*> playersDecisions; // moveAnother
 public slots:
     void clickCity(QMouseEvent*);
     void onMouseMove(QMouseEvent*);
@@ -103,6 +99,7 @@ signals:
     void cityClicked(CCity*);
     void cardActivated();
     void actionCancelled();
+    void actionStarted();
     void actionPerformed();
     void animationFinished();
 };

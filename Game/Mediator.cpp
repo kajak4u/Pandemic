@@ -127,17 +127,18 @@ void Mediator::setHand()
 
 }
 
-bool Mediator::playerUsedCard(CCard* card)
+void Mediator::playerUsedCard(CCard* card)
 {
     if (card->getType() == CT_SPECIAL) {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to use %1 Special Card?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
-            return false;
+            return;
         SpecialCardType cardType = (SpecialCardType) SpecialCardType_SL.indexOf(card->getCityName());
         switch (cardType)
         {
         case SC_ONE_QUIET_NIGHT:
             engine->QuietNight();
+            emit GUI->actionPerformed();
             break;
         case SC_FORECAST:
             {
@@ -160,8 +161,10 @@ bool Mediator::playerUsedCard(CCard* card)
                         engine->Forecast(cards);
                         cards.clear();
                         overlay->deleteLater();
+                        emit GUI->actionPerformed();
                     }
                 });
+                emit GUI->actionStarted();
             }
             break;
         case SC_RESILIENT_POPULATION:
@@ -200,10 +203,9 @@ bool Mediator::playerUsedCard(CCard* card)
                 COverlay* overlay = GUI->showOverlay();
                 overlay->setDescription("<h2>Choose player and then click city to move his pawn.</h2>");
                 overlay->track(playersGUI, playersGUI, true);
-                static Player* chosenPlayer;
                 overlay->connect(overlay, &COverlay::userChosePlayer, [this, overlay](CPlayer* player) {
-                    chosenPlayer = player->toLogic();
-                    QSet<City*> targetCities = engine->ChooseMoveEverywhere(chosenPlayer);
+                    selectedPlayer = player->toLogic();
+                    QSet<City*> targetCities = engine->ChooseMoveEverywhere(selectedPlayer);
                     QSet<CBoardItem*> citiesGUI;
                     for (City* city : targetCities)
                         citiesGUI += GUI->FIND(CCity, QSTR(city->GetName()));
@@ -216,9 +218,11 @@ bool Mediator::playerUsedCard(CCard* card)
                     }
                     else {
                         CCity* chosenCity = dynamic_cast<CCity*>(chosen);
-                        engine->Airlift(chosenPlayer, chosenCity->toLogic());
+                        engine->Airlift(selectedPlayer, chosenCity->toLogic());
+                        emit GUI->actionPerformed();
                     }
                 });
+                emit GUI->actionStarted();
             }
             break;
         case SC_GOVERNMENT_GRANT:
@@ -239,20 +243,21 @@ bool Mediator::playerUsedCard(CCard* card)
                     else {
                         CCity* chosenCity = dynamic_cast<CCity*>(chosen);
                         engine->GovernmentGrant(chosenCity->toLogic());
+                        emit GUI->actionPerformed();
                     }
                 });
+                emit GUI->actionStarted();
             }
             break;
         default:
             throw "dupa, z³y typ karty";
             break;
         }
-        return true;
     }
     else if (card->getCityName().toStdString() == engine->GetCurrentPlayer()->GetPosition()->GetName()) {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move anywhere?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
-            return false;
+            return;
         QSet<City*> cities = engine->ChooseMoveEverywhere(engine->GetCurrentPlayer());
         QSet<CBoardItem*> citiesGUI;
         for (City* city : cities)
@@ -269,16 +274,17 @@ bool Mediator::playerUsedCard(CCard* card)
             else {
                 CCity* chosenCity = dynamic_cast<CCity*>(chosen);
                 engine->MoveEverywhere(chosenCity->toLogic());
+                emit GUI->actionPerformed();
             }
         });
-        return true;
+        emit GUI->actionStarted();
     }
     else {
         int result = QMessageBox::question(GUI, "Confirm action", QString("Are you sure you want to discard %1 Card to move there?").arg(card->getCityName()));
         if (result != QMessageBox::Yes)
-            return false;
+            return;
         engine->MoveToCard(dynamic_cast<PlayerCard*>(card->toLogic()));
-        return true;
+        emit GUI->actionPerformed();
     }
 }
 
@@ -421,19 +427,6 @@ void Mediator::seeDeck(DeckType type)
     QString description = QString("<h2>See the contant of the Deck. Press Ok when winished.</h2>");
     overlay->setDescription(description);
     overlay->letPlayerChoose(0, false);
-    //overlay->connect(overlay, &COverlay::userChoseMany, [this](const QSet<CBoardItem*> chosenGUI) {
-    //    if (chosenGUI.size() == 0) {
-    //        //u¿ytkownik wybra³ "anuluj"
-    //        emit GUI->actionCancelled();
-    //    }
-    //    else {
-    //        vector<PlayerCard*> chosen;
-    //        for (CBoardItem* item : chosenGUI)
-    //            chosen.push_back(dynamic_cast<PlayerCard*>(dynamic_cast<CCard*>(item)->toLogic()));
-    //        engine->DiscardToLimit(chosen, player);
-    //        emit GUI->actionPerformed();
-    //    }
-    //});
 }
 
 void Mediator::endGame(GameResult)
@@ -561,7 +554,8 @@ void Mediator::playerMustDiscardCards(Player * player, int count)
     QString description = QString("<h2>You've exceeded you card limit. Discard up to 7 cards - discard <b>%1</b> cards or use special cards.</h2>").arg(count);
     overlay->setDescription(description);
     overlay->letPlayerChoose(count, false);
-    overlay->connect(overlay, &COverlay::userChoseMany, [this, player](const QSet<CBoardItem*> chosenGUI) {
+    selectedPlayer = player;
+    overlay->connect(overlay, &COverlay::userChoseMany, [this](const QSet<CBoardItem*> chosenGUI) {
         if (chosenGUI.size() == 0) {
             //u¿ytkownik wybra³ "anuluj"
             emit GUI->actionCancelled();
@@ -570,7 +564,7 @@ void Mediator::playerMustDiscardCards(Player * player, int count)
             vector<PlayerCard*> chosen;
             for (CBoardItem* item : chosenGUI)
                 chosen.push_back(dynamic_cast<PlayerCard*>(dynamic_cast<CCard*>(item)->toLogic()));
-            engine->DiscardToLimit(chosen, player);
+            engine->DiscardToLimit(chosen, selectedPlayer);
             emit GUI->actionPerformed();
         }
     });

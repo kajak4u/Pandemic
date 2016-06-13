@@ -30,6 +30,7 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     mediator().setGUI(ui.board);
     connect(this, &CGameWindow::created, this, &CGameWindow::afterCreate, Qt::ConnectionType(Qt::QueuedConnection | Qt::UniqueConnection));
     connect(ui.board, &CBoard::cityClicked, this, &CGameWindow::targetCityClicked);
+    connect(ui.board, &CBoard::actionStarted, this, &CGameWindow::disableAll);
     connect(ui.board, &CBoard::cardActivated, this, &CGameWindow::waitForNextAction);
     connect(ui.board, &CBoard::actionPerformed, this, &CGameWindow::waitForNextAction);
     connect(ui.board, &CBoard::actionCancelled, this, &CGameWindow::nextAction);
@@ -85,8 +86,13 @@ void CGameWindow::waitForNextAction()
         conn = connect(ui.board, &CBoard::animationFinished, this, &CGameWindow::nextAction);
     else
         qDebug() << "dupa";
+    disableAll();
+}
+void CGameWindow::disableAll()
+{
     //blokada przed wykonaniem innych akcji w czasie trwania bie¿¹cej
     ui.board->setActiveCities(QSet<CCity*>());
+    ui.board->setCardsEnabled(CT_PLAYER, false);
     menu_buildStation->setEnabled(false);
     menu_discoverCure->setEnabled(false);
     menu_shareKnowledge->setEnabled(false);
@@ -106,8 +112,6 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
 {
     CPlayer* currentPlayer = ui.board->currentPlayer();
     CCity* currentCity = currentPlayer->getLocation();
-    if (decisions.contains(DEC_MOVE_TO_PLAYER)) {
-    }
     if (decisions.contains(DEC_MOVE_ANOTHER)) {
     }
     if (decisions.contains(DEC_MOVE_SHORT)) {
@@ -117,11 +121,8 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
             citiesGUI << ui.board->findChild<CCity*>(CCity::createObjectName(QString::fromStdString(city->GetName())));
         ui.board->setActiveCities(citiesGUI);
     }
-    if (decisions.contains(DEC_MOVE_TO_CARD)) {
-        // TODO decision
-    }
-    if (decisions.contains(DEC_MOVE_EVERYWHERE)) {
-        // TODO decision
+    if (decisions.contains(DEC_MOVE_TO_CARD) || decisions.contains(DEC_MOVE_EVERYWHERE)) {
+        ui.board->setCardsEnabled(CT_PLAYER, true);
     }
     menu_buildStation->setEnabled(decisions.contains(DEC_BUILD_STATION));
     menu_discoverCure->setEnabled(decisions.contains(DEC_DISCOVER_CURE));

@@ -198,6 +198,8 @@ void COverlay::itemClicked()
     CBoardItem* overlayItem = dynamic_cast<CBoardItem*>(sender());
     CBoardItem* originItem = links[overlayItem];
     emit userChoseOne(originItem);
+    selected.insert(originItem);
+    emit userChoseMany(selected);
     if (deleteItemOnClick)
     {
         overlayItem->deleteLater();

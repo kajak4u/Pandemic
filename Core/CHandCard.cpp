@@ -31,6 +31,11 @@ CHandCard::~CHandCard()
 {
 }
 
+CardType CHandCard::getType() const
+{
+    return origin->getType();
+}
+
 void CHandCard::activate()
 {
     emit cardActivated(origin);

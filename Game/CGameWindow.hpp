@@ -69,6 +69,7 @@ private slots:
     void targetCityClicked(CCity*);
     void nextAction();
     void waitForNextAction();
+    void disableAll();
 signals:
     void created();
 };

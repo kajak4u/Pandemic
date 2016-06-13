@@ -25,6 +25,7 @@ template<typename _OBJ, typename _MET> MethodCallback<_OBJ, _MET> makeCallback(_
 class Mediator {
     CBoard* GUI;
     Board* engine; // jednak te¿ jest potrzebny
+    Player* selectedPlayer;
     Mediator(); //prywatny konstruktor - celowo, ¿eby nie da³o siê tworzyæ obiektów tej klasy poza wyznaczonymi miejscami
     void checkGUI() const;
 public:
@@ -35,7 +36,7 @@ public:
     void setCurrent(Player*);
     void setPlayerToolTips();
     void setHand();
-    bool playerUsedCard(CCard*);
+    void playerUsedCard(CCard*);
     void addDiseaseCube(City*, DiseaseType, int count=1);
     void removeCube(City*, DiseaseType, int count=1);
     void movePawn(Player*, City*);
