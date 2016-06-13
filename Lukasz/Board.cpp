@@ -246,16 +246,21 @@ void Board::NewTurn()
 		currentPlayer = players[currentPlayerNumber%players.size()];
 		m.setCurrent(currentPlayer);
 		movesLeft = 4;
-		int cubesBlue = FindDisease(BLUE)->MarkersLeft(),
-			cubesRed = FindDisease(RED)->MarkersLeft(),
-			cubesYellow = FindDisease(YELLOW)->MarkersLeft(),
-			cubesBlack = FindDisease(BLACK)->MarkersLeft();
-		m.setCurrentStatus(cubesBlue,cubesYellow,cubesBlack,cubesRed,stationsLeft,playerNew.CardsLeft(), outbreaksMarker, GetInfectionRateMarker());
+		//int cubesBlue = FindDisease(BLUE)->MarkersLeft(),
+		//	cubesRed = FindDisease(RED)->MarkersLeft(),
+		//	cubesYellow = FindDisease(YELLOW)->MarkersLeft(),
+		//	cubesBlack = FindDisease(BLACK)->MarkersLeft();
+		////m.setCurrentStatus(cubesBlue,cubesYellow,cubesBlack,cubesRed,stationsLeft,playerNew.CardsLeft(), outbreaksMarker, GetInfectionRateMarker());
 	}
 }
 
 vector<Decision> Board::IsAbleTo()
 {
+	int cubesBlue = FindDisease(BLUE)->MarkersLeft(),
+		cubesRed = FindDisease(RED)->MarkersLeft(),
+		cubesYellow = FindDisease(YELLOW)->MarkersLeft(),
+		cubesBlack = FindDisease(BLACK)->MarkersLeft();
+	mediator().setCurrentStatus(cubesBlue, cubesYellow, cubesBlack, cubesRed, stationsLeft, playerNew.CardsLeft(), outbreaksMarker, GetInfectionRateMarker());
 	vector<Decision> decisionsAvailable;
 	if (gameStatus == IN_PROGRESS)
 	{
