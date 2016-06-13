@@ -313,8 +313,8 @@ vector<Decision> Board::IsAbleTo()
 							}
 						}
 					} 
-					else if (cityCard == nullptr) //jak obecny nie ma miasta, to czy sprawdzany (NIE-researcher) jej nie posiada
-					{
+					else if (cityCard == nullptr && anotherPlayersCityCard == nullptr) //jak obecny nie ma miasta, to czy sprawdzany (NIE-researcher) jej nie posiada
+					{																 //ale tez CZY WCZESNIEJSZY JEJ NIE MIAL
 						anotherPlayersCityCard = play->FindCard(currentCity->GetName());
 						if (anotherPlayersCityCard != nullptr)//jesli posiada..
 						{
