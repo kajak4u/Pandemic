@@ -106,12 +106,12 @@ void CGameWindow::disableAll()
 
 void CGameWindow::setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards)
 {
-    ui.blue_info->setText(QString::number(cubesBlue));
-    ui.yellow_info->setText(QString::number(cubesYellow));
-    ui.black_info->setText(QString::number(cubesBlack));
-    ui.red_info->setText(QString::number(cubesRed));
-    ui.base_info->setText(QString::number(stations));
-    ui.cards_info->setText(QString::number(playerCards));
+    ui.blue_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesBlue < 0 ? "red" : "black").arg(cubesBlue));
+    ui.yellow_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesYellow < 0 ? "red" : "black").arg(cubesYellow));
+    ui.black_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesBlack < 0 ? "red" : "black").arg(cubesBlack));
+    ui.red_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesRed < 0 ? "red" : "black").arg(cubesRed));
+    ui.base_info->setText(QString("<span color=\"%1\">%2</span>").arg(stations == 0 ? "red" : "black").arg(stations));
+    ui.cards_info->setText(QString("<span color=\"%1\">%2</span>").arg(playerCards <= 0 ? "red" : "black").arg(playerCards));
 }
 
 Board * CGameWindow::engine() const
