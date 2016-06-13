@@ -21,13 +21,6 @@ template<typename _OBJ, typename _MET> MethodCallback<_OBJ, _MET> makeCallback(_
     MethodCallback<_OBJ, _MET> ret(o, m);
     return ret;
 }
-//#define THISMETHOD(method) makeCallback(this, method)
-//#define CALLBACK(class, retType, args) MethodCallback<class*, retType(class::*)(args)>
-//#define TWOPARAM(x, y) x, y
-//#define STRING2(x) #x
-//#define STRING(x) STRING2(x)
-//#define STAMP __FILE__  "(" STRING(__LINE__)"): "
-//#define COMMENT(s) message(STAMP s)
 
 class Mediator {
     CBoard* GUI;
@@ -52,6 +45,7 @@ public:
     void increaseOutbreaksMarker(int count = 1);
     void increaseInfectionsMarker();
     void removeResearchStation(City*); //jak chcemy zbudowaæ bazê a nie ma wiêcej kostek, to jak¹œ trzeba usun¹æ
+    void seeDeck(DeckType);
 	void endGame(GameResult);
 
     void chooseStationToRemove(std::vector<City*>);
