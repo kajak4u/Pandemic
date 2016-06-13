@@ -44,6 +44,9 @@ void Board::Infect(Card* card, int cubesCount)
 	diseasesDiscarded.PutCard(card);
 	Disease* disease = FindDisease(card->GetColor());
 	disease->diseaseAppearsIn(FindCity(card->GetName()), cubesCount);
+	mediator().setCurrentStatus(FindDisease(BLUE)->MarkersLeft(), FindDisease(YELLOW)->MarkersLeft(), 
+								FindDisease(BLACK)->MarkersLeft(), FindDisease(RED)->MarkersLeft(), 
+								stationsLeft, playerNew.CardsLeft(), outbreaksMarker, GetInfectionRateMarker());
 }
 
 void Board::PlayTheInfection(bool isSkipped)
