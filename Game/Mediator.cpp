@@ -101,6 +101,20 @@ void Mediator::setCurrent(Player *current)
     });
 }
 
+void Mediator::setPlayerToolTips()
+{
+    vector<Player*> players = engine->ChoosePlayer();
+    for (Player* player : players) {
+        CPlayer* playerGUI = GUI->findPlayer(player->GetRole());
+        QString tooltip = QString("<h1>%1</h1><h2>Role: <b>%2</b></h2><table>").arg(QSTR(player->GetNick())).arg(PlayerRole_SL[player->GetRole()]);
+        vector<PlayerCard*> cards = player->SeeCards();
+        for (PlayerCard* card : cards)
+            tooltip += QString("<tr><td style=\"background-color: %1; color: %2; padding: 10px; border: 2px solid green;\"><h3>%3</h3></td></tr>").arg(card->GetColor() == UNKNOWN ? "ORANGE" : DiseaseType_SL[card->GetColor()]).arg(card->GetColor() == BLACK ? "white" : "black").arg(QSTR(card->GetName()));
+        tooltip += "</table>";
+        playerGUI->getIco()->setToolTip(tooltip);
+    }
+}
+
 void Mediator::setHand()
 {
     vector<PlayerCard*> hand = engine->GetCurrentPlayer()->SeeCards();

@@ -161,7 +161,7 @@ void COverlay::letPlayerChoose(int count, bool canCancel)
         for (QMap<CBoardItem*, CBoardItem*>::iterator iter = links.begin(); iter != links.end(); ++iter)
             connect(iter.key(), &CBoardItem::leftButtonUp, this, &COverlay::itemClicked);
     }
-    else {
+    else if (count != 0) { //0 - przeglądanie kart, bez możliwości zaznaczania
         for (QMap<CBoardItem*, CBoardItem*>::iterator iter = links.begin(); iter != links.end(); ++iter)
             connect(iter.key(), &CBoardItem::leftButtonUp, this, &COverlay::itemToggled);
     }

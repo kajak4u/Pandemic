@@ -23,7 +23,6 @@
 #include "COverlay.hpp"
 #include "CCircleMenu.hpp"
 #include "CGameWindow.hpp"
-#include "Lukasz/Board.h"
 #include "CCard.hpp"
 #include "CPlayer.h"
 #include "CHandCard.hpp"
