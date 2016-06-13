@@ -104,14 +104,16 @@ void CGameWindow::disableAll()
     ui.passButton->setEnabled(false);
 }
 
-void CGameWindow::setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards)
+void CGameWindow::setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate)
 {
-    ui.blue_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesBlue < 0 ? "red" : "black").arg(cubesBlue));
-    ui.yellow_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesYellow < 0 ? "red" : "black").arg(cubesYellow));
-    ui.black_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesBlack < 0 ? "red" : "black").arg(cubesBlack));
-    ui.red_info->setText(QString("<span color=\"%1\">%2</span>").arg(cubesRed < 0 ? "red" : "black").arg(cubesRed));
-    ui.base_info->setText(QString("<span color=\"%1\">%2</span>").arg(stations == 0 ? "red" : "black").arg(stations));
-    ui.cards_info->setText(QString("<span color=\"%1\">%2</span>").arg(playerCards <= 0 ? "red" : "black").arg(playerCards));
+    ui.blue_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesBlue < 0 ? "red" : "black").arg(cubesBlue));
+    ui.yellow_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesYellow < 0 ? "red" : "black").arg(cubesYellow));
+    ui.black_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesBlack < 0 ? "red" : "black").arg(cubesBlack));
+    ui.red_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesRed < 0 ? "red" : "black").arg(cubesRed));
+    ui.base_info->setText(QString("<span color=\"%1\">x%2</span>").arg(stations == 0 ? "red" : "black").arg(stations));
+    ui.cards_info->setText(QString("<span color=\"%1\">x%2</span>").arg(playerCards <= 0 ? "red" : "black").arg(playerCards));
+    ui.outbreak_info->setText(QString("<span color=\"%1\">x%2</span>").arg(outbreaks >= 8 ? "red" : "black").arg(outbreaks));
+    ui.infections_info->setText(QString("<span color=\"%1\">x%2</span>").arg(outbreaks == 4 ? "red" : "black").arg(infectionsRate));
 }
 
 Board * CGameWindow::engine() const
@@ -151,26 +153,26 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
     }
     if (decisions.contains(DEC_PASS)) {
         ui.passButton->setEnabled(true);
-    }
-    if ((decisions - QSet<Decision>({ DEC_PASS, DEC_USE_SPECIAL })).isEmpty()) {
-        //gracz mo¿e tylko spasowaæ / zagraæ kartê specjaln¹
-        QColor startColor = ui.passButton->palette().color(QPalette::Button);
-        QPropertyAnimation* animation = new QPropertyAnimation(ui.passButton, "color");
-        animation->setLoopCount(-1);
-        animation->setKeyValueAt(0.0, startColor);
-        animation->setKeyValueAt(0.25, QColor(0,255,0));
-        animation->setKeyValueAt(0.5, startColor);
-        animation->setKeyValueAt(1.0, startColor);
-        animation->setDuration(2000);
-        QMetaObject::Connection* conn = new QMetaObject::Connection;
-        *conn = connect(ui.passButton, &CPushButton::clicked, [animation, conn]() {
-            animation->pause();
-            animation->setLoopCount(1);
-            animation->resume();
-            animation->disconnect(*conn);
-            delete conn;
-        });
-        animation->start(QAbstractAnimation::DeleteWhenStopped);
+        if ((decisions - QSet<Decision>({ DEC_PASS, DEC_USE_SPECIAL })).isEmpty()) {
+            //gracz mo¿e tylko spasowaæ / zagraæ kartê specjaln¹
+            QColor startColor = ui.passButton->palette().color(QPalette::Button);
+            QPropertyAnimation* animation = new QPropertyAnimation(ui.passButton, "color");
+            animation->setLoopCount(-1);
+            animation->setKeyValueAt(0.0, startColor);
+            animation->setKeyValueAt(0.25, QColor(0, 255, 0));
+            animation->setKeyValueAt(0.5, startColor);
+            animation->setKeyValueAt(1.0, startColor);
+            animation->setDuration(2000);
+            QMetaObject::Connection* conn = new QMetaObject::Connection;
+            *conn = connect(ui.passButton, &CPushButton::clicked, [animation, conn]() {
+                animation->pause();
+                animation->setLoopCount(1);
+                animation->resume();
+                animation->disconnect(*conn);
+                delete conn;
+            });
+            animation->start(QAbstractAnimation::DeleteWhenStopped);
+        }
     }
 }
 

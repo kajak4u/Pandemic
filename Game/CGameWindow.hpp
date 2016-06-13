@@ -83,7 +83,7 @@ private slots:
     void nextAction();
     void waitForNextAction();
     void disableAll();
-    void setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards);
+    void setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate);
 signals:
     void created();
 };

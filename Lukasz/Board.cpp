@@ -269,7 +269,7 @@ void Board::NewTurn()
 			cubesRed = FindDisease(RED)->MarkersLeft(),
 			cubesYellow = FindDisease(YELLOW)->MarkersLeft(),
 			cubesBlack = FindDisease(BLACK)->MarkersLeft();
-		m.setCurrentStatus(cubesBlue,cubesYellow,cubesBlack,cubesRed,stationsLeft,playerNew.CardsLeft());
+		m.setCurrentStatus(cubesBlue,cubesYellow,cubesBlack,cubesRed,stationsLeft,playerNew.CardsLeft(), outbreaksMarker, GetInfectionRateMarker());
 	}
 }
 
