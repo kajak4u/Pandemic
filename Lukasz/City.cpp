@@ -21,44 +21,6 @@ void City::AddCube(DiseaseType diseaseID)
 	diseaseCubes[diseaseID]++;
 }
 
-//void City::Spread(Disease* disease) // nalozyc sprawdzanie - na zewnatrz: czy choroba jest HEALED
-//{
-//	bool visited = false;
-//	for (City* visitCity : visitedInSpread)	
-//	{
-//		if (this->name == visitCity->name)
-//		{
-//			visited = true;
-//		}
-//	}
-//	if (!visited)
-//	{
-//		visited = true;
-//		visitedInSpread.push_back(this);
-//		if (diseaseCubes[disease->getID()] == 3)
-//		{
-//			Board::Outbreak();		// outbreaksMarker++
-//			for each (City* city in neighbourhood)
-//			{
-//				city->Spread(disease);
-//			}
-//		}
-//		else
-//		{
-//			if (disease->MarkersLeft() > 0)
-//			{
-//				diseaseCubes[disease->getID()]++;
-//				disease->PutMarker();
-//						cout << endl << name << " - COLOR:  " << DiseaseType_SL[disease->getID()].toStdString() << " - COUNTER: " << diseaseCubes[disease->getID()] << endl;
-//			}
-//			else
-//			{
-//				throw string(disease->getColor().toStdString() + " - no markers left");				
-//			}
-//		}
-//	}
-//}
-
 void City::RemoveCube(DiseaseType diseaseID)
 {
 	diseaseCubes[diseaseID]--;
@@ -69,20 +31,6 @@ void City::RemoveAllCubes(DiseaseType diseaseID)
 	diseaseCubes[diseaseID] = 0;
 			cout << endl << name << " - COLOR:  " << DiseaseType_SL[diseaseID].toStdString() << " - COUNTER: " << diseaseCubes[diseaseID] << endl;
 }
-
-//void City::HealOne(Disease* disease) //nalozyc sprawdzanie przy wywolaniu !!!
-//{
-//	disease->RemoveMarkers(diseaseCubes[disease->getID()]);
-//	diseaseCubes[disease->getID()]--;	
-//		cout << endl << name << " - COLOR:  " << DiseaseType_SL[disease->getID()].toStdString() << " - COUNTER: " << diseaseCubes[disease->getID()] << endl;
-//}
-//									
-//void City::HealAll(Disease* disease)		  
-//{
-//	disease->RemoveMarkers(diseaseCubes[disease->getID()]);
-//	diseaseCubes[disease->getID()] = 0;
-//		cout << endl << name << " - COLOR:  " << DiseaseType_SL[disease->getID()].toStdString() << " - COUNTER: " << diseaseCubes[disease->getID()] << endl;
-//}
 
 bool City::IsStation() const
 {

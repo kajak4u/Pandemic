@@ -91,7 +91,7 @@ void Disease::diseaseAppearsIn(City *source, int count)
 {
 	if (markersLeft - count < 0)
 	{
-		throw LOST_CUBES;		//ciekawe czy przejdzie
+		Board::WinOrLoose(LOST_CUBES);
 	}
 	
 	QSet<City*> processed = { source };

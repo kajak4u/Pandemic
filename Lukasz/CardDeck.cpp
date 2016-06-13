@@ -177,6 +177,11 @@ DeckType CardDeck::GetType() const
 	return type;
 }
 
+int CardDeck::CardsLeft() const
+{
+	return Deck.size();
+}
+
 CardDeck::CardDeck(DeckType typeNumber) :type(typeNumber)
 {
 }
