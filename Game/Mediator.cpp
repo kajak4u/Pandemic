@@ -37,8 +37,6 @@ CardType findType(Card* card)
 
 Mediator::Mediator(): GUI(nullptr), engine(nullptr)
 {
-    for (int i = 0; i < 100000; ++i)
-        arr1[i] = arr2[i] = arr3[i] = 0;
 }
 
 void Mediator::checkGUI() const
