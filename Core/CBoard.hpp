@@ -19,8 +19,6 @@ class CCity;
 class CCard;
 class CHandCard;
 
-class Board;
-
 
 class CBoard : public CExtendedSignalWidget {
     Q_OBJECT

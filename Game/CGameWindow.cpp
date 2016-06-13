@@ -69,6 +69,7 @@ void CGameWindow::targetCityClicked(CCity* target)
 void CGameWindow::nextAction()
 {
     qDebug() << "ACTION, left " << game->GetMovesLeft();
+    mediator().setPlayerToolTips();
     mediator().setHand();
     disconnect(conn);
     QVector<Decision> decisions = QVector<Decision>::fromStdVector(game->IsAbleTo());
