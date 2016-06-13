@@ -37,6 +37,12 @@ void COverlay::track(const QSet<CBoardItem*>& items, bool canCancel)
         connect(item, &CBoardItem::resized, this, &COverlay::itemResized);
         connect(newItem, &CBoardItem::leftButtonUp, this, &COverlay::itemClicked);
     }
+    if (canCancel) {
+        cancelButton = new QPushButton("Cancel", this);
+        cancelButton->move(QPoint(width() / 4, height() - 100));
+        cancelButton->show();
+        connect(cancelButton, &QPushButton::clicked, this, &COverlay::cancel);
+    }
 }
 
 void COverlay::track(const QSet<CPlayer*>& players, const QSet<CPlayer*>& enabledPlayers, bool canCancel)

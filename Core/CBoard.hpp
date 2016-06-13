@@ -103,4 +103,5 @@ signals:
     void actionPerformed();
     void animationFinished();
     void setCurrentStatus(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate);
+    void endGame(GameResult);
 };

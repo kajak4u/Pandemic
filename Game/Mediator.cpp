@@ -431,14 +431,15 @@ void Mediator::seeDeck(DeckType type)
         cardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
     COverlay* overlay = GUI->showOverlay();
     overlay->displayItems(cardsGUI);
-    QString description = QString("<h2>See the contant of the Deck. Press Ok when winished.</h2>");
+    QString description = QString("<h2>See the contant of the Deck. Press Ok when finished.</h2>");
     overlay->setDescription(description);
     overlay->letPlayerChoose(0, false);
 }
 
-void Mediator::endGame(GameResult)
+void Mediator::endGame(GameResult res)
 {
     qDebug() << "end game" ;
+    emit GUI->endGame(res);
     // TODO: Mediator::endGame not implemented
 }
 
@@ -453,6 +454,7 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
     GUI->zoomOut();
     COverlay* overlay = GUI->showOverlay();
     overlay->track(stationsGUI, true);
+    overlay->setDescription("You are out of Research Stations. To build a new one, choose an existing Station to remove.");
     overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
         if (chosen == nullptr) {
             //u¿ytkownik wybra³ "anuluj"

@@ -11,6 +11,7 @@
 #include "CPlayer.h"
 #include "CCity.hpp"
 #include "CCard.hpp"
+#include "CMainWindow.hpp"
 
 CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRole>>& players, QWidget *parent)
     : QWidget(parent), game(nullptr), diff(diff), players(players)
@@ -35,6 +36,7 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     connect(ui.board, &CBoard::actionPerformed, this, &CGameWindow::waitForNextAction);
     connect(ui.board, &CBoard::actionCancelled, this, &CGameWindow::nextAction);
     connect(ui.board, &CBoard::setCurrentStatus, this, &CGameWindow::setStatusBar);
+    connect(ui.board, &CBoard::endGame, this, &CGameWindow::endGame);
     connect(ui.passButton, &QPushButton::clicked, [this]() {
         engine()->Pass();
         disableAll();
@@ -106,14 +108,72 @@ void CGameWindow::disableAll()
 
 void CGameWindow::setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate)
 {
-    ui.blue_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesBlue < 0 ? "red" : "black").arg(cubesBlue));
-    ui.yellow_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesYellow < 0 ? "red" : "black").arg(cubesYellow));
-    ui.black_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesBlack < 0 ? "red" : "black").arg(cubesBlack));
-    ui.red_info->setText(QString("<span color=\"%1\">x%2</span>").arg(cubesRed < 0 ? "red" : "black").arg(cubesRed));
-    ui.base_info->setText(QString("<span color=\"%1\">x%2</span>").arg(stations == 0 ? "red" : "black").arg(stations));
-    ui.cards_info->setText(QString("<span color=\"%1\">x%2</span>").arg(playerCards <= 0 ? "red" : "black").arg(playerCards));
-    ui.outbreak_info->setText(QString("<span color=\"%1\">x%2</span>").arg(outbreaks >= 8 ? "red" : "black").arg(outbreaks));
-    ui.infections_info->setText(QString("<span color=\"%1\">x%2</span>").arg(outbreaks == 4 ? "red" : "black").arg(infectionsRate));
+    ui.blue_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(cubesBlue < 0 ? "red" : "black").arg(cubesBlue));
+    ui.yellow_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(cubesYellow < 0 ? "red" : "black").arg(cubesYellow));
+    ui.black_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(cubesBlack < 0 ? "red" : "black").arg(cubesBlack));
+    ui.red_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(cubesRed < 0 ? "red" : "black").arg(cubesRed));
+    ui.base_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(stations == 0 ? "red" : "black").arg(stations));
+    ui.cards_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(playerCards <= 0 ? "red" : "black").arg(playerCards));
+    ui.outbreak_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(outbreaks >= 8 ? "red" : "black").arg(outbreaks));
+    ui.infections_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(outbreaks == 4 ? "red" : "black").arg(infectionsRate));
+}
+
+void CGameWindow::endGame(GameResult result)
+{
+    QString color;
+    QString title;
+    if (result == WON) {
+        color = "rgba(64,255,64,192)";
+        title = "You won";
+    }
+    else {
+        color = "rgba(255,64,64,192)";
+        title = "You lost";
+
+    }
+    QString message;
+    switch (result)
+    {
+    case LOST_OUTBREAKS:
+        message = "You lost the game because too many outbreaks had occured.";
+        break;
+    case LOST_CUBES:
+        message = "You lost the game because one of the diseases had already infected too many people.";
+        break;
+    case LOST_CARDS:
+        message = "You lost the game because you run out of Player Cards.";
+        break;
+    case WON:
+        message = "Congratulations! You managed it to save humanity!";
+        break;
+    }
+    QWidget* endStatusWidget = new QWidget(this);
+    endStatusWidget->setGeometry(0, 0, width(), height());
+    endStatusWidget->setObjectName("endStatusWidget");
+    endStatusWidget->setStyleSheet(QString("#endStatusWidget {background: %1;}").arg(color));
+    QLabel* titleLabel = new QLabel(endStatusWidget);
+    titleLabel->setText(QString("<h1>%1</h1>").arg(title));
+    titleLabel->setGeometry(0, 200, width(), 200);
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->show();
+    QLabel* descriptionLabel = new QLabel(endStatusWidget);
+    descriptionLabel->setText(QString("<h2>%1</h2>").arg(message));
+    descriptionLabel->setGeometry(0, 400, width(), 200);
+    descriptionLabel->setAlignment(Qt::AlignCenter);
+    descriptionLabel->setWordWrap(true);
+    descriptionLabel->show();
+    QPushButton* backBtn = new QPushButton("Back to menu", endStatusWidget);
+    backBtn->setGeometry(200, 600, 200, 50);
+    backBtn->show();
+    connect(backBtn, &QPushButton::clicked, this, &CGameWindow::gotoMenu);
+    endStatusWidget->show();
+}
+
+void CGameWindow::gotoMenu()
+{
+    CMainWindow *newWindow = new CMainWindow(false);
+    newWindow->showFullScreen();
+    this->close();
 }
 
 Board * CGameWindow::engine() const
