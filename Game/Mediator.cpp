@@ -105,6 +105,7 @@ void Mediator::setCurrent(Player *current)
             GUI->nextPlayer();
         setHand();
     });
+    emit GUI->actionPerformed();
 }
 
 void Mediator::setPlayerToolTips()

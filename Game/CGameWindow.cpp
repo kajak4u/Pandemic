@@ -37,7 +37,7 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     connect(ui.board, &CBoard::setCurrentStatus, this, &CGameWindow::setStatusBar);
     connect(ui.passButton, &QPushButton::clicked, [this]() {
         engine()->Pass();
-        waitForNextAction();
+        disableAll();
     });
     emit created();
 }

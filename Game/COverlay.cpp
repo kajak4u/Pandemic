@@ -123,9 +123,10 @@ void COverlay::displayItems(const QVector<CBoardItem*>& items, const QString& co
         CBoardItem* newItem = new CBoardItem(areaWidget);
         links[newItem] = item;
         item->cloneTo(newItem);
+        newItem->setMask(QBitmap());
         newItem->scaleTo(item->getContainer()->minZoomFactor()*1.25);
-        newItem->setStyleSheet(QString() + "border: 0px outset black; border-radius: " + QString::number(newItem->width() / 4) + "px; ");
         newItem->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
+        newItem->setGeometry(newItem->geometry().marginsAdded(QMargins(2,2,2,2)));
         newItem->setMinimumSize(newItem->size());
         newItem->setMaximumSize(newItem->size());
         areaHorzLayout->addWidget(newItem);
@@ -220,7 +221,8 @@ void COverlay::itemToggled()
     else {
         selected += originItem;
         overlayItem->select();
-        overlayItem->setStyleSheet("border: 10px solid red;");
+        //overlayItem->setGeometry(overlayItem->geometry().marginsAdded(QMargins(10, 10, 10, 10)));
+        overlayItem->setStyleSheet("border: 10px solid rgba(255,64,64,192);");
     }
     performButton->setEnabled(selected.size() == numberToSelect);
 }
