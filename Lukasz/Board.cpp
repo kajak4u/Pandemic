@@ -7,6 +7,7 @@
 #include <qset.h>
 #include <ctime>
 #include <cstdlib>
+#include <algorithm>
 
 //PRIVATE:
 int Board::outbreaksMarker = 0;
@@ -391,7 +392,11 @@ vector<Decision> Board::IsAbleTo()
 			}
 		}
 		decisionsAvailable.push_back(DEC_PASS);	//PASS
-	}									
+	}		
+	if (none_of(decisionsAvailable.begin(), decisionsAvailable.end(), [](Decision decided){return decided == DEC_GIVE_CARD; }))
+	{
+		supPlayers.clear();
+	}
 	return decisionsAvailable;
 }
 
