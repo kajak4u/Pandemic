@@ -125,6 +125,10 @@ void Board::DiscoverCure_FinalStep(QVector<Card*> cardsRemoved)
 			MedicIncoming(play);
 		}
 	}
+	for (Card* card : cards)
+	{
+		playerDiscarded.PutCard(card);
+	}
 }
 
 void Board::UseSpecial()
