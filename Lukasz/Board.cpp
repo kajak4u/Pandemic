@@ -407,18 +407,18 @@ vector<Player*> Board::ChoosePlayerToShareKnowledge() const
 	return playersToGetCardFrom; //a jeœli give=={} to give + gain == gain
 }
 
-QSet<City*> Board::SeeFREECitiesAsDispatcher(Player* toMove)
-{
-	QSet<City*> toReturn = ChooseMoveShort(toMove);
-	for (Player* play : players)
-	{
-		if (play != toMove)
-		{
-			toReturn.insert(play->GetPosition());
-		}
-	}
-	return toReturn;
-}
+//QSet<City*> Board::SeeFREECitiesAsDispatcher(Player* toMove)
+//{
+//	QSet<City*> toReturn = ChooseMoveShort(toMove);
+//	for (Player* play : players)
+//	{
+//		if (play != toMove)
+//		{
+//			toReturn.insert(play->GetPosition());
+//		}
+//	}
+//	return toReturn;
+//}
 
 QSet<City*> Board::ChooseMoveShort(Player* toMove)
 {
@@ -436,6 +436,16 @@ QSet<City*> Board::ChooseMoveShort(Player* toMove)
 				toSend.insert(city);
 			}
 		}
+	}
+	if (currentPlayer->GetRole() == ROLE_DISPATCHER)
+	{
+		for (Player* play : players)
+		{
+			if (play != toMove)
+			{
+				toSend.insert(play->GetPosition());
+			}
+		}	  		
 	}
 	return toSend;
 }

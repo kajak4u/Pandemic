@@ -59,7 +59,7 @@ public:
 	vector<Decision> IsAbleTo();
 	vector<Player*> ChoosePlayer() const; //praktycznie getter
 	vector<Player*> ChoosePlayerToShareKnowledge() const;
-	QSet<City*> SeeFREECitiesAsDispatcher(Player* toMove);
+	//QSet<City*> SeeFREECitiesAsDispatcher(Player* toMove);
 	QSet<City*> ChooseMoveShort(Player* toMove);
 	QSet<City*> ChooseMoveEverywhere(Player* toMove);
 	vector<DiseaseType> ChooseDiseaseToTreat();
