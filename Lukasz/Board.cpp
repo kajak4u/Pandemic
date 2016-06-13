@@ -68,6 +68,20 @@ int Board::GetMovesLeft() const
 	return movesLeft;
 }
 
+const vector<Card*>& Board::SeeDeck(DeckType number) const
+{
+	switch (number)
+	{
+	case DT_PLAYER:
+		return playerNew.SeeDeck();
+	case DT_PLAYERDISCARD:
+		return playerDiscarded.SeeDeck();
+	case DT_DISEASE:
+		return diseasesNew.SeeDeck();
+	case DT_DISEASEDISCARD:
+		return = diseasesDiscarded.SeeDeck();
+}
+
 City* Board::FindCity(string name) const
 {
 	for (City* city : Cities)

@@ -117,6 +117,7 @@ public:
 	GameResult GameStatus() const;
 	Player* GetCurrentPlayer() const;
 	int GetMovesLeft() const;
+	const vector<Card*>& SeeDeck(DeckType) const;
 
 	static void Outbreak(); //throw out_of_range() -> catch w PASS() //wywolane tez wewnatrz
 	static void InfectionIncrease();
