@@ -10,6 +10,7 @@
 #include <QApplication>
 #include <QPainter>
 #include <QBitmap>
+#include <QStyleOption>
 #include "core.h"
 
 
@@ -304,7 +305,11 @@ void CBoardItem::paintEvent(QPaintEvent *event)
             painter.setTransform(QTransform().scale(scaleY, 1.0) * translateTransform);
         else
             painter.setTransform(QTransform().translate(width(), 0).scale(scaleY, 1.0) * translateTransform);
-        painter.drawPixmap(-pixmap()->width() / 2, -pixmap()->height() / 2, *pixmap());
+        QStyleOption opt; 
+        opt.initFrom(this);
+        QStyle *style = QWidget::style();
+        QPixmap pix = isEnabled() ? *pixmap() : style->generatedIconPixmap(QIcon::Disabled, *pixmap(), &opt);
+        painter.drawPixmap(-pixmap()->width() / 2, -pixmap()->height() / 2, pix);
     }
     else
         QLabel::paintEvent(event);

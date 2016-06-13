@@ -46,7 +46,6 @@ void COverlay::track(const QSet<CPlayer*>& players, bool canCancel)
         QLabel* ico = player->getIco();
         CBoardItem* newItem = new CBoardItem(dynamic_cast<QWidget*>(ico->parent()));
         newItem->setGeometry(ico->geometry());
-        //newItem->setPixmap(*ico->pixmap());
         newItem->setStyleSheet("background-color: rgba(64,64,64,64); border: 2px solid black;");
         newItem->setToolTip(PlayerRole_SL[player->getRole()]);
         newItem->show();
@@ -60,6 +59,19 @@ void COverlay::track(const QSet<CPlayer*>& players, bool canCancel)
         });
         connect(this, &COverlay::destroyed, newItem, &CBoardItem::deleteLater);
     }
+}
+
+void COverlay::clearDisplay()
+{
+    qDeleteAll(children());
+    links.clear();
+    QVBoxLayout* mainLayout = dynamic_cast<QVBoxLayout*>(layout());
+    if (mainLayout == nullptr)
+        return;
+    while (mainLayout->itemAt(0))
+        delete mainLayout->takeAt(0);
+    delete layout();
+    setLayout(nullptr);
 }
 
 void COverlay::setDescription(const QString &desc)
@@ -88,8 +100,13 @@ void COverlay::displayItems(const QVector<CBoardItem*>& items)
     area->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     area->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     QWidget* areaWidget = new QWidget();
+    QString color;
+    if (layout()->count() % 2 == 1)
+        color = "rgba(64, 238, 64, 128)";
+    else
+        color = "rgba(64, 64, 238, 128)";
     areaWidget->setStyleSheet("background: transparent; border: none;");
-    area->setStyleSheet("background: transparent; border: none;");
+    area->setStyleSheet(QString("background: %1; border: none;").arg(color));
     area->setWidgetResizable(true);
     area->setWidget(areaWidget);
     area->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
@@ -103,13 +120,20 @@ void COverlay::displayItems(const QVector<CBoardItem*>& items)
         CBoardItem* newItem = new CBoardItem(areaWidget);
         links[newItem] = item;
         item->cloneTo(newItem);
-        newItem->scaleTo(item->getContainer()->minZoomFactor()*2);
+        newItem->scaleTo(item->getContainer()->minZoomFactor()*1.25);
+        newItem->setStyleSheet(QString() + "border: 0px outset black; border-radius: " + QString::number(newItem->width() / 4) + "px; ");
         newItem->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Preferred);
         newItem->setMinimumSize(newItem->size());
         newItem->setMaximumSize(newItem->size());
         areaHorzLayout->addWidget(newItem);
     }
     dynamic_cast<QVBoxLayout*>(layout())->addWidget(area, 1);
+}
+
+void COverlay::setEnabledItems(const QSet<CBoardItem*>& items)
+{
+    for (QMap<CBoardItem*, CBoardItem*>::iterator iter = links.begin(); iter != links.end(); ++iter)
+        iter.key()->setEnabled((items.contains(iter.value())));
 }
 
 void COverlay::setDeleteOnClick(bool delOnClick)

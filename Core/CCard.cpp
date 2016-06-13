@@ -1,5 +1,5 @@
 ﻿#ifndef _DEBUG
-#define _NOCARDS
+#define _NOCARDS 
 #endif
 
 #include "CCard.hpp"
@@ -10,6 +10,7 @@
 #include "CBoard.hpp"
 #include <QDebug>
 #include "CPlayer.h"
+#include "core.h"
 
 std::unique_ptr<QPixmap> CCard::playerReverse = nullptr,
         CCard::diseaseReverse = nullptr,
@@ -21,7 +22,9 @@ CCard::CCard(QWidget * parent) : CBoardItem(parent), reversed(false), type(CT_UN
         loadStaticGraphics();
     options += new CStringOption("City name", cardName);
     disableResize();
-    connect(this, &CCard::rightButtonUp, this, &CCard::invert);
+    if (isDesigner()) {
+        connect(this, &CCard::rightButtonUp, this, &CCard::invert);
+    }
 }
 
 CCard::~CCard()

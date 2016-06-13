@@ -129,11 +129,8 @@ void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
         for (DiseaseType dt : toTreat)
             menu_treat[dt]->setEnabled(true);
     }
-    if (decisions.contains(DEC_GAIN_CARD)) {
-        // TODO decision
-    }
-    if (decisions.contains(DEC_GIVE_CARD)) {
-        // TODO decision
+    if (decisions.contains(DEC_GAIN_CARD) || decisions.contains(DEC_GIVE_CARD)) {
+        menu_shareKnowledge->setEnabled(true);
     }
     if (decisions.contains(DEC_USE_SPECIAL)) {
         // TODO decision

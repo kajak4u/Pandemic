@@ -427,8 +427,54 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
 
 void Mediator::ShareKnowledge()
 {
-    //TODO share knowledge not implemented
-    //vector<Player*> players = engine->GetPlayersToShareKnowledgeWith(engine->GetCurrentPlayer());
+    vector<Player*> players = engine->ChoosePlayerToShareKnowledge();
+    QSet<CPlayer*> playersGUI;
+    for (Player* player : players)
+        playersGUI += GUI->findPlayer(player->GetRole());
+    COverlay* overlay = GUI->showOverlay();
+    overlay->setDescription("<h2>Choose player and then click card to share it.</h2>");
+    overlay->track(playersGUI, true);
+    static Player* chosenPlayer;
+    overlay->connect(overlay, &COverlay::userChosePlayer, [this, overlay](CPlayer* player) {
+        chosenPlayer = player->toLogic();
+        vector<PlayerCard*> currentPlayerCards = engine->GetCurrentPlayer()->SeeCards();
+        vector<PlayerCard*> guestCards = chosenPlayer->SeeCards();
+        overlay->clearDisplay();
+        overlay->setDescription("<h2>Choose player and then click card to share it.</h2>");
+        vector<PlayerCard*> cardsToGive = engine->ChooseCardToGive(chosenPlayer);
+        vector<PlayerCard*> cardsToGain = engine->ChooseCardToGain(chosenPlayer);
+        QVector<CBoardItem*> currentPlayerCardsGUI;
+        for (PlayerCard* card : currentPlayerCards)
+            currentPlayerCardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+        QVector<CBoardItem*> guestCardsGUI;
+        for (PlayerCard* card : guestCards)
+            guestCardsGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+        QSet<CBoardItem*> toGiveGUI;
+        for (PlayerCard* card : cardsToGive)
+            toGiveGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+        QSet<CBoardItem*> toGainGUI;
+        for (PlayerCard* card : cardsToGain)
+            toGainGUI += GUI->FIND(CCard, QSTR(card->GetName()), findType(card));
+        overlay->displayItems(currentPlayerCardsGUI);
+        overlay->displayItems(guestCardsGUI);
+        overlay->setEnabledItems(toGainGUI + toGiveGUI);
+        overlay->letPlayerChoose(1, true);
+    });
+    overlay->connect(overlay, &COverlay::userChoseOne, [this, overlay](CBoardItem* chosen) {
+        if (chosen == nullptr) {
+            //u¿ytkownik wybra³ "anuluj"
+            emit GUI->actionCancelled();
+        }
+        else {
+            CCard* chosenCard = dynamic_cast<CCard*>(chosen);
+            PlayerCard* logicCard = dynamic_cast<PlayerCard*>(chosenCard->toLogic());
+            if (chosenPlayer->FindCard(logicCard->GetName()) == nullptr)
+                engine->GiveCard(chosenPlayer, logicCard);
+            else
+                engine->GainCard(chosenPlayer, logicCard);
+            emit GUI->actionPerformed();
+        }
+    });
 }
 
 void Mediator::playerMayDiscardCards(int count, CALLBACK(Board, void, QVector<Card*>) callbackIfSuccess)

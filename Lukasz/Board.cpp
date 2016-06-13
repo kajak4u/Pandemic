@@ -633,7 +633,9 @@ vector<PlayerCard*> Board::ChooseCardToGive(Player* target)
 	}
 	else
 	{
-		toReturn.push_back(currentPlayer->FindCard(currentCity->GetName()));
+        PlayerCard* card = currentPlayer->FindCard(currentCity->GetName());
+        if (card != nullptr)
+            toReturn.push_back(card);
 	}
 	return toReturn;
 }
@@ -653,7 +655,9 @@ vector<PlayerCard*> Board::ChooseCardToGain(Player* source)
 	}
 	else //obsluga tutaj dla pojedynczej karty
 	{
-		toReturn.push_back(source->FindCard(currentCity->GetName()));
+        PlayerCard* card = source->FindCard(currentCity->GetName());
+        if (card != nullptr)
+            toReturn.push_back(card);
 	} 
 	return toReturn;
 }

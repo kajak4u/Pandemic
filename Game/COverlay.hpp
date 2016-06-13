@@ -15,8 +15,10 @@ public:
 	~COverlay();
     void track(const QSet<CBoardItem*>& items, bool canCancel);
     void track(const QSet<CPlayer*>& players, bool canCancel);
+    void clearDisplay();
     void setDescription(const QString&);
     void displayItems(const QVector<CBoardItem*>& items);
+    void setEnabledItems(const QSet<CBoardItem*>& items);
     void setDeleteOnClick(bool);
     void setItemDeleteOnClick(bool);
     void letPlayerChoose(int count, bool canCancel);

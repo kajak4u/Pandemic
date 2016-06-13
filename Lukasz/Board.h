@@ -60,6 +60,13 @@ public:
 	vector<Player*> ChoosePlayer() const; //praktycznie getter
 	vector<Player*> ChoosePlayerInCityToGIVE() const;  //wybierz tego, kto OTRZYMA OD currentPlayera karte
 	vector<Player*> ChoosePlayerInCityToGAIN() const;  //OD KOGO currentPlayer moze POBRAC karte
+// NOTE rozwi¹zanie konfliktu
+    vector<Player*> ChoosePlayerToShareKnowledge() const {
+        vector<Player*> canGive = ChoosePlayerInCityToGIVE();
+        if (!canGive.empty())
+            return canGive; // jeœli mo¿e daæ kart, to ka¿demu, wiêc give + gain == give
+        return ChoosePlayerInCityToGAIN(); //a jeœli give=={} to give + gain == gain
+    }
 	QSet<City*> SeeFREECitiesAsDispatcher(Player* toMove);
 	QSet<City*> ChooseMoveShort(Player* toMove);
 	QSet<City*> ChooseMoveEverywhere(Player* toMove);
