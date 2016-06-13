@@ -108,11 +108,11 @@ void Board::DiscoverCure()
 {
 	if (currentPlayer->GetRole() == ROLE_SCIENTIST)
 	{
-        mediator().playerMayDiscardCards(4);
+        mediator().playerMayDiscardCards(4,cardsInColor);
 	}
 	else
 	{
-        mediator().playerMayDiscardCards(5);
+        mediator().playerMayDiscardCards(5,cardsInColor);
 	}
 }
 
