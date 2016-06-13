@@ -12,7 +12,7 @@
 //PRIVATE:
 int Board::outbreaksMarker = 0;
 vector<int> Board::infectionRateMarker;
-GameResult gameStatus = IN_PROGRESS;
+GameResult Board::gameStatus = IN_PROGRESS;
 
 void Board::MedicIncoming(Player* moved)
 {
