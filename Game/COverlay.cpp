@@ -23,6 +23,10 @@ COverlay::~COverlay()
 
 void COverlay::track(const QSet<CBoardItem*>& items, bool canCancel)
 {
+    for (QMap<CBoardItem*, CBoardItem*>::iterator iter = links.begin(); iter != links.end(); ++iter)
+        if (iter.key()->parent() == this)
+            delete iter.key();
+    links.clear();
     for (CBoardItem* item : items) {
         CBoardItem* newItem = new CBoardItem(this);
         newItem->move(mapFromGlobal(item->mapToGlobal(QPoint(0, 0))));

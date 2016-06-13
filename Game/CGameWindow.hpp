@@ -7,18 +7,50 @@
 #include "Lukasz\Board.h"
 #include <QVector>
 #include <QPushButton>
+#include <QPropertyAnimation>
 
 class CPushButton : public QPushButton {
     Q_OBJECT
     Q_PROPERTY(QColor color READ getColor WRITE setColor)
 public:
-    CPushButton(QWidget* parent = 0) : QPushButton(parent) {}
+    CPushButton(QWidget* parent = 0) : QPushButton(parent), animation(nullptr) {}
     virtual ~CPushButton() {}
-    QColor getColor() {
+    QColor getColor()
+    {
         return Qt::transparent;
     }
-    void setColor(QColor color) {
+    void setColor(QColor color)
+    {
         setStyleSheet(QString("background-color: rgb(%1, %2, %3);").arg(color.red()).arg(color.green()).arg(color.blue()));
+    }
+    void blinkTillClicked()
+    {
+        //gracz mo¿e tylko spasowaæ / zagraæ kartê specjaln¹
+        if (animation == nullptr)
+        {
+            QColor startColor = palette().color(QPalette::Button);
+            animation = new QPropertyAnimation(this, "color");
+            animation->setKeyValueAt(0.0, startColor);
+            animation->setKeyValueAt(0.25, QColor(0, 255, 0));
+            animation->setKeyValueAt(0.5, startColor);
+            animation->setKeyValueAt(1.0, startColor);
+            animation->setDuration(2000);
+        }
+        if (animation->state() == QAbstractAnimation::Stopped) {
+            animation->setLoopCount(-1);
+            animation->start(QAbstractAnimation::KeepWhenStopped);
+            connect(this, &CPushButton::clicked, this, &CPushButton::stopBlink);
+        }
+    }
+private:
+    QPropertyAnimation* animation;
+private slots:
+    void stopBlink()
+    {
+        animation->pause();
+        animation->setLoopCount(1);
+        animation->resume();
+        disconnect(this, &CPushButton::clicked, this, &CPushButton::stopBlink);
     }
 };
 

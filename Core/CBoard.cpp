@@ -395,7 +395,7 @@ void CBoard::addAnimation(QAbstractAnimation *newAnim)
     QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
     newGroup->addPause(pauseDuration);
     newGroup->addAnimation(newAnim);
-    lastStart = pauseDuration + 50;
+    lastStart = pauseDuration + 100;
     lastAnim = newGroup;
     ++animCount;
     connect(newGroup, &QAbstractAnimation::stateChanged, [this](QAbstractAnimation::State state) {
@@ -406,17 +406,6 @@ void CBoard::addAnimation(QAbstractAnimation *newAnim)
                 emit animationFinished();
         }
     });
-    //connect(newGroup, &QAbstractAnimation::stateChanged, [newAnim](QAbstractAnimation::State state) {
-    //    auto propAnim = dynamic_cast<QPropertyAnimation*>(newAnim);
-    //    if (propAnim != nullptr)
-    //        qDebug() << propAnim->targetObject() << " - " << propAnim->propertyName() << " - state " << (state == QAbstractAnimation::Running ? "Running" : state == QAbstractAnimation::Stopped ? "Stopped" : "Paused") << " at " << propAnim->currentTime() << " / " << propAnim->totalDuration();
-    //    else
-    //        qDebug() << "ANIM GROUP - state " << (state == QAbstractAnimation::Running ? "Running" : state == QAbstractAnimation::Stopped ? "Stopped" : "Paused") << " at " << newAnim->currentTime() << " / " << newAnim->totalDuration();
-    //}); auto propAnim = dynamic_cast<QPropertyAnimation*>(newAnim);
-    //if (propAnim != nullptr)
-    //    qDebug() << "ADD ANIM " << propAnim->targetObject() << " - " << propAnim->propertyName() << ", count " << animCount;
-    //else
-    //    qDebug() << "ADD ANIM GROUP, count " << animCount;
     newGroup->start(QAbstractAnimation::DeleteWhenStopped);
 }
 

@@ -558,6 +558,8 @@ void Mediator::playerMayDiscardCards(int count)
 void Mediator::playerMustDiscardCards(Player * player, int count)
 {
     qDebug() << "player must discard cards" ;
+    setHand();
+    GUI->setCardsEnabled(CT_PLAYER, false);
     vector<PlayerCard*> cards = player->SeeCards();
     QVector<CBoardItem*> cardsGUI;
     for (PlayerCard* card : cards)
