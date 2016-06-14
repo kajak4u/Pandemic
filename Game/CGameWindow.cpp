@@ -130,11 +130,11 @@ void CGameWindow::endGame(GameResult result)
     QString color;
     QString title;
     if (result == WON) {
-        color = "rgba(64,255,64,192)";
+        color = "rgba(64,255,64,128)";
         title = "You won";
     }
     else {
-        color = "rgba(255,64,64,192)";
+        color = "rgba(255,64,64,128)";
         title = "You lost";
 
     }

@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 #ifdef _DEBUG
     reloadStyle();
     QVector<QPair<QString, PlayerRole>> players;
-    players << qMakePair(QString::fromLocal8Bit("£ukasz"), ROLE_OPERATIONSEXPERT) << qMakePair(QString("Krzysiek"), ROLE_DISPATCHER) << qMakePair(QString("Ania"), ROLE_RANDOM);
+    players << qMakePair(QString::fromLocal8Bit("£ukasz"), ROLE_OPERATIONSEXPERT) << qMakePair(QString("Krzysiek"), ROLE_DISPATCHER);// << qMakePair(QString("Ania"), ROLE_RANDOM);
     CGameWindow* w = new CGameWindow(DIFF_MEDIUM, players);
     w->showFullScreen();
 #else

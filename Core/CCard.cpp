@@ -16,7 +16,7 @@ std::unique_ptr<QPixmap> CCard::playerReverse = nullptr,
         CCard::diseaseReverse = nullptr,
         CCard::epidemicObverse = nullptr;
 
-CCard::CCard(QWidget * parent) : CBoardItem(parent), reversed(false), type(CT_UNKNOWN)
+CCard::CCard(QWidget * parent) : CBoardItem(parent), reversed(false), nextReversed(false), type(CT_UNKNOWN)
 {
     if (playerReverse == nullptr)
         loadStaticGraphics();
@@ -48,6 +48,7 @@ void CCard::setType(CardType newType)
 void CCard::setReversed(bool rev)
 {
     reversed = rev;
+    nextReversed = rev;
 }
 
 bool CCard::isReversed() const
@@ -156,6 +157,7 @@ void CCard::loadFrom(QTextStream &ts)
     CBoardItem::loadFrom(ts);
     cardName = ts.readLine();
     reversed = ts.readLine().toInt();
+    nextReversed = reversed;
     updateOptions();
 }
 
@@ -189,6 +191,11 @@ void CCard::restoreParent()
 
 void CCard::invert()
 {
+    if (nextReversed == !reversed) {
+        nextReversed = !reversed;
+        return;
+    }
+    nextReversed = !reversed;
     QSequentialAnimationGroup* animation = new QSequentialAnimationGroup(this);
     QPropertyAnimation *fadeOut = createPropertyAnimation(this, "angleY", 0, 90, 250, QEasingCurve::InSine);
     connect(fadeOut, &QPropertyAnimation::stateChanged, this, &CCard::invertStateChanged);
@@ -202,7 +209,7 @@ void CCard::invertStateChanged(QAbstractAnimation::State newState)
     if (newState == QAbstractAnimation::Running)
         raise();
     if (newState == QAbstractAnimation::Stopped) {
-        reversed = !reversed;
+        reversed = nextReversed;
         if (reversed)
             setImage(getReverse().scaledToWidth(standardSize.width(), Qt::SmoothTransformation));
         else if (pxm.isNull()) {

@@ -167,8 +167,10 @@ void COverlay::removeItem(CBoardItem *toRemove)
                 else {
                     performButton->setEnabled(selected.size() == numberToSelect);
                     QLabel* descLabel = performButton->findChild<QLabel*>("overlayDescriptionLabel");
-                    QString newText = descLabel->text().replace(QString("<b>%1</b>").arg(numberToSelect + 1), QString("<b>%1</b>").arg(numberToSelect));
-                    descLabel->setText(newText);
+                    if (descLabel != nullptr) {
+                        QString newText = descLabel->text().replace(QString("<b>%1</b>").arg(numberToSelect + 1), QString("<b>%1</b>").arg(numberToSelect));
+                        descLabel->setText(newText);
+                    }
                 }
             }
             return;

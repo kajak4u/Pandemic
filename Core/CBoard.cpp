@@ -346,6 +346,13 @@ void CBoard::clickCity(QMouseEvent* event)
 void CBoard::setMode(Qt::TransformationMode newMode)
 {
     scaleMode = newMode;
+    QAbstractAnimation::State st;
+    if (newMode == Qt::FastTransformation)
+        st = QAbstractAnimation::Running;
+    else
+        st = QAbstractAnimation::Stopped;
+    for (CBoardItem* item : items)
+        item->scaleAnimationChanged(st);
     zoom(1.0);
 }
 
@@ -395,7 +402,7 @@ void CBoard::addAnimation(QAbstractAnimation *newAnim)
     QSequentialAnimationGroup* newGroup = new QSequentialAnimationGroup(this);
     newGroup->addPause(pauseDuration);
     newGroup->addAnimation(newAnim);
-    lastStart = pauseDuration + 100;
+    lastStart = pauseDuration + 256;
     lastAnim = newGroup;
     ++animCount;
     connect(newGroup, &QAbstractAnimation::stateChanged, [this](QAbstractAnimation::State state) {

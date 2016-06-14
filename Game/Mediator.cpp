@@ -462,8 +462,8 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
 
     GUI->zoomOut();
     COverlay* overlay = GUI->showOverlay();
-    overlay->track(stationsGUI, true);
     overlay->setDescription("You are out of Research Stations. To build a new one, choose an existing Station to remove.");
+    overlay->track(stationsGUI, true);
     overlay->connect(overlay, &COverlay::userChoseOne, [this](CBoardItem* chosen) {
         if (chosen == nullptr) {
             //u¿ytkownik wybra³ "anuluj"
@@ -472,8 +472,10 @@ void Mediator::chooseStationToRemove(std::vector<City*> stations)
         else {
             CCity* chosenCity = dynamic_cast<CCity*>(chosen);
             engine->BuildStationIfFull(chosenCity->toLogic());
+            emit GUI->actionPerformed();
         }
     });
+    emit GUI->actionStarted();
 }
 
 void Mediator::ShareKnowledge()

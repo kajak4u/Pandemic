@@ -41,6 +41,7 @@ private:
     void saveTo(QTextStream & ts) const;
     QPixmap pxm;
     bool reversed;
+    bool nextReversed;
     
 public slots:
     void invert();
