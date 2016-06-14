@@ -123,7 +123,7 @@ void CGameWindow::setStatusBar(int cubesBlue, int cubesYellow, int cubesBlack, i
     ui.base_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(stations == 0 ? "red" : "black").arg(stations));
     ui.cards_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(playerCards <= 0 ? "red" : "black").arg(playerCards));
     ui.outbreak_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(outbreaks >= 8 ? "red" : "black").arg(outbreaks));
-    ui.infections_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(outbreaks == 4 ? "red" : "black").arg(infectionsRate));
+    ui.infections_info->setText(QString("<span style=\"color: %1;\">x%2</span>").arg(infectionsRate == 4 ? "red" : "black").arg(infectionsRate));
 }
 
 void CGameWindow::endGame(GameResult result)
