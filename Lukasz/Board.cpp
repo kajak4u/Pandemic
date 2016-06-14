@@ -133,6 +133,10 @@ void Board::DiscoverCure_FinalStep(QVector<Card*> cardsRemoved)
 	{
 		playerDiscarded.PutCard(card);
 	}
+	if (all_of(diseases.begin(), diseases.end(), IsEradicated))
+	{
+		WinOrLoose(WON); //zwyciestwo
+	}
 }
 
 void Board::UseSpecial()
@@ -643,10 +647,6 @@ void Board::Treat(DiseaseType disType)
 {
 	Disease* dis = FindDisease(disType);
 	dis->healDisease(currentCity, currentPlayer->GetRole());
-	if (all_of(diseases.begin(), diseases.end(), IsEradicated))
-	{
-		WinOrLoose(WON); //zwyciestwo
-	}
 	--movesLeft;
 }
 
