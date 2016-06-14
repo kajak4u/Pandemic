@@ -1,5 +1,5 @@
 ﻿#ifdef _DEBUG
-#define _NOCARDS 
+//#define _NOCARDS 
 #endif
 
 #include "CCard.hpp"
@@ -53,7 +53,7 @@ void CCard::setReversed(bool rev)
 
 bool CCard::isReversed() const
 {
-    return reversed;
+    return nextReversed;
 }
 
 QString CCard::getCityName() const
@@ -127,8 +127,6 @@ void CCard::updateOptions()
     setMask(pxm.createMaskFromColor(Qt::transparent));
     update();
     repaint();
-    QString tooltip = CBoardItem::createToolTip() + "\ncardName: " + cardName + "\ntype: " + typeStr;
-    setToolTip(tooltip);
 }
 
 QString CCard::getSrc() const
@@ -192,10 +190,12 @@ void CCard::restoreParent()
 void CCard::invert()
 {
     if (nextReversed == !reversed) {
-        nextReversed = !reversed;
+        nextReversed = reversed;
+        qDebug() << this << " will be inverted to " << nextReversed << " with no animation";
         return;
     }
     nextReversed = !reversed;
+    qDebug() << this << " will be inverted to " << nextReversed;
     QSequentialAnimationGroup* animation = new QSequentialAnimationGroup(this);
     QPropertyAnimation *fadeOut = createPropertyAnimation(this, "angleY", 0, 90, 250, QEasingCurve::InSine);
     connect(fadeOut, &QPropertyAnimation::stateChanged, this, &CCard::invertStateChanged);
@@ -210,6 +210,7 @@ void CCard::invertStateChanged(QAbstractAnimation::State newState)
         raise();
     if (newState == QAbstractAnimation::Stopped) {
         reversed = nextReversed;
+        qDebug() << this << " is reversed to" << reversed;
         if (reversed)
             setImage(getReverse().scaledToWidth(standardSize.width(), Qt::SmoothTransformation));
         else if (pxm.isNull()) {
