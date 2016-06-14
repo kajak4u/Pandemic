@@ -759,6 +759,7 @@ void Board::Airlift(Player* toMove, City* target)
 	SpecialCardType  number = SC_AIRLIFT;
 	DiscardSpecialCard(SpecialCardType_SL[number].toStdString());
 	toMove->MoveToNeighbour(target);   //bo tylko ta nie usunie karty z reki
+	MedicIncoming(toMove);
 }
 QSet<City*> Board::ChooseCitiesToBuildStation()
 {
