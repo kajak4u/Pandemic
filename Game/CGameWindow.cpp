@@ -109,6 +109,7 @@ void CGameWindow::disableAll()
     menu_treat[RED]->setEnabled(false);
     menu_treat[YELLOW]->setEnabled(false);
     ui.passButton->setEnabled(false);
+    ui.passButton->stopBlink();
     for (int i = 0; i < 4; ++i)
         ui.playerOverlays[i]->hide();
 }

@@ -592,6 +592,7 @@ void Mediator::playerMustDiscardCards(Player * player, int count)
         emit GUI->actionPerformed();
         activeOverlay = nullptr;
     });
+    emit GUI->actionStarted();
 }
 
 Mediator & mediator()
