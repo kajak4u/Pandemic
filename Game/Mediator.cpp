@@ -99,6 +99,8 @@ void Mediator::setCurrent(Player *current)
     qDebug() << "set current to " << PlayerRole_SL[current->GetRole()];
     QMetaObject::Connection *conn = new QMetaObject::Connection;
     *conn = GUI->connect(GUI, &CBoard::animationFinished, [this, current, conn]() {
+        if (GUI == nullptr)
+            return;
         GUI->disconnect(*conn);
         delete conn;
         while (GUI->currentPlayer()->getRole() != current->GetRole())
@@ -121,7 +123,7 @@ void Mediator::setPlayerToolTips()
         QString tooltip = QString("<h1>%1</h1><h2>Role: <b>%2</b></h2><table>").arg(QSTR(player->GetNick())).arg(PlayerRole_SL[player->GetRole()]);
         vector<PlayerCard*> cards = player->SeeCards();
         for (PlayerCard* card : cards)
-            tooltip += QString("<tr><td style=\"background-color: %1; color: %2; padding: 10px; border: 2px solid green;\"><h3>%3</h3></td></tr>").arg(card->GetColor() == UNKNOWN ? "ORANGE" : DiseaseType_SL[card->GetColor()]).arg(card->GetColor() == BLACK ? "white" : "black").arg(QSTR(card->GetName()));
+            tooltip += QString("<tr><td style=\"background-color: %1; color: %2; padding: 10px; border: 2px solid green;\"><h3>%3</h3></td></tr>").arg(card->GetColor() == UNKNOWN ? "ORANGE" : DiseaseType_SL[card->GetColor()]).arg(card->GetColor() == BLACK || card->GetColor()==BLUE ? "white" : "black").arg(QSTR(card->GetName()));
         tooltip += "</table>";
         playerGUI->getIco()->setToolTip(tooltip);
     }
@@ -590,6 +592,7 @@ void Mediator::playerMustDiscardCards(Player * player, int count)
         emit GUI->actionPerformed();
         activeOverlay = nullptr;
     });
+    emit GUI->actionStarted();
 }
 
 Mediator & mediator()

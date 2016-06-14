@@ -109,6 +109,7 @@ void CGameWindow::disableAll()
     menu_treat[RED]->setEnabled(false);
     menu_treat[YELLOW]->setEnabled(false);
     ui.passButton->setEnabled(false);
+    ui.passButton->stopBlink();
     for (int i = 0; i < 4; ++i)
         ui.playerOverlays[i]->hide();
 }
@@ -178,6 +179,7 @@ void CGameWindow::endGame(GameResult result)
 
 void CGameWindow::gotoMenu()
 {
+    mediator().setGUI(nullptr);
     CMainWindow *newWindow = new CMainWindow(false);
     newWindow->showFullScreen();
     this->close();
@@ -212,8 +214,11 @@ void CGameWindow::keyReleaseEvent(QKeyEvent *event)
     if (event->key() != Qt::Key_Escape)
         return;
     int result = QMessageBox::question(this, "Exit to menu?", "Do you really want to abandon the game and exit to menu?");
-    if (result == QMessageBox::Yes)
+    qDebug() << "disconnect";
+    if (result == QMessageBox::Yes) {
+        disconnect(conn);
         gotoMenu();
+    }
 }
 
 Board * CGameWindow::engine() const
@@ -224,7 +229,7 @@ Board * CGameWindow::engine() const
 void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
 {
     if (actualMovedPlayer == nullptr)
-        actualMovedPlayer = ui.board->currentPlayer();
+        actualMovedPlayer = ui.board->findPlayer(game->GetCurrentPlayer()->GetRole());
     mediator().setActualMovedPlayer(actualMovedPlayer->toLogic());
     CCity* currentCity = actualMovedPlayer->getLocation();
     if (decisions.contains(DEC_MOVE_ANOTHER)) {

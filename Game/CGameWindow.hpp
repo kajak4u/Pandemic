@@ -46,13 +46,15 @@ public:
     }
 private:
     QPropertyAnimation* animation;
-private slots:
+public slots:
     void stopBlink()
     {
-        animation->pause();
-        animation->setLoopCount(1);
-        animation->resume();
-        disconnect(this, &CPushButton::clicked, this, &CPushButton::stopBlink);
+        if (animation != nullptr && animation->state() == QAbstractAnimation::Running) {
+            animation->pause();
+            animation->setLoopCount(1);
+            animation->resume();
+            disconnect(this, &CPushButton::clicked, this, &CPushButton::stopBlink);
+        }
     }
 };
 
