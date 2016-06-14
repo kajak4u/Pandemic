@@ -116,6 +116,11 @@ void Board::DiscoverCure()
 	}
 }
 
+bool IsEradicated(Disease& disease)	//lokalna funkcja dla ALL_OF
+{
+	return (disease.Status() == TREATED) || (disease.Status() == DISCOVERED);
+}
+
 void Board::DiscoverCure_FinalStep(QVector<Card*> cardsRemoved)
 { 
 	vector<Card*> cards = cardsRemoved.toStdVector();
@@ -236,11 +241,6 @@ void Board::InfectionIncrease()
 int Board::GetInfectionRateMarker()
 {
 	return infectionRateMarker[infectionRateMarker[0]];
-}
-
-bool IsEradicated(Disease& disease)	//lokalna funkcja dla ALL_OF
-{
-	return (disease.Status() == TREATED) || (disease.Status() == DISCOVERED);
 }
 
 void Board::NewTurn()
