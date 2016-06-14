@@ -178,6 +178,7 @@ void CGameWindow::endGame(GameResult result)
 
 void CGameWindow::gotoMenu()
 {
+    mediator().setGUI(nullptr);
     CMainWindow *newWindow = new CMainWindow(false);
     newWindow->showFullScreen();
     this->close();
@@ -212,8 +213,11 @@ void CGameWindow::keyReleaseEvent(QKeyEvent *event)
     if (event->key() != Qt::Key_Escape)
         return;
     int result = QMessageBox::question(this, "Exit to menu?", "Do you really want to abandon the game and exit to menu?");
-    if (result == QMessageBox::Yes)
+    qDebug() << "disconnect";
+    if (result == QMessageBox::Yes) {
+        disconnect(conn);
         gotoMenu();
+    }
 }
 
 Board * CGameWindow::engine() const

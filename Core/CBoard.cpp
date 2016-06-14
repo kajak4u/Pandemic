@@ -405,13 +405,19 @@ void CBoard::addAnimation(QAbstractAnimation *newAnim)
     lastStart = pauseDuration + 256;
     lastAnim = newGroup;
     ++animCount;
-    connect(newGroup, &QAbstractAnimation::stateChanged, [this](QAbstractAnimation::State state) {
-        if (state == QAbstractAnimation::Stopped) {
-            --animCount;
-            qDebug() << "anim finished, left " << animCount;
-            if (animCount == 0)
-                emit animationFinished();
-        }
+    //connect(newGroup, &QAbstractAnimation::stateChanged, [this](QAbstractAnimation::State state) {
+    //    if (state == QAbstractAnimation::Stopped) {
+    //        --animCount;
+    //        qDebug() << "anim finished, left " << animCount;
+    //        if (animCount == 0)
+    //            emit animationFinished();
+    //    }
+    //});
+    connect(newGroup, &QAbstractAnimation::destroyed, [this]() {
+        --animCount;
+        qDebug() << "anim destroyed, left " << animCount;
+        if (animCount == 0)
+            emit animationFinished();
     });
     newGroup->start(QAbstractAnimation::DeleteWhenStopped);
 }

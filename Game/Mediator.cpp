@@ -99,8 +99,10 @@ void Mediator::setCurrent(Player *current)
     qDebug() << "set current to " << PlayerRole_SL[current->GetRole()];
     QMetaObject::Connection *conn = new QMetaObject::Connection;
     *conn = GUI->connect(GUI, &CBoard::animationFinished, [this, current, conn]() {
-        GUI->disconnect(*conn);
+        if (GUI == nullptr)
+            return;
         delete conn;
+        GUI->disconnect(*conn);
         while (GUI->currentPlayer()->getRole() != current->GetRole())
             GUI->nextPlayer();
         setHand();
