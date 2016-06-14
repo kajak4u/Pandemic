@@ -228,7 +228,7 @@ Board * CGameWindow::engine() const
 void CGameWindow::dispatchDecisions(const QSet<Decision>& decisions)
 {
     if (actualMovedPlayer == nullptr)
-        actualMovedPlayer = ui.board->currentPlayer();
+        actualMovedPlayer = ui.board->findPlayer(game->GetCurrentPlayer()->GetRole());
     mediator().setActualMovedPlayer(actualMovedPlayer->toLogic());
     CCity* currentCity = actualMovedPlayer->getLocation();
     if (decisions.contains(DEC_MOVE_ANOTHER)) {
