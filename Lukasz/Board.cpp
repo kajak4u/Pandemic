@@ -116,6 +116,11 @@ void Board::DiscoverCure()
 	}
 }
 
+bool IsEradicated(Disease& disease)	//lokalna funkcja dla ALL_OF
+{
+	return (disease.Status() == TREATED) || (disease.Status() == DISCOVERED);
+}
+
 void Board::DiscoverCure_FinalStep(QVector<Card*> cardsRemoved)
 { 
 	vector<Card*> cards = cardsRemoved.toStdVector();
@@ -132,6 +137,10 @@ void Board::DiscoverCure_FinalStep(QVector<Card*> cardsRemoved)
 	for (Card* card : cards)
 	{
 		playerDiscarded.PutCard(card);
+	}
+	if (all_of(diseases.begin(), diseases.end(), IsEradicated))
+	{
+		WinOrLoose(WON); //zwyciestwo
 	}
 }
 
@@ -232,11 +241,6 @@ void Board::InfectionIncrease()
 int Board::GetInfectionRateMarker()
 {
 	return infectionRateMarker[infectionRateMarker[0]];
-}
-
-bool IsEradicated(Disease& disease)	//lokalna funkcja dla ALL_OF
-{
-	return (disease.Status() == TREATED) || (disease.Status() == DISCOVERED);
 }
 
 void Board::NewTurn()
@@ -643,10 +647,6 @@ void Board::Treat(DiseaseType disType)
 {
 	Disease* dis = FindDisease(disType);
 	dis->healDisease(currentCity, currentPlayer->GetRole());
-	if (all_of(diseases.begin(), diseases.end(), IsEradicated))
-	{
-		WinOrLoose(WON); //zwyciestwo
-	}
 	--movesLeft;
 }
 
