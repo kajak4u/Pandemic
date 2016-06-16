@@ -4,7 +4,7 @@
 #include <QDebug>
 
 CExtendedSignalWidget::CExtendedSignalWidget(QWidget *parent)
-    : QLabel(parent), pressed(false), hover(false)
+    : QLabel(parent), pressed(false)
 {
 }
 

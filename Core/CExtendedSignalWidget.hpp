@@ -5,7 +5,6 @@
 class CExtendedSignalWidget : public QLabel
 {
     Q_OBJECT
-    Q_PROPERTY(bool hover MEMBER hover)
     Q_PROPERTY(bool pressed MEMBER pressed)
 public:
     CExtendedSignalWidget(QWidget *parent = nullptr);
@@ -16,7 +15,6 @@ public:
     virtual void resizeEvent(QResizeEvent*) final;
     virtual void moveEvent(QMoveEvent*) final;
 private:
-    bool hover;
     bool pressed;
 
 signals:
