@@ -517,21 +517,25 @@ CPathMarker
 199
 img\spreadMarker.png
 CDeck
-PlayerDeck
+PlayerDiscard
 561
 1991 1457 302 422
-CDeck
 PlayerDiscard
+CDeck
+PlayerDeck
 576
 1625 1457 302 422
+PlayerDeck
 CDeck
 DiseaseDeck
 577
 1532 59 424 300
+DiseaseDeck
 CDeck
 DiseaseDiscard
 578
 2000 60 424 300
+DiseaseDiscard
 CCard
 
 593

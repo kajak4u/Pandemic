@@ -205,7 +205,7 @@ void CBoard::seeDeck()
     for (DeckType type: typesToSee) {
         CDeck* deck = findChild<CDeck*>(CDeck::createObjectName(type));
         if (snd->geometry().intersects(deck->geometry())) {
-            mediator().seeDeck(type);
+            emit showDeck(type);
             break;
         }
     }
@@ -372,11 +372,6 @@ void CBoard::closeCityMenu() {
     cityMenu->hide();
 }
 
-void CBoard::useCard(CCard *card)
-{
-    mediator().playerUsedCard(card);
-}
-
 void CBoard::setCityMenu(CCircleMenu *menu)
 {
     cityMenu = menu;
@@ -464,7 +459,7 @@ bool CBoard::isCurrentCity(CCity *city) const
 
 void CBoard::addCardToHand(CCard *card)
 {
-    qDebug() << "CBoard::addCard " << card << "to hand of " << PlayerRole_SL[currentPlayer()->getRole()];
+    qDebug() << "CBoard::addNewCard " << card << "to hand of " << PlayerRole_SL[currentPlayer()->getRole()];
     CHandCard* item = new CHandCard(card);
     hand.push_back(item);
     dynamic_cast<QVBoxLayout*>(playerArea)->insertWidget(hand.size(), item);
@@ -503,7 +498,7 @@ void CBoard::nextPlayer()
         positions += player->getIco()->pos();
     players[0]->getIco()->stackUnder(players.back()->getIco());
     for (int i = 0; i < players.size()-1; ++i)
-        swap(players[i + 1], players[i]);
+        std::swap(players[i + 1], players[i]);
     int i = 0;
     for (CPlayer* player : players)
         addAnimation(createPropertyAnimation(player->getIco(), "pos", player->getIco()->pos(), positions[i++], 1000, QEasingCurve::InOutCirc));

@@ -16,7 +16,7 @@ class CPlayer
     QString nick;
     Player* logicObj;
 public:
-    CPlayer(Player*, CCity*);
+    CPlayer(Player*, PlayerRole, const QString&, CCity*);
     ~CPlayer();
     Player* toLogic();
     QString getColor();

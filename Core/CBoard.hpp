@@ -92,7 +92,6 @@ private slots:
     void setMode(Qt::TransformationMode);
     void setSmoothMode();
     void closeCityMenu();
-    void useCard(CCard*);
 signals:
     void created();
     void cityClicked(CCity*);
@@ -103,4 +102,6 @@ signals:
     void animationFinished();
     void setCurrentStatus(int cubesBlue, int cubesYellow, int cubesBlack, int cubesRed, int stations, int playerCards, int outbreaks, int infectionsRate);
     void endGame(GameResult);
+    void showDeck(DeckType);
+    void useCard(CCard*);
 };

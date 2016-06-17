@@ -55,7 +55,7 @@ QString CDeck::createObjectName(DeckType dt)
     return QString("CDeck %1").arg(DeckType_SL[dt]);
 }
 
-void CDeck::addCard(CardType type, const QString& name, Card* logicObj)
+void CDeck::addNewCard(CardType type, const QString& name, Card* logicObj)
 {
     CCard* card = dynamic_cast<CCard*>(CBoardItemsFactory().create("CCard", zoomFactor, getStandardMiddle()));
     if (card == nullptr)

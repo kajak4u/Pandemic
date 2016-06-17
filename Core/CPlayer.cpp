@@ -1,15 +1,14 @@
 #include "CPlayer.h"
 #include "CCity.hpp"
 #include "CPawn.hpp"
-#include "Lukasz\Player.h"
 
 
-CPlayer::CPlayer(Player* logic, CCity *startLocation)
+CPlayer::CPlayer(Player* logic, PlayerRole role, const QString& nick, CCity *startLocation)
 {
     logicObj = logic;
-    this->role = logic->GetRole();
+    this->role = role;
     pawn = CPawn::createIn(startLocation, role);
-    this->nick = QString::fromStdString(logic->GetNick());
+    this->nick = nick;
     }
 
 CPlayer::~CPlayer()

@@ -15,8 +15,6 @@ public:
     void setDestination(CCity * newLocation);
     void onRightBtnUp(QMouseEvent * event);
 private:
-	static QSet<CResearchStation*> existingStations;
-    const int maxNumberOfStations = 6;
     CCity* location;
 };
 Q_DECLARE_METATYPE(CResearchStation)

@@ -14,6 +14,7 @@
 #include "CCity.hpp"
 #include "CCard.hpp"
 #include "CMainWindow.hpp"
+#include "Lukasz\Board.h"
 
 CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRole>>& players, QWidget *parent)
     : QWidget(parent), game(nullptr), diff(diff), players(players), actualMovedPlayer(nullptr)
@@ -39,6 +40,12 @@ CGameWindow::CGameWindow(Difficulty diff, const QVector<QPair<QString, PlayerRol
     connect(ui.board, &CBoard::actionCancelled, this, &CGameWindow::nextAction);
     connect(ui.board, &CBoard::setCurrentStatus, this, &CGameWindow::setStatusBar);
     connect(ui.board, &CBoard::endGame, this, &CGameWindow::endGame);
+    connect(ui.board, &CBoard::showDeck, [](DeckType type) {
+        mediator().seeDeck(type);
+    });
+    connect(ui.board, &CBoard::useCard, [](CCard* card) {
+        mediator().playerUsedCard(card);
+    });
     for (int i = 0; i < 4;++i)
         connect(ui.playerOverlays[i], &CExtendedSignalWidget::leftButtonUp, this, &CGameWindow::choosePlayerToMove);
     connect(ui.passButton, &QPushButton::clicked, [this]() {

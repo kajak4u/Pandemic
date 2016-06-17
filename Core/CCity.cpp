@@ -69,12 +69,14 @@ CCity::~CCity()
 
 void CCity::onLeftBtnUp(QMouseEvent *event)
 {
+    event->accept();
     if (event->modifiers() & Qt::ShiftModifier)
         toggleHighlight();
 }
 
 void CCity::onRightBtnUp(QMouseEvent *event)
 {
+    event->accept();
     if (event->modifiers() & Qt::ControlModifier)
         addCube(type);
     else

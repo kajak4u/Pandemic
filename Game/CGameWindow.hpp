@@ -4,12 +4,12 @@
 #include <QMap>
 #include "ui_CGameWindow.h"
 #include "enums.h"
-#include "Lukasz\Board.h"
 #include <QVector>
 #include <QPushButton>
 #include <QPropertyAnimation>
 
 class QKeyEvent;
+class Board;
 
 class CPushButton : public QPushButton {
     Q_OBJECT

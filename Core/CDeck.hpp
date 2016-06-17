@@ -5,13 +5,11 @@ class Card;
 
 class CDeck : public CBoardItem {
 	Q_OBJECT
-    bool hasReversedCards;
-    DeckType type;
 public:
 	CDeck(QWidget * parent = (QWidget*)defaultContainer);
     virtual void loadFrom(QTextStream &);
     virtual void saveTo(QTextStream &) const;
-    void addCard(CardType type, const QString& name, Card* logicObj=nullptr);
+    void addNewCard(CardType type, const QString& name, Card* logicObj=nullptr);
 	virtual ~CDeck();
     void setType(DeckType);
     void setReversed(bool reversed);
@@ -20,5 +18,7 @@ public:
     static QString createObjectName(const QString& name);
     static QString createObjectName(DeckType dt);
 private:
+    bool hasReversedCards;
+    DeckType type;
 	
 };

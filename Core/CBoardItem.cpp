@@ -72,12 +72,14 @@ CBoardItem::~CBoardItem() {
 
 void CBoardItem::onMouseDown(QMouseEvent *event)
 {
+    event->accept();
     grabStart = event->pos();
     isDragging = false;
 }
 
 void CBoardItem::onLeftBtnUp(QMouseEvent *event)
 {
+    event->accept();
     if (event->modifiers() & Qt::ControlModifier) { //Ctrl+Leftbutton -> delete object
         QString message = QString("Are you sure you want to delete the ") + metaObject()->className() + "?\n\n" + toolTip();
         bool ok;
@@ -95,6 +97,7 @@ void CBoardItem::onLeftBtnUp(QMouseEvent *event)
 }
 
 void CBoardItem::onMouseMove(QMouseEvent* event) {
+    event->accept();
     isDragging = true;
     if (event->buttons() & Qt::LeftButton) {
         setRealPos(mapToParent(event->pos() - grabStart));

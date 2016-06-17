@@ -62,7 +62,7 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
     qDebug() << "init start";
     checkGUI();
     for (Player* player : players) {
-        CPlayer* newPlayer = new CPlayer(player, GUI->FIND(CCity, QSTR(player->GetPosition()->GetName())));
+        CPlayer* newPlayer = new CPlayer(player, player->GetRole(), QSTR(player->GetNick()), GUI->FIND(CCity, QSTR(player->GetPosition()->GetName())));
         GUI->addPlayer(newPlayer);
     }
     qDebug() << "connect cities";
@@ -81,7 +81,7 @@ void Mediator::init(const std::vector<Player*>& players, const std::vector<City*
         pair.second->setReversed(reversed);
         reversed = !reversed;
         for (Card* card : cards) {
-            pair.second->addCard(findType(card), QSTR(card->GetName()), card);
+            pair.second->addNewCard(findType(card), QSTR(card->GetName()), card);
         }
     }
     qDebug() << "init end";
