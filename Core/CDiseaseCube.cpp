@@ -29,7 +29,7 @@ void CDiseaseCube::disappear()
     container->addAnimation(anim);
 }
 
-CDiseaseCube::CDiseaseCube(DiseaseType _color, CCity *_city) : CBoardItem((QWidget*)defaultContainer), color(_color), location(_city), nth(-1)
+CDiseaseCube::CDiseaseCube(DiseaseType _color, CCity *_city) : CBoardItem((QWidget*)defaultContainer), color(_color), location(_city)
 {
     disableResize();
     if (pixmaps.size() == 0)
@@ -64,7 +64,6 @@ QString CDiseaseCube::createToolTip()
     tooltip += "\nColor: " + DiseaseType_SL[color];
     if (location != nullptr)
         tooltip += "\nLocation: " + location->getName();
-    tooltip += "\nnth: " + QString::number(nth);
     return tooltip;
 }
 
@@ -94,7 +93,7 @@ void CDiseaseCube::setDestination(CCity * newLocation)
     if (newLocation == nullptr)
         return;
     CPoint cityPoint = newLocation->getStandardPos();
-    nth = newLocation->cubesOf(color);
+    int nth = newLocation->cubesOf(color);
     CPoint verticalOffset = CPoint(0, -20)*nth;
     CPoint diseaseOffset = offsetOf(color);
     CPoint endPos = cityPoint + verticalOffset + diseaseOffset + standardSize/2;
@@ -103,16 +102,6 @@ void CDiseaseCube::setDestination(CCity * newLocation)
     container->addAnimation(anim);
 }
 
-bool CDiseaseCube::isFirst() const
-{
-    return nth == 1;
-}
-
-void CDiseaseCube::setAlpha(double newAlpha)
-{
-    alpha = newAlpha;
-
-}
 
 CPoint CDiseaseCube::offsetOf(DiseaseType type)
 {

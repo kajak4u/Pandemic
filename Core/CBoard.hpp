@@ -81,7 +81,6 @@ private:
     QPixmap image;
     QPixmap smallImage;
     Insertable actualInserted;
-    QMap<Decision, QWidget*> decisions;
     QMetaObject::Connection closeMenuConn;
 public slots:
     void clickCity(QMouseEvent*);

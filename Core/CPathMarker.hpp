@@ -13,15 +13,12 @@ public:
     ~CPathMarker();
     virtual void loadFrom(QTextStream & ts);
     virtual void saveTo(QTextStream & ts) const;
-    CPathItem *getPosition() const;
-    int getValue() const;
-    bool isAtEnd() const;
-    void moveTo(CPathItem* dest);
     void moveToNext(int count=1);
     void onRightBtnUp(QMouseEvent*);
 protected:
     void updateOptions();
 private:
+    void moveTo(CPathItem* dest);
     CPathItem *position;
     QString imgSrc;
     QString oldImgSrc;

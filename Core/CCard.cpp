@@ -166,16 +166,6 @@ void CCard::saveTo(QTextStream &ts) const
     ts << QString::number((int)reversed) << endl;
 }
 
-void CCard::gotoPlayer()
-{
-    QRect cardPos = QRect(mapToGlobal({ 0,0 }), size());
-    QLabel* ico = container->currentPlayer()->getIco();
-    QRect playerIcoRect = QRect(ico->mapToGlobal({ 0,0 }), ico->size());
-    if (cardPos.intersects(playerIcoRect))
-        container->addCardToHand(this);
-    hide();
-}
-
 void CCard::restoreParent()
 {
     auto children = container->children();

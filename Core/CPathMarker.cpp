@@ -45,16 +45,6 @@ void CPathMarker::moveToNext(int count)
         moveTo(position);
 }
 
-CPathItem * CPathMarker::getPosition() const
-{
-    return position;
-}
-
-bool CPathMarker::isAtEnd() const
-{
-    return position && position->getNext();
-}
-
 void CPathMarker::moveTo(CPathItem * dest)
 {
     if (dest == nullptr)
